@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion sdk_version
+    buildToolsVersion "29.0.0"
+
+    defaultConfig {
+        applicationId "com.yamal.sudoku"
+        minSdkVersion min_api_level
+        targetSdkVersion sdk_version
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation libs.android_compat
+    implementation libs.kotlin_stdlib
+    implementation libs.constraint_layout
+}
