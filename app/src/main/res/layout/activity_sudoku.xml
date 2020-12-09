@@ -108,18 +108,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Start game"
-            tools:visibility="gone" />
+            android:text="@string/start_game"
+            android:visibility="gone" />
 
     <Button
             android:id="@+id/check_game"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/save_game"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/buttons_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Check game"
+            android:text="@string/check_game"
             android:visibility="gone" />
+
+    <Button
+        android:id="@+id/save_game"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/check_game"
+        app:layout_constraintTop_toBottomOf="@+id/buttons_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/save_game"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,7 @@ import android.view.View
 
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.R
-import com.yamal.sudoku.model.OnlyReadBoard
+import com.yamal.sudoku.model.ReadOnlyBoard
 
 class SudokuBoardView @JvmOverloads constructor(
     context: Context,
@@ -21,7 +21,7 @@ class SudokuBoardView @JvmOverloads constructor(
     var listener: OnCellSelectedListener? = null
 
     private var isHighlighted = false
-    private var board: OnlyReadBoard? = null
+    private var onlyBoard: ReadOnlyBoard? = null
     private var cellWidth: Float = 0F
     private var boardWidth: Float = 0F
     private var textHeight: Float = 0F
@@ -67,9 +67,9 @@ class SudokuBoardView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setBoard(board: OnlyReadBoard?) {
-        board?.let {
-            this.board = board
+    fun setBoard(onlyBoard: ReadOnlyBoard?) {
+        onlyBoard?.let {
+            this.onlyBoard = onlyBoard
             invalidate()
         }
     }
@@ -95,7 +95,7 @@ class SudokuBoardView @JvmOverloads constructor(
     }
 
     private fun Canvas.drawNumbers() {
-        board?.let { board ->
+        onlyBoard?.let { board ->
             if (isHighlighted) {
                 drawRect(0F, 0F, boardWidth, boardWidth, highlightedPaint)
             }

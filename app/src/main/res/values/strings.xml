@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Sudoku</string>
+    <string name="start_game">Start</string>
+    <string name="check_game">Check</string>
+    <string name="save_game">Save</string>
+    <string name="shared_preferences_file_name">sudoku_board_storage</string>
 </resources>

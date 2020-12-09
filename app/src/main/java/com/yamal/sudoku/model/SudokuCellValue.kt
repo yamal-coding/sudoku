@@ -13,10 +13,4 @@ enum class SudokuCellValue(private val label: String, val intValue: Int) {
     NINE("9", 9);
 
     override fun toString(): String = label
-
-    companion object {
-        fun fromInt(value: Int): SudokuCellValue =
-            values().firstOrNull { value == it.intValue }
-                ?: throw IllegalArgumentException("Invalid value")
-    }
 }

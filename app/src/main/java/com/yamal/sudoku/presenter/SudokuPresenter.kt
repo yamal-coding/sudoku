@@ -1,10 +1,17 @@
 package com.yamal.sudoku.presenter
 
+import com.yamal.sudoku.commons.JobDispatcher
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.SudokuCellValue
+import com.yamal.sudoku.usecase.GetSavedBoard
+import com.yamal.sudoku.usecase.SaveBoard
 import com.yamal.sudoku.view.SudokuView
 
-class SudokuPresenter {
+class SudokuPresenter(
+    private val getSavedBoard: GetSavedBoard,
+    private val saveBoard: SaveBoard,
+    private val jobDispatcher: JobDispatcher
+) {
 
     private lateinit var view: SudokuView
     private lateinit var board: Board
@@ -12,14 +19,28 @@ class SudokuPresenter {
     private var gameFinished = false
 
     fun onCreate(view: SudokuView) {
-        board = Board.empty()
         this.view = view
-        view.updateBoard(board)
+
+        // TODO show spinner
+
+        getSavedBoard { savedBoard ->
+            jobDispatcher.runOnUIThread {
+                if (savedBoard == null) {
+                    board = Board.empty()
+                    view.onNewGame()
+                } else {
+                    board = savedBoard
+                    view.onSavedGame()
+                    isSetUpMode = false
+                }
+                view.updateBoard(board)
+            }
+        }
     }
 
-    fun startGame() {
+    fun setUpFinishedGame() {
         isSetUpMode = false
-        view.onGameStarted()
+        view.onSetUpFinished()
     }
 
     fun checkGame() {
@@ -46,5 +67,9 @@ class SudokuPresenter {
                 view.updateBoard(board)
             }
         }
+    }
+
+    fun saveGame() {
+        saveBoard(board)
     }
 }

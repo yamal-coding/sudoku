@@ -1,12 +1,13 @@
 package com.yamal.sudoku.model
 
-interface OnlyReadBoard {
+interface ReadOnlyBoard {
     fun getSelectedX(): Int
     fun getSelectedY(): Int
     operator fun get(x: Int, y: Int): SudokuCell
+    fun getAllCells(): List<List<SudokuCell>>
 }
 
-class Board(private val cells: List<MutableList<SudokuCell>>) : OnlyReadBoard {
+class Board(private val cells: List<MutableList<SudokuCell>>) : ReadOnlyBoard {
 
     private val rows = mapOfCells()
     private val columns = mapOfCells()
@@ -38,6 +39,8 @@ class Board(private val cells: List<MutableList<SudokuCell>>) : OnlyReadBoard {
 
     override fun get(x: Int, y: Int): SudokuCell =
         cells[x][y]
+
+    override fun getAllCells(): List<List<SudokuCell>> = cells
 
     fun selectCell(x: Int, y: Int) {
         _selectedX = x

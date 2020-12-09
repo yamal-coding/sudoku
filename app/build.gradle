@@ -29,4 +29,5 @@ dependencies {
     implementation libs.android_compat
     implementation libs.kotlin_stdlib
     implementation libs.constraint_layout
+    implementation libs.gson
 }
