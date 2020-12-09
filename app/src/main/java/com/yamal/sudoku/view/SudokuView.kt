@@ -1,10 +1,10 @@
 package com.yamal.sudoku.view
 
-import com.yamal.sudoku.model.Board
+import com.yamal.sudoku.model.OnlyReadBoard
 
 interface SudokuView {
-    fun updateBoard(board: Board)
-    fun onResetGame(board: Board)
+    fun updateBoard(board: OnlyReadBoard)
+    fun onResetGame(board: OnlyReadBoard)
     fun onGameStarted()
     fun onGameFinished()
 }

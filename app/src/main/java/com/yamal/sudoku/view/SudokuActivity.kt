@@ -3,7 +3,7 @@ package com.yamal.sudoku.view
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.yamal.sudoku.model.Board
+import com.yamal.sudoku.model.OnlyReadBoard
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.R
 import com.yamal.sudoku.presenter.SudokuPresenter
@@ -44,12 +44,12 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         check_game.setOnClickListener { presenter.checkGame() }
     }
 
-    override fun onResetGame(board: Board) {
+    override fun onResetGame(board: OnlyReadBoard) {
         sudoku_board.unHighlightBackground()
         sudoku_board.setBoard(board)
     }
 
-    override fun updateBoard(board: Board) {
+    override fun updateBoard(board: OnlyReadBoard) {
         sudoku_board.setBoard(board)
     }
 

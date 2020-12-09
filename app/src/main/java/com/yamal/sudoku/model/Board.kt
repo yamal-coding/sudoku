@@ -1,6 +1,12 @@
 package com.yamal.sudoku.model
 
-class Board(private val cells: List<MutableList<SudokuCell>>) {
+interface OnlyReadBoard {
+    fun getSelectedX(): Int
+    fun getSelectedY(): Int
+    operator fun get(x: Int, y: Int): SudokuCell
+}
+
+class Board(private val cells: List<MutableList<SudokuCell>>) : OnlyReadBoard {
 
     private val rows = mapOfCells()
     private val columns = mapOfCells()
@@ -21,48 +27,49 @@ class Board(private val cells: List<MutableList<SudokuCell>>) {
         }
     }
 
-    var selectedX: Int = 0
-        private set
-    var selectedY: Int = 0
-        private set
+    private var _selectedX: Int = 0
+    override fun getSelectedX(): Int = _selectedX
+
+    private var _selectedY: Int = 0
+    override fun getSelectedY(): Int = _selectedY
 
     val selectedCell: SudokuCell
-        get() = cells[selectedX][selectedY]
+        get() = cells[_selectedX][_selectedY]
 
-    operator fun get(x: Int, y: Int): SudokuCell =
+    override fun get(x: Int, y: Int): SudokuCell =
         cells[x][y]
 
     fun selectCell(x: Int, y: Int) {
-        selectedX = x
-        selectedY = y
+        _selectedX = x
+        _selectedY = y
     }
 
     fun setSelectedCell(value: SudokuCellValue) {
         updateCurrentStatus(value)
-        cells[selectedX][selectedY].value = value
+        cells[_selectedX][_selectedY].value = value
     }
 
     fun fixSelectedCell(value: SudokuCellValue) {
         updateCurrentStatus(value)
 
-        cells[selectedX][selectedY].isFixed = value != SudokuCellValue.EMPTY
-        cells[selectedX][selectedY].value = value
+        cells[_selectedX][_selectedY].isFixed = value != SudokuCellValue.EMPTY
+        cells[_selectedX][_selectedY].value = value
     }
 
     private fun updateCurrentStatus(value: SudokuCellValue) {
-        if (cells[selectedX][selectedY].value != SudokuCellValue.EMPTY) {
-            val intValue = cells[selectedX][selectedY].value.intValue
-            rows[selectedX][intValue] = rows[selectedX][intValue]!! - 1
-            columns[selectedY][intValue] = columns[selectedY][intValue]!! - 1
-            quadrants[quadrantByRowAndColumn(selectedX, selectedY)][intValue] =
-                quadrants[quadrantByRowAndColumn(selectedX, selectedY)][intValue]!! - 1
+        if (cells[_selectedX][_selectedY].value != SudokuCellValue.EMPTY) {
+            val intValue = cells[_selectedX][_selectedY].value.intValue
+            rows[_selectedX][intValue] = rows[_selectedX][intValue]!! - 1
+            columns[_selectedY][intValue] = columns[_selectedY][intValue]!! - 1
+            quadrants[quadrantByRowAndColumn(_selectedX, _selectedY)][intValue] =
+                quadrants[quadrantByRowAndColumn(_selectedX, _selectedY)][intValue]!! - 1
         }
 
         if (value != SudokuCellValue.EMPTY) {
-            rows[selectedX][value.intValue] = rows[selectedX][value.intValue]!! + 1
-            columns[selectedY][value.intValue] = columns[selectedY][value.intValue]!! + 1
-            quadrants[quadrantByRowAndColumn(selectedX, selectedY)][value.intValue] =
-                quadrants[quadrantByRowAndColumn(selectedX, selectedY)][value.intValue]!! + 1
+            rows[_selectedX][value.intValue] = rows[_selectedX][value.intValue]!! + 1
+            columns[_selectedY][value.intValue] = columns[_selectedY][value.intValue]!! + 1
+            quadrants[quadrantByRowAndColumn(_selectedX, _selectedY)][value.intValue] =
+                quadrants[quadrantByRowAndColumn(_selectedX, _selectedY)][value.intValue]!! + 1
         }
     }
 

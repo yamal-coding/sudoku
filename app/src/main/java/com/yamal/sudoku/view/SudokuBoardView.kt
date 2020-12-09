@@ -9,9 +9,9 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 
-import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.R
+import com.yamal.sudoku.model.OnlyReadBoard
 
 class SudokuBoardView @JvmOverloads constructor(
     context: Context,
@@ -21,7 +21,7 @@ class SudokuBoardView @JvmOverloads constructor(
     var listener: OnCellSelectedListener? = null
 
     private var isHighlighted = false
-    private var board: Board? = null
+    private var board: OnlyReadBoard? = null
     private var cellWidth: Float = 0F
     private var boardWidth: Float = 0F
     private var textHeight: Float = 0F
@@ -67,7 +67,7 @@ class SudokuBoardView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setBoard(board: Board?) {
+    fun setBoard(board: OnlyReadBoard?) {
         board?.let {
             this.board = board
             invalidate()
@@ -106,11 +106,11 @@ class SudokuBoardView @JvmOverloads constructor(
                     if (!isHighlighted) {
                         var paint: Paint? = null
                         when {
-                            i == board.selectedX && j == board.selectedY
+                            i == board.getSelectedX() && j == board.getSelectedY()
                                     && board[i, j].isFixed && board[i, j].value != SudokuCellValue.EMPTY -> {
                                 paint = fixedAndSelectedPaint
                             }
-                            i == board.selectedX && j == board.selectedY ->
+                            i == board.getSelectedX() && j == board.getSelectedY() ->
                                 paint = selectedCellPaint
                             board[i, j].isFixed && board[i, j].value != SudokuCellValue.EMPTY ->
                                 paint = fixedCellPaint
