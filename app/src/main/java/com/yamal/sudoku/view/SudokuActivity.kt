@@ -12,6 +12,7 @@ import com.yamal.sudoku.presenter.SudokuPresenter
 import com.yamal.sudoku.repository.BoardRepository
 import com.yamal.sudoku.storage.BoardStorage
 import com.yamal.sudoku.usecase.GetSavedBoard
+import com.yamal.sudoku.usecase.RemoveSavedBoard
 import com.yamal.sudoku.usecase.SaveBoard
 import kotlinx.android.synthetic.main.activity_sudoku.*
 
@@ -27,17 +28,19 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
 
         setUpListeners()
 
-        presenter.onCreate(this)
+        val isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false)
+        presenter.onCreate(isNewGame, this)
     }
 
-    private fun injectDependencies() {
-        val gson = GsonBuilder().create()
-        val sharedPreferences = getSharedPreferences(getString(R.string.shared_preferences_file_name), MODE_PRIVATE)
-        val storage = BoardStorage(gson, sharedPreferences)
-        val jobDispatcher = JobDispatcherImpl()
-        val repository = BoardRepository(storage, jobDispatcher)
+    private fun injectDependencies() { // TODO Revisit this
+        val repository = BoardRepository.getInstance(this)
 
-        presenter = SudokuPresenter(GetSavedBoard(repository), SaveBoard(repository), jobDispatcher)
+        presenter = SudokuPresenter(
+            GetSavedBoard(repository),
+            SaveBoard(repository),
+            RemoveSavedBoard(repository),
+            JobDispatcherImpl()
+        )
     }
 
     private fun setUpListeners() {
@@ -92,5 +95,9 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         check_game.visibility = View.GONE
         buttons_layout.visibility = View.GONE
         save_game.visibility = View.GONE
+    }
+
+    companion object {
+        const val IS_NEW_GAME_EXTRA = "is_new_game"
     }
 }

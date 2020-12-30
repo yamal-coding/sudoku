@@ -4,12 +4,14 @@ import com.yamal.sudoku.commons.JobDispatcher
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.usecase.GetSavedBoard
+import com.yamal.sudoku.usecase.RemoveSavedBoard
 import com.yamal.sudoku.usecase.SaveBoard
 import com.yamal.sudoku.view.SudokuView
 
 class SudokuPresenter(
     private val getSavedBoard: GetSavedBoard,
     private val saveBoard: SaveBoard,
+    private val removeSavedBoard: RemoveSavedBoard,
     private val jobDispatcher: JobDispatcher
 ) {
 
@@ -18,24 +20,39 @@ class SudokuPresenter(
     private var isSetUpMode = true
     private var gameFinished = false
 
-    fun onCreate(view: SudokuView) {
+    fun onCreate(isNewGame: Boolean, view: SudokuView) {
         this.view = view
 
-        // TODO show spinner
+        if (isNewGame) {
+            onNewGame()
+        } else {
+            lookForSavedBoard()
+        }
+    }
 
+    private fun lookForSavedBoard() {
         getSavedBoard { savedBoard ->
             jobDispatcher.runOnUIThread {
                 if (savedBoard == null) {
-                    board = Board.empty()
-                    view.onNewGame()
+                    onNewGame()
                 } else {
-                    board = savedBoard
-                    view.onSavedGame()
-                    isSetUpMode = false
+                    onSavedGame(savedBoard)
                 }
-                view.updateBoard(board)
             }
         }
+    }
+
+    private fun onNewGame() {
+        board = Board.empty()
+        view.onNewGame()
+        view.updateBoard(board)
+    }
+
+    private fun onSavedGame(savedBoard: Board) {
+        board = savedBoard
+        view.onSavedGame()
+        isSetUpMode = false
+        view.updateBoard(board)
     }
 
     fun setUpFinishedGame() {
@@ -47,6 +64,7 @@ class SudokuPresenter(
         if (!gameFinished && board.isSolved()) {
             gameFinished = true
             view.onGameFinished()
+            removeSavedBoard()
         }
     }
 

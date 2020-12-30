@@ -21,6 +21,12 @@ class BoardStorage(
             gson.fromJson(it, BoardDO::class.java)
         }
 
+    fun removeBoard() {
+        sharedPreferences.edit()
+            .remove(BOARD_KEY)
+            .apply()
+    }
+
     private companion object {
         const val BOARD_KEY = "board"
     }
