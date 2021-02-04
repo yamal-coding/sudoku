@@ -1,4 +1,4 @@
-package com.yamal.sudoku.commons
+package com.yamal.sudoku.commons.thread
 
 import android.os.Handler
 import android.os.Looper

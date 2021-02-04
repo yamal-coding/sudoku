@@ -1,46 +1,27 @@
-package com.yamal.sudoku.view
+package com.yamal.sudoku.game.view
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.GsonBuilder
+import com.yamal.sudoku.R
+import com.yamal.sudoku.game.presenter.SudokuPresenter
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCellValue
-import com.yamal.sudoku.R
-import com.yamal.sudoku.commons.JobDispatcherImpl
-import com.yamal.sudoku.presenter.SudokuPresenter
-import com.yamal.sudoku.repository.BoardRepository
-import com.yamal.sudoku.storage.BoardStorage
-import com.yamal.sudoku.usecase.GetSavedBoard
-import com.yamal.sudoku.usecase.RemoveSavedBoard
-import com.yamal.sudoku.usecase.SaveBoard
 import kotlinx.android.synthetic.main.activity_sudoku.*
+import org.koin.android.ext.android.inject
 
 class SudokuActivity : AppCompatActivity(), SudokuView {
 
-    private lateinit var presenter: SudokuPresenter
+    private val presenter: SudokuPresenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sudoku)
 
-        injectDependencies()
-
         setUpListeners()
 
         val isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false)
         presenter.onCreate(isNewGame, this)
-    }
-
-    private fun injectDependencies() { // TODO Revisit this
-        val repository = BoardRepository.getInstance(this)
-
-        presenter = SudokuPresenter(
-            GetSavedBoard(repository),
-            SaveBoard(repository),
-            RemoveSavedBoard(repository),
-            JobDispatcherImpl()
-        )
     }
 
     private fun setUpListeners() {

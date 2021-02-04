@@ -1,12 +1,12 @@
-package com.yamal.sudoku.presenter
+package com.yamal.sudoku.game.presenter
 
-import com.yamal.sudoku.commons.JobDispatcher
+import com.yamal.sudoku.commons.thread.JobDispatcher
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.SudokuCellValue
-import com.yamal.sudoku.usecase.GetSavedBoard
-import com.yamal.sudoku.usecase.RemoveSavedBoard
-import com.yamal.sudoku.usecase.SaveBoard
-import com.yamal.sudoku.view.SudokuView
+import com.yamal.sudoku.game.domain.GetSavedBoard
+import com.yamal.sudoku.game.domain.RemoveSavedBoard
+import com.yamal.sudoku.game.domain.SaveBoard
+import com.yamal.sudoku.game.view.SudokuView
 
 class SudokuPresenter(
     private val getSavedBoard: GetSavedBoard,

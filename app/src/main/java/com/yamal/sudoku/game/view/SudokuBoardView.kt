@@ -1,4 +1,4 @@
-package com.yamal.sudoku.view
+package com.yamal.sudoku.game.view
 
 import android.content.Context
 import android.graphics.Canvas

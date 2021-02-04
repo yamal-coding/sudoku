@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <com.yamal.sudoku.view.SudokuBoardView
+    <com.yamal.sudoku.game.view.SudokuBoardView
             android:id="@+id/sudoku_board"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

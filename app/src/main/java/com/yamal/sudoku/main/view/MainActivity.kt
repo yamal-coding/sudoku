@@ -1,35 +1,23 @@
-package com.yamal.sudoku.view
+package com.yamal.sudoku.main.view
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.yamal.sudoku.R
-import com.yamal.sudoku.commons.JobDispatcherImpl
-import com.yamal.sudoku.navigation.Navigator
-import com.yamal.sudoku.presenter.MainPresenter
-import com.yamal.sudoku.repository.BoardRepository
-import com.yamal.sudoku.usecase.HasSavedBoard
+import com.yamal.sudoku.main.presenter.MainPresenter
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    private lateinit var presenter: MainPresenter
+    private val presenter: MainPresenter by inject { parametersOf(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        injectDependencies()
-
         presenter.onCreate(this)
-    }
-
-    private fun injectDependencies() {
-        presenter = MainPresenter(
-            HasSavedBoard(BoardRepository.getInstance(this)),
-            Navigator(this),
-            JobDispatcherImpl()
-        )
     }
 
     override fun onSavedGame() {

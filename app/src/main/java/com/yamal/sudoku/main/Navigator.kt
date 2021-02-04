@@ -1,8 +1,8 @@
-package com.yamal.sudoku.navigation
+package com.yamal.sudoku.main
 
 import android.content.Context
 import android.content.Intent
-import com.yamal.sudoku.view.SudokuActivity
+import com.yamal.sudoku.game.view.SudokuActivity
 
 class Navigator(
     private val context: Context

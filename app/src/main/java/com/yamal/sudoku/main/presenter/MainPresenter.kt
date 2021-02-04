@@ -1,9 +1,9 @@
-package com.yamal.sudoku.presenter
+package com.yamal.sudoku.main.presenter
 
-import com.yamal.sudoku.commons.JobDispatcher
-import com.yamal.sudoku.navigation.Navigator
-import com.yamal.sudoku.usecase.HasSavedBoard
-import com.yamal.sudoku.view.MainView
+import com.yamal.sudoku.commons.thread.JobDispatcher
+import com.yamal.sudoku.main.Navigator
+import com.yamal.sudoku.main.domain.HasSavedBoard
+import com.yamal.sudoku.main.view.MainView
 
 class MainPresenter(
     private val hasSavedBoard: HasSavedBoard,

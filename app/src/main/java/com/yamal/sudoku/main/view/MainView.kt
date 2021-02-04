@@ -1,4 +1,4 @@
-package com.yamal.sudoku.view
+package com.yamal.sudoku.main.view
 
 interface MainView {
     fun onSavedGame()

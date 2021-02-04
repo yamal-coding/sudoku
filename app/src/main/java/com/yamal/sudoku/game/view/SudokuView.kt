@@ -1,4 +1,4 @@
-package com.yamal.sudoku.view
+package com.yamal.sudoku.game.view
 
 import com.yamal.sudoku.model.ReadOnlyBoard
 

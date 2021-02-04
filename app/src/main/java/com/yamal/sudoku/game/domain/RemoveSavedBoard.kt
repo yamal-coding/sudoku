@@ -1,4 +1,4 @@
-package com.yamal.sudoku.usecase
+package com.yamal.sudoku.game.domain
 
 import com.yamal.sudoku.repository.BoardRepository
 
