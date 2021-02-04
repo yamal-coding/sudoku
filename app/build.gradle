@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion sdk_version
-    buildToolsVersion "29.0.2"
 
     defaultConfig {
         applicationId "com.yamal.sudoku"
@@ -31,4 +29,6 @@ dependencies {
     implementation libs.constraint_layout
     implementation libs.gson
     implementation libs.koin
+    implementation libs.coroutines_core
+    implementation libs.coroutines_android
 }

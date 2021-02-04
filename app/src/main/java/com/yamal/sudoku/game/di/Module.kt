@@ -18,7 +18,7 @@ val gameScreenModule = module {
             getSavedBoard = get(),
             saveBoard = get(),
             removeSavedBoard = get(),
-            jobDispatcher = get()
+            dispatchers = get()
         )
     }
 }

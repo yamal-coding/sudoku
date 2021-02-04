@@ -1,9 +1,9 @@
 package com.yamal.sudoku.commons.thread.di
 
-import com.yamal.sudoku.commons.thread.JobDispatcher
-import com.yamal.sudoku.commons.thread.JobDispatcherImpl
+import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
+import com.yamal.sudoku.commons.thread.CoroutineDispatcherProviderImpl
 import org.koin.dsl.module
 
 val threadingModule = module {
-    single<JobDispatcher> { JobDispatcherImpl() }
+    single<CoroutineDispatcherProvider> { CoroutineDispatcherProviderImpl() }
 }

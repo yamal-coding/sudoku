@@ -6,7 +6,6 @@ import com.yamal.sudoku.repository.BoardRepository
 class GetSavedBoard(
     private val repository: BoardRepository
 ) {
-    operator fun invoke(onBoardLoaded: (Board?) -> Unit) {
-        repository.getSavedBoard(onBoardLoaded)
-    }
+    suspend operator fun invoke(): Board? =
+        repository.getSavedBoard()
 }

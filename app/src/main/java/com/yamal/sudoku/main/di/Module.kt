@@ -16,7 +16,7 @@ val mainScreenModule = module {
         MainPresenter(
             hasSavedBoard = get(),
             navigator = get { parametersOf(context) },
-            jobDispatcher = get()
+            dispatchers = get()
         )
     }
 }
