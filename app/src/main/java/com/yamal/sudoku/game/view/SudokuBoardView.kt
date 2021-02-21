@@ -2,7 +2,6 @@ package com.yamal.sudoku.game.view
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.text.TextPaint
 import android.util.AttributeSet
@@ -11,6 +10,7 @@ import android.view.View
 
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.R
+import com.yamal.sudoku.commons.utils.getColorFromAttr
 import com.yamal.sudoku.model.ReadOnlyBoard
 
 class SudokuBoardView @JvmOverloads constructor(
@@ -27,33 +27,33 @@ class SudokuBoardView @JvmOverloads constructor(
     private var textHeight: Float = 0F
     private var textX: Float = 0F
     private var softPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.BLACK
+        color = context.getColorFromAttr(R.attr.colorBoardSoftLine)
         style = Paint.Style.STROKE
         strokeWidth = context.resources.getDimension(R.dimen.sudoku_soft_width)
     }
     private val prominentPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.BLACK
+        color = context.getColorFromAttr(R.attr.colorBoardProminentLine)
         style = Paint.Style.STROKE
         strokeWidth = context.resources.getDimension(R.dimen.sudoku_prominent_line_width)
     }
     private val textPaint = TextPaint().apply {
-        color = Color.BLACK
+        color = context.getColorFromAttr(R.attr.colorBoardText)
         setPadding(0, 0, 0, 0)
     }
     private val selectedCellPaint = Paint().apply {
-        color = Color.YELLOW
+        color = context.getColorFromAttr(R.attr.colorBoardSelectedCell)
         style = Paint.Style.FILL
     }
     private val fixedCellPaint = Paint().apply {
-        color = Color.GRAY
+        color = context.getColorFromAttr(R.attr.colorBoardFixedCell)
         style = Paint.Style.FILL
     }
     private val fixedAndSelectedPaint = Paint().apply {
-        color = Color.LTGRAY
+        color = context.getColorFromAttr(R.attr.colorBoardFixedAndSelectedCell)
         style = Paint.Style.FILL
     }
     private val highlightedPaint = Paint().apply {
-        color = Color.CYAN
+        color = context.getColorFromAttr(R.attr.colorBoardHighlightedCell)
         style = Paint.Style.FILL
     }
 
@@ -102,7 +102,6 @@ class SudokuBoardView @JvmOverloads constructor(
 
             for (i in 0..8) {
                 for (j in 0..8) {
-
                     if (!isHighlighted) {
                         var paint: Paint? = null
                         when {
