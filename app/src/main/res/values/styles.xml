@@ -15,4 +15,9 @@
         <item name="colorBoardHighlightedCell">@color/color_cyan</item>
     </style>
 
+    <style name="SelectCellButton">
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+    </style>
+
 </resources>

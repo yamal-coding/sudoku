@@ -31,7 +31,7 @@
 
         <Button
             android:id="@+id/one_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -39,7 +39,7 @@
 
         <Button
             android:id="@+id/two_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -47,7 +47,7 @@
 
         <Button
             android:id="@+id/three_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -55,7 +55,7 @@
 
         <Button
             android:id="@+id/four_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,7 +63,7 @@
 
         <Button
             android:id="@+id/five_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +71,7 @@
 
         <Button
             android:id="@+id/six_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -79,7 +79,7 @@
 
         <Button
             android:id="@+id/seven_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -87,7 +87,7 @@
 
         <Button
             android:id="@+id/eight_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -95,7 +95,7 @@
 
         <Button
             android:id="@+id/nine_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/SelectCellButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
