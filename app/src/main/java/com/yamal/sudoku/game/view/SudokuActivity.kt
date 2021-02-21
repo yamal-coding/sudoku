@@ -17,7 +17,7 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
     private lateinit var board: SudokuBoardView
     private lateinit var startGameButton: Button
     private lateinit var saveGameButton: Button
-    private lateinit var checkGameButton: Button
+    private lateinit var removeCellButton: Button
     private lateinit var buttonsLayout: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +34,8 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
     private fun bindViews() {
         board = findViewById(R.id.sudoku_board)
         startGameButton = findViewById(R.id.start_game)
+        removeCellButton = findViewById(R.id.remove_cell_button)
         saveGameButton = findViewById(R.id.save_game)
-        checkGameButton = findViewById(R.id.check_game)
         buttonsLayout = findViewById(R.id.buttons_layout)
     }
 
@@ -47,7 +47,7 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         }
 
         val cellButtons = mapOf(
-            R.id.clear_button to SudokuCellValue.EMPTY,
+            R.id.remove_cell_button to SudokuCellValue.EMPTY,
             R.id.one_button to SudokuCellValue.ONE,
             R.id.two_button to SudokuCellValue.TWO,
             R.id.three_button to SudokuCellValue.THREE,
@@ -65,9 +65,8 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
             }
         }
 
-        findViewById<Button>(R.id.start_game).setOnClickListener { presenter.setUpFinishedGame() }
-        findViewById<Button>(R.id.check_game).setOnClickListener { presenter.checkGame() }
-        findViewById<Button>(R.id.save_game).setOnClickListener { presenter.saveGame() }
+        startGameButton.setOnClickListener { presenter.setUpFinishedGame() }
+        saveGameButton.setOnClickListener { presenter.saveGame() }
     }
 
     override fun onNewGame() {
@@ -75,8 +74,7 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
     }
 
     override fun onSavedGame() {
-        findViewById<Button>(R.id.check_game).visibility = View.VISIBLE
-        findViewById<Button>(R.id.save_game).visibility = View.VISIBLE
+        saveGameButton.visibility = View.VISIBLE
     }
 
     override fun onResetGame(onlyBoard: ReadOnlyBoard) {
@@ -90,15 +88,14 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
 
     override fun onSetUpFinished() {
         startGameButton.visibility = View.GONE
-        checkGameButton.visibility = View.VISIBLE
         saveGameButton.visibility = View.VISIBLE
     }
 
     override fun onGameFinished() {
         board.highlightBackground()
-        checkGameButton.visibility = View.GONE
         buttonsLayout.visibility = View.GONE
         saveGameButton.visibility = View.GONE
+        removeCellButton.visibility = View.GONE
     }
 
     override fun onDestroy() {

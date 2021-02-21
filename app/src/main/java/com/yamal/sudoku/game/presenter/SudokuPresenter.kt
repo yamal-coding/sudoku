@@ -66,14 +66,6 @@ class SudokuPresenter(
         view.onSetUpFinished()
     }
 
-    fun checkGame() {
-        if (!gameFinished && board.isSolved()) {
-            gameFinished = true
-            view.onGameFinished()
-            removeSavedBoard()
-        }
-    }
-
     fun onCellSelected(x: Int, y: Int) {
         if (!gameFinished && (!board[x, y].isFixed || isSetUpMode)) {
             board.selectCell(x, y)
@@ -89,7 +81,17 @@ class SudokuPresenter(
             } else if (!board.selectedCell.isFixed) {
                 board.setSelectedCell(value)
                 view.updateBoard(board)
+
+                checkGame()
             }
+        }
+    }
+
+    private fun checkGame() {
+        if (board.isSolved()) {
+            gameFinished = true
+            view.onGameFinished()
+            removeSavedBoard()
         }
     }
 

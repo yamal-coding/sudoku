@@ -6,6 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorBoardSoftLine">@color/color_black</item>
+        <item name="colorBoardProminentLine">@color/color_black</item>
+        <item name="colorBoardText">@color/color_black</item>
+        <item name="colorBoardSelectedCell">@color/color_yellow</item>
+        <item name="colorBoardFixedCell">@color/color_gray</item>
+        <item name="colorBoardFixedAndSelectedCell">@color/color_light_gray</item>
+        <item name="colorBoardHighlightedCell">@color/color_cyan</item>
     </style>
 
 </resources>

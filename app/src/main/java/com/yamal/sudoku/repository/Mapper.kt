@@ -24,8 +24,11 @@ fun SudokuCell.toDO(): SudokuCellDO {
     return SudokuCellDO(value, isFixed)
 }
 
-fun SudokuCellDO.toDomain(): SudokuCell {
-    val value = when (this.value) {
+fun SudokuCellDO.toDomain(): SudokuCell =
+    SudokuCell(value.toSudokuCell(), isFixed)
+
+fun Int.toSudokuCell(): SudokuCellValue =
+    when (this) {
         0 -> SudokuCellValue.EMPTY
         1 -> SudokuCellValue.ONE
         2 -> SudokuCellValue.TWO
@@ -36,10 +39,8 @@ fun SudokuCellDO.toDomain(): SudokuCell {
         7 -> SudokuCellValue.SEVEN
         8 -> SudokuCellValue.EIGHT
         9 -> SudokuCellValue.NINE
-        else -> throw IllegalStateException("Can't parse sudoku with cell value ${this.value}")
+        else -> throw IllegalStateException("Can't parse sudoku with cell value $this")
     }
-    return SudokuCell(value, isFixed)
-}
 
 fun ReadOnlyBoard.toDO(): BoardDO {
     val list = mutableListOf<List<SudokuCellDO>>()

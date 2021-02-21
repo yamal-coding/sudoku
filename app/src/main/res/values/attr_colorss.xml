@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Colors">
+        <attr name="colorBoardSoftLine" format="color|reference"/>
+        <attr name="colorBoardProminentLine" format="color|reference" />
+        <attr name="colorBoardText" format="color|reference" />
+        <attr name="colorBoardSelectedCell" format="color|reference" />
+        <attr name="colorBoardFixedCell" format="color|reference" />
+        <attr name="colorBoardFixedAndSelectedCell" format="color|reference" />
+        <attr name="colorBoardHighlightedCell" format="color|reference" />
+    </declare-styleable>
+</resources>
