@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:text="@string/load_game_button"/>
 
         <Button
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:text="@string/new_game_button"/>
     </LinearLayout>
 

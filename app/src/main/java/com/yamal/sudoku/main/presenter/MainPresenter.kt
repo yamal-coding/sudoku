@@ -21,7 +21,9 @@ class MainPresenter(
 
     fun onCreate(view: MainView) {
         this.view = view
+    }
 
+    fun onResume() {
         scope.launch {
             if (hasSavedBoard()) {
                 view.onSavedGame()

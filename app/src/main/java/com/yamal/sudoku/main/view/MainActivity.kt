@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity(), MainView {
     private lateinit var loadSavedGameButton: Button
     private lateinit var newGameButton: Button
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,13 +30,17 @@ class MainActivity : AppCompatActivity(), MainView {
         newGameButton = findViewById(R.id.new_board_button)
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.onResume()
+    }
+
     override fun onSavedGame() {
         setUpOpenSavedGameButton()
         setUpOpenNewGameButton()
     }
 
     override fun onNotSavedGame() {
-        loadSavedGameButton.visibility = View.GONE
         setUpOpenNewGameButton()
     }
 
