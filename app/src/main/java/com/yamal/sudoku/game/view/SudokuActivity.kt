@@ -17,7 +17,6 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
 
     private lateinit var board: SudokuBoardView
     private lateinit var startGameButton: Button
-    private lateinit var saveGameButton: Button
     private lateinit var removeCellButton: Button
     private lateinit var buttonsLayout: View
 
@@ -44,7 +43,6 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         board = findViewById(R.id.sudoku_board)
         startGameButton = findViewById(R.id.start_game)
         removeCellButton = findViewById(R.id.remove_cell_button)
-        saveGameButton = findViewById(R.id.save_game)
         buttonsLayout = findViewById(R.id.buttons_layout)
     }
 
@@ -75,15 +73,10 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         }
 
         startGameButton.setOnClickListener { presenter.setUpFinishedGame() }
-        saveGameButton.setOnClickListener { presenter.saveGame() }
     }
 
     override fun onNewGame() {
         startGameButton.visibility = View.VISIBLE
-    }
-
-    override fun onSavedGame() {
-        saveGameButton.visibility = View.VISIBLE
     }
 
     override fun onResetGame(onlyBoard: ReadOnlyBoard) {
@@ -97,13 +90,11 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
 
     override fun onSetUpFinished() {
         startGameButton.visibility = View.GONE
-        saveGameButton.visibility = View.VISIBLE
     }
 
     override fun onGameFinished() {
         board.highlightBackground()
         buttonsLayout.visibility = View.GONE
-        saveGameButton.visibility = View.GONE
         removeCellButton.visibility = View.GONE
     }
 

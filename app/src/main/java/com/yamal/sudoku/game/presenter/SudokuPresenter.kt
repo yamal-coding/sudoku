@@ -56,7 +56,6 @@ class SudokuPresenter(
 
     private fun onSavedGame(savedBoard: Board) {
         board = savedBoard
-        view.onSavedGame()
         isSetUpMode = false
         view.updateBoard(board)
     }
@@ -92,11 +91,9 @@ class SudokuPresenter(
             gameFinished = true
             view.onGameFinished()
             removeSavedBoard()
+        } else {
+            saveBoard(board)
         }
-    }
-
-    fun saveGame() {
-        saveBoard(board)
     }
 
     fun onDestroy() {
