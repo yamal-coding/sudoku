@@ -4,6 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/header_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/sudoku_header"
+        app:layout_constraintBottom_toTopOf="@id/header_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
     <TextView
         android:id="@+id/header_title"
         android:layout_width="wrap_content"
@@ -11,22 +23,10 @@
         android:layout_marginTop="30dp"
         android:text="@string/header_title"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@id/header_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <ImageView
-        android:id="@+id/header_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/sudoku_header"
         app:layout_constraintBottom_toTopOf="@id/buttons_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_title" />
+        app:layout_constraintTop_toBottomOf="@id/header_image" />
 
     <LinearLayout
         android:id="@+id/buttons_layout"
@@ -35,7 +35,7 @@
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header_image"
+        app:layout_constraintTop_toBottomOf="@id/header_title"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
