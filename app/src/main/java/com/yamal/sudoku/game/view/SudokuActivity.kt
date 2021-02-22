@@ -1,6 +1,7 @@
 package com.yamal.sudoku.game.view
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -24,11 +25,19 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sudoku)
 
+        setUpToolbar()
         bindViews()
         setUpListeners()
 
-        val isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false)
-        presenter.onCreate(isNewGame, this)
+        presenter.onCreate(
+            isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false),
+            this
+        )
+    }
+
+    private fun setUpToolbar() {
+        setSupportActionBar(findViewById(R.id.tool_bar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun bindViews() {
@@ -102,6 +111,15 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         presenter.onDestroy()
         super.onDestroy()
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
 
     companion object {
         const val IS_NEW_GAME_EXTRA = "is_new_game"
