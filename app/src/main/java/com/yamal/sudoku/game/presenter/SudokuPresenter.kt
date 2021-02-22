@@ -45,24 +45,25 @@ class SudokuPresenter(
             } else {
                 onSavedGame(savedBoard)
             }
+
+            view.updateBoard(board)
         }
     }
 
     private fun onNewGame() {
         board = Board.empty()
         view.onNewGame()
-        view.updateBoard(board)
     }
 
     private fun onSavedGame(savedBoard: Board) {
         board = savedBoard
         isSetUpMode = false
-        view.updateBoard(board)
     }
 
-    fun setUpFinishedGame() {
+    fun finishSetUpAndStartGame() {
         isSetUpMode = false
         view.onSetUpFinished()
+        saveBoard()
     }
 
     fun onCellSelected(x: Int, y: Int) {
@@ -92,8 +93,12 @@ class SudokuPresenter(
             view.onGameFinished()
             removeSavedBoard()
         } else {
-            saveBoard(board)
+            saveBoard()
         }
+    }
+
+    private fun saveBoard() {
+        saveBoard(board)
     }
 
     fun onDestroy() {

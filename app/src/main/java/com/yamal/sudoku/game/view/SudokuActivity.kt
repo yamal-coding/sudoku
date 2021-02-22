@@ -71,12 +71,13 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
                 presenter.selectNumber(cellButton.value)
             }
         }
-
-        startGameButton.setOnClickListener { presenter.setUpFinishedGame() }
     }
 
     override fun onNewGame() {
-        startGameButton.visibility = View.VISIBLE
+        with(startGameButton) {
+            visibility = View.VISIBLE
+            setOnClickListener { presenter.finishSetUpAndStartGame() }
+        }
     }
 
     override fun onResetGame(onlyBoard: ReadOnlyBoard) {
