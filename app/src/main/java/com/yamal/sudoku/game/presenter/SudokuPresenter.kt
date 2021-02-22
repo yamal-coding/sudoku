@@ -2,8 +2,11 @@ package com.yamal.sudoku.game.presenter
 
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
 import com.yamal.sudoku.game.domain.GetSavedBoard
+import com.yamal.sudoku.game.domain.DoNotShowSetUpNewGameHintAgain
 import com.yamal.sudoku.game.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.domain.SaveBoard
+import com.yamal.sudoku.game.domain.ShouldShowSetUpNewGameHint
+import com.yamal.sudoku.game.view.FeedbackFactory
 import com.yamal.sudoku.game.view.SudokuView
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.SudokuCellValue
@@ -15,6 +18,9 @@ class SudokuPresenter(
     private val getSavedBoard: GetSavedBoard,
     private val saveBoard: SaveBoard,
     private val removeSavedBoard: RemoveSavedBoard,
+    private val feedbackFactory: FeedbackFactory,
+    private val shouldShowSetUpNewGameHint: ShouldShowSetUpNewGameHint,
+    private val doNotShowSetUpNewGameHintAgain: DoNotShowSetUpNewGameHintAgain,
     dispatchers: CoroutineDispatcherProvider
 ) {
 
@@ -26,11 +32,11 @@ class SudokuPresenter(
     private var isSetUpMode = true
     private var gameFinished = false
 
-    fun onCreate(isNewGame: Boolean, view: SudokuView) {
+    fun onCreate(isSetUpNewGameMode: Boolean, view: SudokuView) {
         this.view = view
 
-        if (isNewGame) {
-            onNewGame()
+        if (isSetUpNewGameMode) {
+            scope.launch { onSetUpNewGameMode() }
         } else {
             lookForSavedBoard()
         }
@@ -41,23 +47,30 @@ class SudokuPresenter(
             val savedBoard = getSavedBoard()
 
             if (savedBoard == null) {
-                onNewGame()
+                onSetUpNewGameMode()
             } else {
                 onSavedGame(savedBoard)
             }
-
-            view.updateBoard(board)
         }
     }
 
-    private fun onNewGame() {
+    private suspend fun onSetUpNewGameMode() {
+        val shouldShowSetUpHint = shouldShowSetUpNewGameHint()
+
         board = Board.empty()
-        view.onNewGame()
+        view.onSetUpNewGameMode()
+        view.updateBoard(board)
+
+        if (shouldShowSetUpHint && feedbackFactory.showSetUpNewGameHintDialog()) {
+            doNotShowSetUpNewGameHintAgain()
+        }
     }
 
     private fun onSavedGame(savedBoard: Board) {
         board = savedBoard
         isSetUpMode = false
+        view.updateBoard(board)
+        view.onSavedGame()
     }
 
     fun finishSetUpAndStartGame() {

@@ -15,22 +15,32 @@ class BoardRepository(
 ) {
 
     suspend fun hasSavedBoard(): Boolean = withContext(dispatchers.ioDispatcher) {
-        boardStorage.getBoard() != null
+        boardStorage.board != null
     }
 
     suspend fun getSavedBoard(): Board? = withContext(dispatchers.ioDispatcher) {
-        boardStorage.getBoard()?.toDomain()
+        boardStorage.board?.toDomain()
     }
 
-    fun saveBoard(onlyBoard: ReadOnlyBoard) {
+    fun saveBoard(readOnlyBoard: ReadOnlyBoard) {
         coroutineScope.launch(dispatchers.ioDispatcher) {
-            boardStorage.setBoard(onlyBoard.toDO())
+            boardStorage.board = readOnlyBoard.toDO()
         }
     }
 
     fun removeSavedBoard() {
         coroutineScope.launch(dispatchers.ioDispatcher) {
-            boardStorage.removeBoard()
+            boardStorage.board = null
+        }
+    }
+
+    suspend fun shouldShowSetUpNewGameHint(): Boolean = withContext(dispatchers.ioDispatcher) {
+        boardStorage.showSetUpNewGameHint
+    }
+
+    fun doNotShowSetUpNewGameHintAgain() {
+        coroutineScope.launch(dispatchers.ioDispatcher) {
+            boardStorage.showSetUpNewGameHint = false
         }
     }
 }

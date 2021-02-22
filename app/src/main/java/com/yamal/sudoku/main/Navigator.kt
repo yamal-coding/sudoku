@@ -17,7 +17,7 @@ class Navigator(
 
     private fun openSudokuGame(newGame: Boolean) {
         val intent = Intent(context, SudokuActivity::class.java).apply {
-            putExtra(SudokuActivity.IS_NEW_GAME_EXTRA, newGame)
+            putExtra(SudokuActivity.IS_SET_UP_GAME_MODE_EXTRA, newGame)
         }
 
         context.startActivity(intent)

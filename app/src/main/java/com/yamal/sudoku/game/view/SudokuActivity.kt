@@ -4,20 +4,24 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.yamal.sudoku.R
 import com.yamal.sudoku.game.presenter.SudokuPresenter
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCellValue
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class SudokuActivity : AppCompatActivity(), SudokuView {
 
-    private val presenter: SudokuPresenter by inject()
+    private val presenter: SudokuPresenter by inject { parametersOf(this) }
 
     private lateinit var board: SudokuBoardView
     private lateinit var startGameButton: Button
     private lateinit var removeCellButton: Button
+    private lateinit var toolbar: Toolbar
     private lateinit var buttonsLayout: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +33,14 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         setUpListeners()
 
         presenter.onCreate(
-            isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false),
+            isSetUpNewGameMode = intent.getBooleanExtra(IS_SET_UP_GAME_MODE_EXTRA, false),
             this
         )
     }
 
     private fun setUpToolbar() {
-        setSupportActionBar(findViewById(R.id.tool_bar))
+        toolbar = findViewById(R.id.tool_bar)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -73,11 +78,17 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         }
     }
 
-    override fun onNewGame() {
+    override fun onSetUpNewGameMode() {
+        setTitle(getString(R.string.set_up_new_game_mode_title))
         with(startGameButton) {
             visibility = View.VISIBLE
             setOnClickListener { presenter.finishSetUpAndStartGame() }
         }
+        removeCellButton.visibility =  View.VISIBLE
+    }
+
+    override fun onSavedGame() {
+        removeCellButton.visibility =  View.VISIBLE
     }
 
     override fun onResetGame(onlyBoard: ReadOnlyBoard) {
@@ -113,7 +124,11 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
             else -> super.onOptionsItemSelected(item)
         }
 
+    private fun setTitle(title: String) {
+        toolbar.title = title
+    }
+
     companion object {
-        const val IS_NEW_GAME_EXTRA = "is_new_game"
+        const val IS_SET_UP_GAME_MODE_EXTRA = "is_new_game"
     }
 }

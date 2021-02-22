@@ -17,4 +17,11 @@
     <string name="button_7">7</string>
     <string name="button_8">8</string>
     <string name="button_9">9</string>
+
+    <string name="set_up_new_game_mode_title">Set up mode</string>
+    <string name="set_up_new_game_mode_hint_message">Fill the board with an existing unfinished sudoku and click on start when you are ready.</string>
+    <string name="set_up_new_game_mode_checkbox">Don\'t ask again.</string>
+    <string name="set_up_new_game_mode_ok_button">Got it</string>
+
+    <string name="game_title">Sudoku</string>
 </resources>
