@@ -7,6 +7,7 @@
     <string name="header_title">Sudoku</string>
     <string name="load_game_button">Continue game</string>
     <string name="new_game_button">New game</string>
+    <string name="set_up_existing_game">Set up existing game</string>
     <string name="remove_button">Remove</string>
     <string name="button_1">1</string>
     <string name="button_2">2</string>

@@ -8,16 +8,20 @@ class Navigator(
     private val context: Context
 ) {
     fun openNewGame() {
-        openSudokuGame(newGame = true)
+        // TODO
+    }
+
+    fun openExistingGameSetUp() {
+        openSudokuGame(isSetUpNewGameMode = true)
     }
 
     fun openSavedGame() {
-        openSudokuGame(newGame = false)
+        openSudokuGame(isSetUpNewGameMode = false)
     }
 
-    private fun openSudokuGame(newGame: Boolean) {
+    private fun openSudokuGame(isSetUpNewGameMode: Boolean) {
         val intent = Intent(context, SudokuActivity::class.java).apply {
-            putExtra(SudokuActivity.IS_SET_UP_GAME_MODE_EXTRA, newGame)
+            putExtra(SudokuActivity.IS_SET_UP_GAME_MODE_EXTRA, isSetUpNewGameMode)
         }
 
         context.startActivity(intent)

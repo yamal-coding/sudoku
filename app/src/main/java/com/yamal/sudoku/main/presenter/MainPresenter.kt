@@ -37,6 +37,10 @@ class MainPresenter(
         navigator.openNewGame()
     }
 
+    fun openExistingGameSetUp() {
+        navigator.openExistingGameSetUp()
+    }
+
     fun openSavedGame() {
         navigator.openSavedGame()
     }
