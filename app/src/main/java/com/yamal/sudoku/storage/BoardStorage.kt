@@ -1,37 +1,23 @@
 package com.yamal.sudoku.storage
 
-import android.content.SharedPreferences
-import com.google.gson.Gson
+import com.yamal.storage.KeyValueStorage
 import com.yamal.sudoku.storage.model.BoardDO
 
 class BoardStorage(
-    private val gson: Gson,
-    private val sharedPreferences: SharedPreferences
+    private val keyValueStorage: KeyValueStorage
 ) {
     var board: BoardDO?
-        get() = sharedPreferences.getString(BOARD_KEY, null)?.let {
-            gson.fromJson(it, BoardDO::class.java)
-        }
+        get() = keyValueStorage.getJson(BOARD_KEY, BoardDO::class.java)
         set(value) {
-            if (value == null) {
-                sharedPreferences.edit()
-                    .remove(BOARD_KEY)
-                    .apply()
-            } else {
-                val serializedBoard = gson.toJson(value, BoardDO::class.java)
-
-                sharedPreferences.edit()
-                    .putString(BOARD_KEY, serializedBoard)
-                    .apply()
-            }
+            value?.let {
+                keyValueStorage.putJson(BOARD_KEY, value, BoardDO::class.java)
+            } ?: keyValueStorage.remove(BOARD_KEY)
         }
 
     var showSetUpNewGameHint: Boolean
-        get() = sharedPreferences.getBoolean(SHOW_SET_UP_NEW_GAME_HINT, true)
+        get() = keyValueStorage.getBoolean(SHOW_SET_UP_NEW_GAME_HINT, true)
         set(value) {
-            sharedPreferences.edit()
-                .putBoolean(SHOW_SET_UP_NEW_GAME_HINT, value)
-                .apply()
+            keyValueStorage.put(SHOW_SET_UP_NEW_GAME_HINT, value)
         }
 
     private companion object {

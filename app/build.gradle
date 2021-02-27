@@ -10,8 +10,6 @@ android {
         targetSdkVersion sdk_version
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -31,4 +29,6 @@ dependencies {
     implementation libs.koin
     implementation libs.coroutines_core
     implementation libs.coroutines_android
+
+    implementation project(':storage')
 }

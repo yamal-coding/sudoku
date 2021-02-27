@@ -2,6 +2,7 @@ package com.yamal.sudoku.repository.di
 
 import android.content.Context
 import com.google.gson.GsonBuilder
+import com.yamal.storage.KeyValueStorage
 import com.yamal.sudoku.R
 import com.yamal.sudoku.repository.BoardRepository
 import com.yamal.sudoku.storage.BoardStorage
@@ -18,7 +19,14 @@ val repositoryModule = module {
         context.getSharedPreferences(context.getString(R.string.shared_preferences_file_name), Context.MODE_PRIVATE)
     }
 
-    single { BoardStorage(gson = get(), sharedPreferences = get()) }
+    single {
+        KeyValueStorage(
+            gson = get(),
+            sharedPreferences = get()
+        )
+    }
+
+    single { BoardStorage(keyValueStorage = get()) }
 
     single {
         BoardRepository(
