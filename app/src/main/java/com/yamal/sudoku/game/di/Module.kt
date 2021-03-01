@@ -3,6 +3,7 @@ package com.yamal.sudoku.game.di
 import android.content.Context
 import com.yamal.sudoku.game.domain.DoNotShowSetUpNewGameHintAgain
 import com.yamal.sudoku.game.domain.GetSavedBoard
+import com.yamal.sudoku.game.domain.LoadNewGame
 import com.yamal.sudoku.game.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.domain.SaveBoard
 import com.yamal.sudoku.game.domain.ShouldShowSetUpNewGameHint
@@ -18,6 +19,8 @@ val gameScreenModule = module {
 
     factory { RemoveSavedBoard(repository = get()) }
 
+    factory { LoadNewGame() }
+
     factory { (context: Context) -> FeedbackFactory(context) }
 
     factory { ShouldShowSetUpNewGameHint(repository = get()) }
@@ -29,6 +32,7 @@ val gameScreenModule = module {
             getSavedBoard = get(),
             saveBoard = get(),
             removeSavedBoard = get(),
+            loadNewGame = get(),
             feedbackFactory = get { parametersOf(context) },
             shouldShowSetUpNewGameHint = get(),
             doNotShowSetUpNewGameHintAgain = get(),

@@ -3,6 +3,7 @@ package com.yamal.sudoku.game.presenter
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
 import com.yamal.sudoku.game.domain.GetSavedBoard
 import com.yamal.sudoku.game.domain.DoNotShowSetUpNewGameHintAgain
+import com.yamal.sudoku.game.domain.LoadNewGame
 import com.yamal.sudoku.game.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.domain.SaveBoard
 import com.yamal.sudoku.game.domain.ShouldShowSetUpNewGameHint
@@ -18,6 +19,7 @@ class SudokuPresenter(
     private val getSavedBoard: GetSavedBoard,
     private val saveBoard: SaveBoard,
     private val removeSavedBoard: RemoveSavedBoard,
+    private val loadNewGame: LoadNewGame,
     private val feedbackFactory: FeedbackFactory,
     private val shouldShowSetUpNewGameHint: ShouldShowSetUpNewGameHint,
     private val doNotShowSetUpNewGameHintAgain: DoNotShowSetUpNewGameHintAgain,
@@ -32,13 +34,25 @@ class SudokuPresenter(
     private var isSetUpMode = true
     private var gameFinished = false
 
-    fun onCreate(isSetUpNewGameMode: Boolean, view: SudokuView) {
+    fun onCreate(
+        isSetUpNewGameMode: Boolean,
+        isNewGame: Boolean,
+        view: SudokuView
+    ) {
         this.view = view
 
-        if (isSetUpNewGameMode) {
-            scope.launch { onSetUpNewGameMode() }
-        } else {
-            lookForSavedBoard()
+        when {
+            isNewGame -> startNewGame()
+            isSetUpNewGameMode -> scope.launch { onSetUpNewGameMode() }
+            else -> lookForSavedBoard()
+        }
+    }
+
+    private fun startNewGame() {
+        scope.launch {
+            val newBoard = loadNewGame()
+            onGameLoaded(newBoard)
+            saveBoard()
         }
     }
 
@@ -47,9 +61,10 @@ class SudokuPresenter(
             val savedBoard = getSavedBoard()
 
             if (savedBoard == null) {
+                // TODO Handle this error case in a better way when there is unexpectedly  no saved game
                 onSetUpNewGameMode()
             } else {
-                onSavedGame(savedBoard)
+                onGameLoaded(savedBoard)
             }
         }
     }
@@ -66,7 +81,7 @@ class SudokuPresenter(
         }
     }
 
-    private fun onSavedGame(savedBoard: Board) {
+    private fun onGameLoaded(savedBoard: Board) {
         board = savedBoard
         isSetUpMode = false
         view.updateBoard(board)

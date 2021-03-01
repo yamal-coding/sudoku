@@ -34,6 +34,7 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
 
         presenter.onCreate(
             isSetUpNewGameMode = intent.getBooleanExtra(IS_SET_UP_GAME_MODE_EXTRA, false),
+            isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false),
             this
         )
     }
@@ -129,6 +130,7 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
     }
 
     companion object {
-        const val IS_SET_UP_GAME_MODE_EXTRA = "is_new_game"
+        const val IS_SET_UP_GAME_MODE_EXTRA = "is_set_up_game_mode"
+        const val IS_NEW_GAME_EXTRA = "is_new_game"
     }
 }

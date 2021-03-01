@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun onNotSavedGame() {
+        loadSavedGameButton.visibility = View.GONE
         setUpOpenNewGameButtons()
     }
 
