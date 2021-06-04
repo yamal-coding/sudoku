@@ -21,7 +21,7 @@ class SudokuBoardView @JvmOverloads constructor(
     var listener: OnCellSelectedListener? = null
 
     private var isHighlighted = false
-    private var onlyBoard: ReadOnlyBoard? = null
+    private var readOnlyBoard: ReadOnlyBoard? = null
     private var cellWidth: Float = 0F
     private var boardWidth: Float = 0F
     private var textHeight: Float = 0F
@@ -69,7 +69,7 @@ class SudokuBoardView @JvmOverloads constructor(
 
     fun setBoard(onlyBoard: ReadOnlyBoard?) {
         onlyBoard?.let {
-            this.onlyBoard = onlyBoard
+            this.readOnlyBoard = onlyBoard
             invalidate()
         }
     }
@@ -95,39 +95,33 @@ class SudokuBoardView @JvmOverloads constructor(
     }
 
     private fun Canvas.drawNumbers() {
-        onlyBoard?.let { board ->
+        readOnlyBoard?.let { board ->
             if (isHighlighted) {
                 drawRect(0F, 0F, boardWidth, boardWidth, highlightedPaint)
             }
 
             for (i in 0..8) {
                 for (j in 0..8) {
+                    val cell = board[i, j]
                     if (!isHighlighted) {
                         var paint: Paint? = null
+                        val cellIsSelected = i == board.getSelectedX() && j == board.getSelectedY()
+
                         when {
-                            i == board.getSelectedX() && j == board.getSelectedY()
-                                    && board[i, j].isFixed && board[i, j].value != SudokuCellValue.EMPTY -> {
+                            cellIsSelected && cell.isFixed && cell.value != SudokuCellValue.EMPTY -> {
                                 paint = fixedAndSelectedPaint
                             }
-                            i == board.getSelectedX() && j == board.getSelectedY() ->
+                            cellIsSelected ->
                                 paint = selectedCellPaint
-                            board[i, j].isFixed && board[i, j].value != SudokuCellValue.EMPTY ->
+                            cell.isFixed && cell.value != SudokuCellValue.EMPTY ->
                                 paint = fixedCellPaint
                         }
 
-                        paint?.let {
-                            drawRect(
-                                j * cellWidth,
-                                i * cellWidth,
-                                j * cellWidth + cellWidth,
-                                i * cellWidth + cellWidth,
-                                it
-                            )
-                        }
+                        paint?.let { drawColouredCell(i, j, it) }
                     }
 
                     drawText(
-                        board[i, j].value.toString(),
+                        cell.value.toString(),
                         j * cellWidth + textX,
                         i * cellWidth + textHeight,
                         textPaint
@@ -135,6 +129,16 @@ class SudokuBoardView @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    private fun Canvas.drawColouredCell(x: Int, y: Int, paint: Paint) {
+        drawRect(
+            y * cellWidth,
+            x * cellWidth,
+            y * cellWidth + cellWidth,
+            x * cellWidth + cellWidth,
+            paint
+        )
     }
 
     private fun Canvas.drawBoard() {

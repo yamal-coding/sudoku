@@ -1,5 +1,6 @@
 package com.yamal.sudoku.model
 
+import androidx.annotation.VisibleForTesting
 import com.yamal.sudoku.repository.toSudokuCell
 
 interface ReadOnlyBoard {
@@ -94,17 +95,19 @@ class Board(private val cells: List<MutableList<SudokuCell>>) : ReadOnlyBoard {
         return rowsOk && columnsOk && quadrantsOk
     }
 
-    private fun mapOfCells(): List<MutableMap<Int, Int>> = listOf(
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0),
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0),
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0),
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0),
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0),
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0),
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0),
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0),
-        mutableMapOf(1 to 0, 2 to 0, 3 to 0, 4 to 0, 5 to 0, 6 to 0, 7 to 0, 8 to 0, 9 to 0)
-    )
+    private fun mapOfCells(): List<MutableMap<Int, Int>> {
+        val list = mutableListOf<MutableMap<Int, Int>>()
+
+        for (i in 1..9) {
+            val map = mutableMapOf<Int, Int>()
+            for (j in 1..9) {
+                map[j] = 0
+            }
+            list.add(map)
+        }
+
+        return list
+    }
 
     private fun quadrantByRowAndColumn(row: Int, column: Int): Int =
         when(row) {
@@ -167,13 +170,14 @@ class Board(private val cells: List<MutableList<SudokuCell>>) : ReadOnlyBoard {
                     rowOf(7, 1, 3, 9, 2, 4, 8, 5, 6),
                     rowOf(9, 6, 1, 5, 3, 7, 2, 8, 4),
                     rowOf(2, 8, 7, 4, 1, 9, 6, 3, 5),
-                    rowOf(3, 4, 5, 2, 8, 6, 1, 7).apply {
-                        add(SudokuCell(SudokuCellValue.EMPTY, isFixed = false))
+                    rowOf(3, 4, 5, 2, 8, 6, 1, 7).also {
+                        it.add(SudokuCell(SudokuCellValue.EMPTY, isFixed = false))
                     }
                 )
             )
 
-        private fun rowOf(vararg items: Int): MutableList<SudokuCell> =
+        @VisibleForTesting
+        fun rowOf(vararg items: Int): MutableList<SudokuCell> =
             items.map { SudokuCell(it.toSudokuCell(), isFixed = false) }.toMutableList()
     }
 }
