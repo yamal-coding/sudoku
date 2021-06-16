@@ -1,5 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
 
 android {
     compileSdkVersion sdk_version
@@ -19,6 +23,10 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -29,6 +37,8 @@ dependencies {
     implementation libs.koin
     implementation libs.coroutines_core
     implementation libs.coroutines_android
+    implementation libs.hilt_android
+    kapt libs.hilt_compiler
 
     implementation project(':storage')
 

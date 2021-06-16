@@ -1,14 +1,16 @@
 ext {
     sdk_version = 30
     min_api_level = 21
-    gradle_version = '4.1.2'
+    gradle_version = '4.2.0'
     kotlin_version = '1.4.30'
     coroutines_version = '1.4.2'
     junit_version = '4.13.2'
+    hilt_version = '2.35'
 
     build_plugins = [
             android_gradle: [group: 'com.android.tools.build', name: 'gradle', version: gradle_version],
-            kotlin_plugin: [group: 'org.jetbrains.kotlin', name: 'kotlin-gradle-plugin', version: kotlin_version]
+            kotlin_plugin: [group: 'org.jetbrains.kotlin', name: 'kotlin-gradle-plugin', version: kotlin_version],
+            hilt_gradle_plugin: [group: 'com.google.dagger', name: 'hilt-android-gradle-plugin', version: hilt_version]
     ]
 
     libs = [
@@ -20,6 +22,8 @@ ext {
             koin: [group: 'org.koin', name: 'koin-android', version: '2.2.2'],
             coroutines_core: [group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: coroutines_version],
             coroutines_android: [group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-android', version: coroutines_version],
-            junit: [group: 'junit', name: 'junit', version: junit_version]
+            junit: [group: 'junit', name: 'junit', version: junit_version],
+            hilt_android: [group: 'com.google.dagger', name: 'hilt-android', version: hilt_version],
+            hilt_compiler: [group: 'com.google.dagger', name: 'hilt-android-compiler', version: hilt_version]
     ]
 }
