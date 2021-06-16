@@ -14,8 +14,9 @@ import com.yamal.sudoku.model.SudokuCellValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SudokuPresenter(
+class SudokuPresenter @Inject constructor(
     private val getSavedBoard: GetSavedBoard,
     private val saveBoard: SaveBoard,
     private val removeSavedBoard: RemoveSavedBoard,

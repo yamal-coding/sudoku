@@ -7,8 +7,9 @@ import com.yamal.sudoku.main.view.MainView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainPresenter(
+class MainPresenter @Inject constructor(
     private val hasSavedBoard: HasSavedBoard,
     private val navigator: Navigator,
     dispatchers: CoroutineDispatcherProvider

@@ -5,11 +5,13 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatCheckBox
 import com.yamal.sudoku.R
+import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.suspendCancellableCoroutine
+import javax.inject.Inject
 import kotlin.coroutines.resume
 
-class FeedbackFactory(
-    private val context: Context
+class FeedbackFactory @Inject constructor(
+    @ActivityContext private val context: Context
 ){
     suspend fun showSetUpNewGameHintDialog(): Boolean = suspendCancellableCoroutine { continuation ->
         val view = View.inflate(context, R.layout.set_up_new_game_dialog_hint_layout, null)

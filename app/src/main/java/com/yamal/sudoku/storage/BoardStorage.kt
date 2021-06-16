@@ -2,8 +2,9 @@ package com.yamal.sudoku.storage
 
 import com.yamal.storage.KeyValueStorage
 import com.yamal.sudoku.storage.model.BoardDO
+import javax.inject.Inject
 
-class BoardStorage(
+class BoardStorage @Inject constructor(
     private val keyValueStorage: KeyValueStorage
 ) {
     var board: BoardDO?

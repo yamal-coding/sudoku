@@ -3,7 +3,6 @@
     <string name="start_game">Start</string>
     <string name="check_game">Check</string>
     <string name="save_game">Save</string>
-    <string name="shared_preferences_file_name">sudoku_board_storage</string>
     <string name="header_title">Sudoku</string>
     <string name="load_game_button">Continue game</string>
     <string name="new_game_button">New game</string>

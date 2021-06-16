@@ -1,16 +1,19 @@
 package com.yamal.sudoku.repository
 
+import com.yamal.sudoku.commons.thread.ApplicationScope
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.storage.BoardStorage
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class BoardRepository(
+@Singleton
+class BoardRepository @Inject constructor(
     private val boardStorage: BoardStorage,
-    private val coroutineScope: CoroutineScope,
+    private val scope: ApplicationScope,
     private val dispatchers: CoroutineDispatcherProvider
 ) {
 
@@ -23,13 +26,13 @@ class BoardRepository(
     }
 
     fun saveBoard(readOnlyBoard: ReadOnlyBoard) {
-        coroutineScope.launch(dispatchers.ioDispatcher) {
+        scope.launch(dispatchers.ioDispatcher) {
             boardStorage.board = readOnlyBoard.toDO()
         }
     }
 
     fun removeSavedBoard() {
-        coroutineScope.launch(dispatchers.ioDispatcher) {
+        scope.launch(dispatchers.ioDispatcher) {
             boardStorage.board = null
         }
     }
@@ -39,7 +42,7 @@ class BoardRepository(
     }
 
     fun doNotShowSetUpNewGameHintAgain() {
-        coroutineScope.launch(dispatchers.ioDispatcher) {
+        scope.launch(dispatchers.ioDispatcher) {
             boardStorage.showSetUpNewGameHint = false
         }
     }

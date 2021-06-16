@@ -11,12 +11,16 @@ import com.yamal.sudoku.R
 import com.yamal.sudoku.game.presenter.SudokuPresenter
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCellValue
+import dagger.hilt.android.AndroidEntryPoint
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SudokuActivity : AppCompatActivity(), SudokuView {
 
-    private val presenter: SudokuPresenter by inject { parametersOf(this) }
+    @Inject
+    lateinit var presenter: SudokuPresenter
 
     private lateinit var board: SudokuBoardView
     private lateinit var startGameButton: Button

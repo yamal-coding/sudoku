@@ -3,9 +3,11 @@ package com.yamal.sudoku.main
 import android.content.Context
 import android.content.Intent
 import com.yamal.sudoku.game.view.SudokuActivity
+import dagger.hilt.android.qualifiers.ActivityContext
+import javax.inject.Inject
 
-class Navigator(
-    private val context: Context
+class Navigator @Inject constructor(
+    @ActivityContext private val context: Context
 ) {
     fun openNewGame() {
         openSudokuGame(isSetUpNewGameMode = false, isNewGame = true)

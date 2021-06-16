@@ -6,12 +6,16 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.yamal.sudoku.R
 import com.yamal.sudoku.main.presenter.MainPresenter
+import dagger.hilt.android.AndroidEntryPoint
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), MainView {
 
-    private val presenter: MainPresenter by inject { parametersOf(this) }
+    @Inject
+    lateinit var presenter: MainPresenter
 
     private lateinit var loadSavedGameButton: Button
     private lateinit var newGameButton: Button

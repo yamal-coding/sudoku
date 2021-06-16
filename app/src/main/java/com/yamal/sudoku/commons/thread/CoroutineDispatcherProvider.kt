@@ -2,6 +2,8 @@ package com.yamal.sudoku.commons.thread
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
+import javax.inject.Singleton
 
 interface CoroutineDispatcherProvider {
     val ioDispatcher: CoroutineDispatcher
@@ -9,7 +11,8 @@ interface CoroutineDispatcherProvider {
     val defaultDispatcher: CoroutineDispatcher
 }
 
-class CoroutineDispatcherProviderImpl : CoroutineDispatcherProvider {
+@Singleton
+class CoroutineDispatcherProviderImpl @Inject constructor() : CoroutineDispatcherProvider {
     override val ioDispatcher: CoroutineDispatcher
         get() = Dispatchers.IO
 
