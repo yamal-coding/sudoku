@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yamal.sudoku.R
 import com.yamal.sudoku.main.presenter.MainPresenter
 import dagger.hilt.android.AndroidEntryPoint
-import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 import javax.inject.Inject
 
 @AndroidEntryPoint
