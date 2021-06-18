@@ -7,15 +7,19 @@ import android.widget.Button
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
 import com.yamal.sudoku.R
 import com.yamal.sudoku.game.presenter.SudokuPresenter
+import com.yamal.sudoku.game.presenter.SudokuViewState
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCellValue
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SudokuActivity : AppCompatActivity(), SudokuView {
+class SudokuActivity : AppCompatActivity() {
 
     @Inject
     lateinit var presenter: SudokuPresenter
@@ -36,9 +40,21 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
 
         presenter.onCreate(
             isSetUpNewGameMode = intent.getBooleanExtra(IS_SET_UP_GAME_MODE_EXTRA, false),
-            isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false),
-            this
+            isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false)
         )
+
+        lifecycleScope.launch {
+            presenter.state.collect {
+                when (it) {
+                    is SudokuViewState.Loading -> { /* Nothing to do */ }
+                    is SudokuViewState.SettingUpNewGame -> onSettingUpNewGame(it.initialBoard)
+                    is SudokuViewState.NewGameLoaded -> onNewGameLoaded(it.board)
+                    is SudokuViewState.UpdateBoard -> updateBoard(it.board)
+                    is SudokuViewState.SetUpFinished -> onSetUpFinished()
+                    is SudokuViewState.GameFinished -> onGameFinished()
+                }
+            }
+        }
     }
 
     private fun setUpToolbar() {
@@ -81,33 +97,30 @@ class SudokuActivity : AppCompatActivity(), SudokuView {
         }
     }
 
-    override fun onSetUpNewGameMode() {
+    private fun onSettingUpNewGame(initialBoard: ReadOnlyBoard) {
         setTitle(getString(R.string.set_up_new_game_mode_title))
         with(startGameButton) {
             visibility = View.VISIBLE
             setOnClickListener { presenter.finishSetUpAndStartGame() }
         }
         removeCellButton.visibility =  View.VISIBLE
+        updateBoard(initialBoard)
     }
 
-    override fun onSavedGame() {
+    private fun onNewGameLoaded(board: ReadOnlyBoard) {
+        updateBoard(board)
         removeCellButton.visibility =  View.VISIBLE
     }
 
-    override fun onResetGame(onlyBoard: ReadOnlyBoard) {
-        board.unHighlightBackground()
+    private fun updateBoard(onlyBoard: ReadOnlyBoard) {
         board.setBoard(onlyBoard)
     }
 
-    override fun updateBoard(onlyBoard: ReadOnlyBoard) {
-        board.setBoard(onlyBoard)
-    }
-
-    override fun onSetUpFinished() {
+    private fun onSetUpFinished() {
         startGameButton.visibility = View.GONE
     }
 
-    override fun onGameFinished() {
+    private fun onGameFinished() {
         board.highlightBackground()
         buttonsLayout.visibility = View.GONE
         removeCellButton.visibility = View.GONE

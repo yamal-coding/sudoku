@@ -8,11 +8,12 @@ import com.yamal.sudoku.game.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.domain.SaveBoard
 import com.yamal.sudoku.game.domain.ShouldShowSetUpNewGameHint
 import com.yamal.sudoku.game.view.FeedbackFactory
-import com.yamal.sudoku.game.view.SudokuView
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.SudokuCellValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,21 +31,20 @@ class SudokuPresenter @Inject constructor(
     private val job = Job()
     private val scope = CoroutineScope(job + dispatchers.mainDispatcher)
 
-    private lateinit var view: SudokuView
     private lateinit var board: Board
     private var isSetUpMode = true
     private var gameFinished = false
 
+    private val _state = MutableStateFlow<SudokuViewState>(SudokuViewState.Loading)
+    val state: StateFlow<SudokuViewState> = _state
+
     fun onCreate(
         isSetUpNewGameMode: Boolean,
-        isNewGame: Boolean,
-        view: SudokuView
+        isNewGame: Boolean
     ) {
-        this.view = view
-
         when {
             isNewGame -> startNewGame()
-            isSetUpNewGameMode -> scope.launch { onSetUpNewGameMode() }
+            isSetUpNewGameMode -> scope.launch { onSettingUpNewGame() }
             else -> lookForSavedBoard()
         }
     }
@@ -62,20 +62,18 @@ class SudokuPresenter @Inject constructor(
             val savedBoard = getSavedBoard()
 
             if (savedBoard == null) {
-                // TODO Handle this error case in a better way when there is unexpectedly  no saved game
-                onSetUpNewGameMode()
+                onSettingUpNewGame()
             } else {
                 onGameLoaded(savedBoard)
             }
         }
     }
 
-    private suspend fun onSetUpNewGameMode() {
+    private suspend fun onSettingUpNewGame() {
         val shouldShowSetUpHint = shouldShowSetUpNewGameHint()
 
         board = Board.empty()
-        view.onSetUpNewGameMode()
-        view.updateBoard(board)
+        _state.value = SudokuViewState.SettingUpNewGame(board)
 
         if (shouldShowSetUpHint && feedbackFactory.showSetUpNewGameHintDialog()) {
             doNotShowSetUpNewGameHintAgain()
@@ -85,20 +83,19 @@ class SudokuPresenter @Inject constructor(
     private fun onGameLoaded(savedBoard: Board) {
         board = savedBoard
         isSetUpMode = false
-        view.updateBoard(board)
-        view.onSavedGame()
+        _state.value = SudokuViewState.NewGameLoaded(board)
     }
 
     fun finishSetUpAndStartGame() {
         isSetUpMode = false
-        view.onSetUpFinished()
+        _state.value = SudokuViewState.SetUpFinished
         saveBoard()
     }
 
     fun onCellSelected(x: Int, y: Int) {
         if (!gameFinished && (!board[x, y].isFixed || isSetUpMode)) {
             board.selectCell(x, y)
-            view.updateBoard(board)
+            _state.value = SudokuViewState.UpdateBoard(board)
         }
     }
 
@@ -106,10 +103,10 @@ class SudokuPresenter @Inject constructor(
         if (!gameFinished) {
             if (isSetUpMode) {
                 board.fixSelectedCell(value)
-                view.updateBoard(board)
+                _state.value = SudokuViewState.UpdateBoard(board)
             } else if (!board.selectedCell.isFixed) {
                 board.setSelectedCell(value)
-                view.updateBoard(board)
+                _state.value = SudokuViewState.UpdateBoard(board)
 
                 checkGame()
             }
@@ -119,7 +116,7 @@ class SudokuPresenter @Inject constructor(
     private fun checkGame() {
         if (board.isSolved()) {
             gameFinished = true
-            view.onGameFinished()
+            _state.value = SudokuViewState.GameFinished
             removeSavedBoard()
         } else {
             saveBoard()
