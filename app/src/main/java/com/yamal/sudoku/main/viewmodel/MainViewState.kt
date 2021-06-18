@@ -1,4 +1,4 @@
-package com.yamal.sudoku.main.presenter
+package com.yamal.sudoku.main.viewmodel
 
 sealed class MainViewState {
     object LoadingGame : MainViewState()

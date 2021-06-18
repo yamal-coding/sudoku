@@ -1,4 +1,4 @@
-package com.yamal.sudoku.main.presenter
+package com.yamal.sudoku.main.viewmodel
 
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
 import com.yamal.sudoku.main.Navigator
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainPresenter @Inject constructor(
+class MainViewModel @Inject constructor(
     private val hasSavedBoard: HasSavedBoard,
     private val navigator: Navigator,
     dispatchers: CoroutineDispatcherProvider

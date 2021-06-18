@@ -6,8 +6,8 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.yamal.sudoku.R
-import com.yamal.sudoku.main.presenter.MainPresenter
-import com.yamal.sudoku.main.presenter.MainViewState
+import com.yamal.sudoku.main.viewmodel.MainViewModel
+import com.yamal.sudoku.main.viewmodel.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var presenter: MainPresenter
+    lateinit var viewModel: MainViewModel
 
     private lateinit var loadSavedGameButton: Button
     private lateinit var newGameButton: Button
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         bindViews()
 
         lifecycleScope.launch {
-            presenter.state.collect {
+            viewModel.state.collect {
                 when (it) {
                     is MainViewState.LoadingGame -> { /* Nothing to do */ }
                     is MainViewState.SavedGame -> onSavedGame()
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        presenter.onResume()
+        viewModel.onResume()
     }
 
     private fun onSavedGame() {
@@ -64,21 +64,21 @@ class MainActivity : AppCompatActivity() {
     private fun setUpOpenSavedGameButton() {
         loadSavedGameButton.visibility = View.VISIBLE
         loadSavedGameButton.setOnClickListener {
-            presenter.openSavedGame()
+            viewModel.openSavedGame()
         }
     }
 
     private fun setUpOpenNewGameButtons() {
         newGameButton.setOnClickListener {
-            presenter.openNewGame()
+            viewModel.openNewGame()
         }
         setUpNewGameButton.setOnClickListener {
-            presenter.openExistingGameSetUp()
+            viewModel.openExistingGameSetUp()
         }
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        viewModel.onDestroy()
         super.onDestroy()
     }
 }
