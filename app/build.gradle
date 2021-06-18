@@ -30,14 +30,17 @@ android {
 }
 
 dependencies {
+    implementation libs.hilt_android
+    kapt libs.hilt_compiler
+
     implementation libs.android_compat
     implementation libs.kotlin_stdlib
     implementation libs.constraint_layout
     implementation libs.gson
     implementation libs.coroutines_core
     implementation libs.coroutines_android
-    implementation libs.hilt_android
-    kapt libs.hilt_compiler
+    implementation libs.activity_ktx
+
 
     implementation project(':storage')
 

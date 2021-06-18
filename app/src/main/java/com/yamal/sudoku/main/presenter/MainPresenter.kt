@@ -3,9 +3,10 @@ package com.yamal.sudoku.main.presenter
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
 import com.yamal.sudoku.main.Navigator
 import com.yamal.sudoku.main.domain.HasSavedBoard
-import com.yamal.sudoku.main.view.MainView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,21 +16,18 @@ class MainPresenter @Inject constructor(
     dispatchers: CoroutineDispatcherProvider
 ) {
 
+    private val _state = MutableStateFlow<MainViewState>(MainViewState.LoadingGame)
+    val state: StateFlow<MainViewState> = _state
+
     private val job = Job()
     private val scope = CoroutineScope(job + dispatchers.mainDispatcher)
-
-    private lateinit var view: MainView
-
-    fun onCreate(view: MainView) {
-        this.view = view
-    }
 
     fun onResume() {
         scope.launch {
             if (hasSavedBoard()) {
-                view.onSavedGame()
+                _state.value = MainViewState.SavedGame
             } else {
-                view.onNotSavedGame()
+                _state.value = MainViewState.NotSavedGame
             }
         }
     }

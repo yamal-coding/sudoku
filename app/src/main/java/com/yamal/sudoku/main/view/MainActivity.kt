@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.yamal.sudoku.R
 import com.yamal.sudoku.main.presenter.MainPresenter
+import com.yamal.sudoku.main.presenter.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var presenter: MainPresenter
@@ -25,7 +29,15 @@ class MainActivity : AppCompatActivity(), MainView {
 
         bindViews()
 
-        presenter.onCreate(this)
+        lifecycleScope.launch {
+            presenter.state.collect {
+                when (it) {
+                    is MainViewState.LoadingGame -> { /* Nothing to do */ }
+                    is MainViewState.SavedGame -> onSavedGame()
+                    is MainViewState.NotSavedGame -> onNotSavedGame()
+                }
+            }
+        }
     }
 
     private fun bindViews() {
@@ -39,12 +51,12 @@ class MainActivity : AppCompatActivity(), MainView {
         presenter.onResume()
     }
 
-    override fun onSavedGame() {
+    private fun onSavedGame() {
         setUpOpenSavedGameButton()
         setUpOpenNewGameButtons()
     }
 
-    override fun onNotSavedGame() {
+    private fun onNotSavedGame() {
         loadSavedGameButton.visibility = View.GONE
         setUpOpenNewGameButtons()
     }
