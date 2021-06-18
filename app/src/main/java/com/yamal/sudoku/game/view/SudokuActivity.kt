@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import com.yamal.sudoku.R
-import com.yamal.sudoku.game.presenter.SudokuPresenter
-import com.yamal.sudoku.game.presenter.SudokuViewState
+import com.yamal.sudoku.game.viewmodel.SudokuViewModel
+import com.yamal.sudoku.game.viewmodel.SudokuViewState
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCellValue
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class SudokuActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var presenter: SudokuPresenter
+    lateinit var viewModel: SudokuViewModel
 
     private lateinit var board: SudokuBoardView
     private lateinit var startGameButton: Button
@@ -38,13 +38,13 @@ class SudokuActivity : AppCompatActivity() {
         bindViews()
         setUpListeners()
 
-        presenter.onCreate(
+        viewModel.onCreate(
             isSetUpNewGameMode = intent.getBooleanExtra(IS_SET_UP_GAME_MODE_EXTRA, false),
             isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false)
         )
 
         lifecycleScope.launch {
-            presenter.state.collect {
+            viewModel.state.collect {
                 when (it) {
                     is SudokuViewState.Loading -> { /* Nothing to do */ }
                     is SudokuViewState.SettingUpNewGame -> onSettingUpNewGame(it.initialBoard)
@@ -73,7 +73,7 @@ class SudokuActivity : AppCompatActivity() {
     private fun setUpListeners() {
         board.listener = object : SudokuBoardView.OnCellSelectedListener {
             override fun onCellSelected(x: Int, y: Int) {
-                presenter.onCellSelected(x, y)
+                viewModel.onCellSelected(x, y)
             }
         }
 
@@ -92,7 +92,7 @@ class SudokuActivity : AppCompatActivity() {
 
         cellButtons.forEach { cellButton ->
             findViewById<Button>(cellButton.key).setOnClickListener {
-                presenter.selectNumber(cellButton.value)
+                viewModel.selectNumber(cellButton.value)
             }
         }
     }
@@ -101,7 +101,7 @@ class SudokuActivity : AppCompatActivity() {
         setTitle(getString(R.string.set_up_new_game_mode_title))
         with(startGameButton) {
             visibility = View.VISIBLE
-            setOnClickListener { presenter.finishSetUpAndStartGame() }
+            setOnClickListener { viewModel.finishSetUpAndStartGame() }
         }
         removeCellButton.visibility =  View.VISIBLE
         updateBoard(initialBoard)
@@ -127,7 +127,7 @@ class SudokuActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
+        viewModel.onDestroy()
         super.onDestroy()
     }
 

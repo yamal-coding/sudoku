@@ -1,4 +1,4 @@
-package com.yamal.sudoku.game.presenter
+package com.yamal.sudoku.game.viewmodel
 
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
 import com.yamal.sudoku.game.domain.GetSavedBoard
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SudokuPresenter @Inject constructor(
+class SudokuViewModel @Inject constructor(
     private val getSavedBoard: GetSavedBoard,
     private val saveBoard: SaveBoard,
     private val removeSavedBoard: RemoveSavedBoard,
