@@ -43,8 +43,10 @@ dependencies {
     implementation libs.coroutines_android
     implementation libs.activity_ktx
 
-
     implementation project(':storage')
 
-    testImplementation libs.junit
+    testImplementation test_libs.junit
+    androidTestImplementation test_libs.espresso_core
+    androidTestImplementation test_libs.espresso_runner
+    androidTestImplementation test_libs.espresso_rules
 }
