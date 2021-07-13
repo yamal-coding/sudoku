@@ -2,14 +2,10 @@ package com.yamal.sudoku
 
 import android.app.Application
 import com.yamal.sudoku.darkmode.InitDarkMode
-import dagger.hilt.android.HiltAndroidApp
-import javax.inject.Inject
 
-@HiltAndroidApp
-class SudokuApplication : Application() {
+abstract class SudokuBaseApplication : Application() {
 
-    @Inject
-    lateinit var initDarkMode: InitDarkMode
+    abstract val initDarkMode: InitDarkMode
 
     override fun onCreate() {
         super.onCreate()
