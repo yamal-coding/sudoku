@@ -1,0 +1,25 @@
+package com.yamal.sudoku.test
+
+import android.app.Activity
+import androidx.test.rule.ActivityTestRule
+import dagger.hilt.android.testing.HiltAndroidRule
+import org.junit.Before
+import org.junit.Rule
+
+abstract class BaseTest<T : Activity>(testClass: Class<T>) {
+
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule
+    val activityTestRule = ActivityTestRule(testClass, false, false)
+
+    @Before
+    fun init() {
+        hiltRule.inject()
+    }
+
+    fun launchTarget() {
+        activityTestRule.launchActivity(null)
+    }
+}
