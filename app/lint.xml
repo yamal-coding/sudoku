@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="all">
+        <ignore path="build" />
+    </issue>
+    <issue id="VectorPath">
+        <ignore path="src/main/res/drawable/sudoku_header.xml"/>
+    </issue>
+    <issue id="LockedOrientationActivity" severity="ignore" />
+</lint>
