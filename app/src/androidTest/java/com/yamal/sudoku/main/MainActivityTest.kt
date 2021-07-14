@@ -33,7 +33,7 @@ class MainActivityTest : BaseTest<MainActivity>(MainActivity::class.java) {
 
         givenThatCurrentScreenIsMain()
 
-        onView(withId(R.id.load_saved_game_button)).check(matches(isDisplayed()))
+        onView(withId(R.id.load_saved_game_button)).check(matches(not(isDisplayed())))
     }
 
     private fun givenThatCurrentScreenIsMain() {
