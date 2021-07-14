@@ -138,6 +138,31 @@ class Board(private val cells: List<MutableList<SudokuCell>>) : ReadOnlyBoard {
             else -> throw IllegalArgumentException("Column $column is not in range [0, 8]")
         }
 
+    override fun equals(other: Any?): Boolean =
+        other != null && other is ReadOnlyBoard && hasSameContent(other)
+
+    private fun hasSameContent(other: ReadOnlyBoard): Boolean {
+        for (x in 0..8) {
+            for (y in 0..8) {
+                if (cells[x][y] != other[x, y]) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = cells.hashCode()
+        result = 31 * result + rows.hashCode()
+        result = 31 * result + columns.hashCode()
+        result = 31 * result + quadrants.hashCode()
+        result = 31 * result + _selectedX
+        result = 31 * result + _selectedY
+        result = 31 * result + selectedCell.hashCode()
+        return result
+    }
+
     companion object {
         fun empty(): Board =
             Board(

@@ -7,6 +7,7 @@ import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.VisibleForTesting
 
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.R
@@ -56,6 +57,10 @@ class SudokuBoardView @JvmOverloads constructor(
         color = context.getColorFromAttr(R.attr.colorBoardHighlightedCell)
         style = Paint.Style.FILL
     }
+
+    @VisibleForTesting
+    val board: ReadOnlyBoard?
+        get() = readOnlyBoard
 
     fun highlightBackground() {
         isHighlighted = true

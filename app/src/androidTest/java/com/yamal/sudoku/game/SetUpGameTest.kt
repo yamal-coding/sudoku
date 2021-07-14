@@ -1,5 +1,6 @@
 package com.yamal.sudoku.game
 
+import com.yamal.sudoku.game.scenario.SetUpGameScenario
 import com.yamal.sudoku.main.MainScreen
 import com.yamal.sudoku.main.view.MainActivity
 import com.yamal.sudoku.test.BaseTest
@@ -13,11 +14,25 @@ class SetUpGameTest : BaseTest<MainActivity>(MainActivity::class.java) {
     @Inject
     lateinit var mainScreen: MainScreen
 
+    @Inject
+    lateinit var setUpGameScenario: SetUpGameScenario
+
     @Test
     fun hintDialogShouldBeDisplayedWhenSettingUpAGame() {
         givenThatCurrentScreenIsMainScreen()
             .clickOnSetUpGame()
             .expectHintDialog()
+    }
+
+    @Test
+    fun boardShouldBeEmptyAndOnlyStartGameAndRemoveCellButtonsShouldBeDisplayedOnSetUpGameScreen() {
+        setUpGameScenario.givenThatSetUpNewGameHintWillNotBeDisplayed()
+
+        givenThatCurrentScreenIsMainScreen()
+            .clickOnSetUpGame()
+            .expectEmptyBoard()
+            .expectStartGameButton()
+            .expectRemoveGameButton()
     }
 
     @Test
@@ -41,6 +56,22 @@ class SetUpGameTest : BaseTest<MainActivity>(MainActivity::class.java) {
             .goBack()
             .clickOnSetUpGame()
             .expectHintDialog()
+    }
+
+    @Test
+    fun aGameCanBeContinuedAfterSettingUpANewGame() {
+        setUpGameScenario.givenThatSetUpNewGameHintWillNotBeDisplayed()
+
+        givenThatCurrentScreenIsMainScreen()
+            .clickOnSetUpGame()
+            .selectSomeCell()
+            .setSomeCellValue()
+            .expectBoardIs(SetUpGameScenario.SOME_BOARD)
+            .clickOnFinishSetUp()
+            .doNotExpectStartGameButton()
+            .goBack()
+            .clickOnContinueGame()
+            .expectBoardIs(SetUpGameScenario.SOME_BOARD)
     }
 
     private fun givenThatCurrentScreenIsMainScreen(): MainScreen {
