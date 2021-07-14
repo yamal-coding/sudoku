@@ -18,7 +18,7 @@ class Navigator @Inject constructor(
     }
 
     fun openSavedGame() {
-        openSudokuGame(isSetUpNewGameMode = false, isNewGame = false
+        openSudokuGame(isSetUpNewGameMode = false, isNewGame = false)
     }
 
     private fun openSudokuGame(isSetUpNewGameMode: Boolean, isNewGame: Boolean) {
