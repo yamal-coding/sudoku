@@ -16,7 +16,7 @@ class BoardTest {
 
     @Test
     fun `Board is solved when initialized as full board`() {
-        assertFalse(SolvedSudokuMother.solvedSudoku().isSolved())
+        assertTrue(SolvedSudokuMother.solvedSudoku().isSolved())
     }
 
     @Test
