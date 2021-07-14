@@ -13,7 +13,7 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class MainActivityTest : BaseTest<MainActivity>(MainActivity::class.java){
+class MainActivityTest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     @Inject
     lateinit var mainScenario: MainScenario
