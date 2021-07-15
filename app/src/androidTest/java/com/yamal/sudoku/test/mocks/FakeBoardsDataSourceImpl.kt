@@ -13,7 +13,7 @@ class FakeBoardsDataSourceImpl @Inject constructor() : BoardsDataSource {
     private var mockedBoard: ReadOnlyBoard? = null
 
     override fun getNewBoard(): BoardDO =
-        mockedBoard?.toDO() ?: throw IllegalStateException("Mocked board should be have been set first.")
+        mockedBoard?.toDO() ?: throw IllegalStateException("A mocked board should have been set first.")
 
     fun whenGettingNewBoard(thenReturn: ReadOnlyBoard) {
         mockedBoard = thenReturn
