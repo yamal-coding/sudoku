@@ -1,4 +1,4 @@
-package com.yamal.sudoku.repository
+package com.yamal.sudoku.game.status.data
 
 import com.yamal.sudoku.commons.thread.ApplicationScope
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BoardRepository @Inject constructor(
+class GameStatusRepository @Inject constructor(
     private val boardStorage: BoardStorage,
     private val scope: ApplicationScope,
     private val dispatchers: CoroutineDispatcherProvider

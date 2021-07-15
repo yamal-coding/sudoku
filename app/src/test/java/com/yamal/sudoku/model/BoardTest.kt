@@ -1,6 +1,6 @@
 package com.yamal.sudoku.model
 
-import com.yamal.sudoku.repository.toSudokuCell
+import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
 import com.yamal.sudoku.test.utils.SolvedSudokuMother
 import org.junit.Assert.assertFalse

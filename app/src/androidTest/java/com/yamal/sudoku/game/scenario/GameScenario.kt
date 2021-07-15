@@ -1,6 +1,6 @@
 package com.yamal.sudoku.game.scenario
 
-import com.yamal.sudoku.game.domain.DoNotShowSetUpNewGameHintAgain
+import com.yamal.sudoku.game.status.domain.DoNotShowSetUpNewGameHintAgain
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCellValue

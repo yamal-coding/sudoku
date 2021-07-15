@@ -1,7 +1,7 @@
 package com.yamal.sudoku.model
 
 import androidx.annotation.VisibleForTesting
-import com.yamal.sudoku.repository.toSudokuCell
+import com.yamal.sudoku.game.status.data.toSudokuCell
 
 interface ReadOnlyBoard {
     fun getSelectedX(): Int

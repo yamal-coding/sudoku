@@ -1,4 +1,4 @@
-package com.yamal.sudoku.repository
+package com.yamal.sudoku.game.status.data
 
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.ReadOnlyBoard
