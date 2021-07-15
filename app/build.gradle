@@ -1,13 +1,4 @@
-plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
-}
-
 android {
-    compileSdkVersion sdk_version
-
     defaultConfig {
         applicationId "com.yamal.sudoku"
         minSdkVersion min_api_level
@@ -26,25 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    lintOptions {
-        warningsAsErrors true
-        checkDependencies true
-        lintConfig file("lint.xml")
-    }
 }
 
 dependencies {
-    implementation libs.hilt_android
-    kapt libs.hilt_compiler
-
     implementation libs.android_compat
-    implementation libs.kotlin_stdlib
     implementation libs.constraint_layout
     implementation libs.gson
     implementation libs.coroutines_core

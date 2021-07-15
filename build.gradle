@@ -1,5 +1,4 @@
 buildscript {
-
     repositories {
         mavenCentral()
         google()
@@ -19,6 +18,51 @@ allprojects {
         mavenCentral()
         google()
         maven { url "https://jitpack.io" }
+    }
+}
+
+// Defining common gradle plugins, config and dependencies to every module.
+// There are some differences between app module and the others,
+subprojects {
+    def currentModule = it.name
+    def appModule = 'app'
+
+    if (currentModule == appModule) {
+        apply plugin: 'com.android.application'
+    } else {
+        apply plugin: 'com.android.library'
+    }
+    apply plugin: 'kotlin-android'
+    apply plugin: 'kotlin-kapt'
+    apply plugin: 'dagger.hilt.android.plugin'
+
+
+    android {
+        compileSdkVersion sdk_version
+
+        if (currentModule != appModule) {
+            defaultConfig {
+                minSdkVersion min_api_level
+                targetSdkVersion sdk_version
+            }
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+
+        lintOptions {
+            warningsAsErrors true
+            checkDependencies true
+            lintConfig file("lint.xml")
+        }
+    }
+
+    dependencies {
+        implementation libs.kotlin_stdlib
+        implementation libs.hilt_android
+        kapt libs.hilt_compiler
     }
 }
 
