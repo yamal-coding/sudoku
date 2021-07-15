@@ -1,4 +1,4 @@
-package com.yamal.sudoku.test
+package com.yamal.sudoku.test.di
 
 import android.app.Application
 import android.content.Context

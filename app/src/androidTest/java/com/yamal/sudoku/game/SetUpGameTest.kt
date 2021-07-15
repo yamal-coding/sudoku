@@ -1,7 +1,6 @@
 package com.yamal.sudoku.game
 
-import com.yamal.sudoku.game.scenario.SetUpGameScenario
-import com.yamal.sudoku.main.MainScreen
+import com.yamal.sudoku.game.scenario.GameScenario
 import com.yamal.sudoku.main.view.MainActivity
 import com.yamal.sudoku.test.BaseTest
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -12,10 +11,7 @@ import javax.inject.Inject
 class SetUpGameTest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     @Inject
-    lateinit var mainScreen: MainScreen
-
-    @Inject
-    lateinit var setUpGameScenario: SetUpGameScenario
+    lateinit var gameScenario: GameScenario
 
     @Test
     fun hintDialogShouldBeDisplayedWhenSettingUpAGame() {
@@ -26,7 +22,7 @@ class SetUpGameTest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     @Test
     fun boardShouldBeEmptyAndOnlyStartGameAndRemoveCellButtonsShouldBeDisplayedOnSetUpGameScreen() {
-        setUpGameScenario.givenThatSetUpNewGameHintWillNotBeDisplayed()
+        gameScenario.givenThatSetUpNewGameHintWillNotBeDisplayed()
 
         givenThatCurrentScreenIsMainScreen()
             .clickOnSetUpGame()
@@ -60,22 +56,17 @@ class SetUpGameTest : BaseTest<MainActivity>(MainActivity::class.java) {
 
     @Test
     fun aGameCanBeContinuedAfterSettingUpANewGame() {
-        setUpGameScenario.givenThatSetUpNewGameHintWillNotBeDisplayed()
+        gameScenario.givenThatSetUpNewGameHintWillNotBeDisplayed()
 
         givenThatCurrentScreenIsMainScreen()
             .clickOnSetUpGame()
             .selectSomeCell()
             .setSomeCellValue()
-            .expectBoardIs(SetUpGameScenario.SOME_BOARD)
+            .expectBoardIs(GameScenario.SOME_BOARD)
             .clickOnFinishSetUp()
             .doNotExpectStartGameButton()
             .goBack()
             .clickOnContinueGame()
-            .expectBoardIs(SetUpGameScenario.SOME_BOARD)
-    }
-
-    private fun givenThatCurrentScreenIsMainScreen(): MainScreen {
-        launchTarget()
-        return mainScreen
+            .expectBoardIs(GameScenario.SOME_BOARD)
     }
 }
