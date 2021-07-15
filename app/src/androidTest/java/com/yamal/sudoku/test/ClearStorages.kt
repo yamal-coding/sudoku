@@ -1,14 +1,12 @@
 package com.yamal.sudoku.test
 
-import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.SharedPreferences
 import javax.inject.Inject
 
 class ClearStorages @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val sharedPreferences: SharedPreferences
 ) {
     operator fun invoke() {
-       val sharedPreferences = context.getSharedPreferences("sudoku_board_storage", Context.MODE_PRIVATE)
         sharedPreferences.edit()
             .clear()
             .commit()

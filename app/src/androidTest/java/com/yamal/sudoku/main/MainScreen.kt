@@ -30,11 +30,11 @@ class MainScreen @Inject constructor(
         return gameScreenProvider.get()
     }
 
-    fun expectContinueGameButton(): GameScreen {
+    fun expectContinueGameButton(): MainScreen = apply {
         onView(withId(R.id.load_saved_game_button)).check(matches(isDisplayed()))
     }
 
-    fun doNotExpectContinueGameButton(): GameScreen {
+    fun doNotExpectContinueGameButton(): MainScreen = apply {
         onView(withId(R.id.load_saved_game_button)).check(matches(not(isDisplayed())))
     }
 }
