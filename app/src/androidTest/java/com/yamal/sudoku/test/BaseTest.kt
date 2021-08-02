@@ -1,7 +1,8 @@
 package com.yamal.sudoku.test
 
 import android.app.Activity
-import androidx.test.rule.ActivityTestRule
+import androidx.lifecycle.Lifecycle
+import androidx.test.core.app.ActivityScenario
 import com.yamal.sudoku.main.MainScreen
 import dagger.hilt.android.testing.HiltAndroidRule
 import org.junit.Before
@@ -9,13 +10,12 @@ import org.junit.Rule
 import javax.inject.Inject
 import javax.inject.Provider
 
-abstract class BaseTest<T : Activity>(testClass: Class<T>) {
+abstract class BaseTest<T : Activity>(
+    private val testClass: Class<T>
+) {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule
-    val activityTestRule = ActivityTestRule(testClass, false, false)
 
     @Inject
     lateinit var clearStorages: ClearStorages
@@ -35,6 +35,7 @@ abstract class BaseTest<T : Activity>(testClass: Class<T>) {
     }
 
     private fun launchTarget() {
-        activityTestRule.launchActivity(null)
+        ActivityScenario.launch(testClass)
+            .moveToState(Lifecycle.State.RESUMED)
     }
 }

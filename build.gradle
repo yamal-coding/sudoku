@@ -36,7 +36,6 @@ subprojects {
     apply plugin: 'kotlin-kapt'
     apply plugin: 'dagger.hilt.android.plugin'
 
-
     android {
         compileSdkVersion sdk_version
 

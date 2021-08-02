@@ -23,7 +23,6 @@ object StorageModule {
 
     @Provides
     fun provideKeyValueStorage(
-        @ApplicationContext context: Context,
         sharedPreferences: SharedPreferences
     ): KeyValueStorage =
         KeyValueStorage(
