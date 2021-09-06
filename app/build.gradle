@@ -31,8 +31,9 @@ dependencies {
 
     testImplementation test_libs.junit
     androidTestImplementation test_libs.espresso_core
-    androidTestImplementation test_libs.espresso_runner
-    androidTestImplementation test_libs.espresso_rules
+    androidTestImplementation test_libs.android_test_core
+    androidTestImplementation test_libs.android_test_runner
+    androidTestImplementation test_libs.android_test_rules
     androidTestImplementation test_libs.hilt_android_testing
     kaptAndroidTest libs.hilt_compiler
 }
