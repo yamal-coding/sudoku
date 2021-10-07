@@ -1,10 +1,12 @@
 package com.yamal.sudoku.game.status.data
 
 import com.yamal.sudoku.model.Board
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.storage.model.BoardDO
+import com.yamal.sudoku.storage.model.DifficultyDO
 import com.yamal.sudoku.storage.model.SudokuCellDO
 import java.lang.IllegalStateException
 
@@ -49,8 +51,19 @@ fun ReadOnlyBoard.toDO(): BoardDO {
         list.add(row.map { it.toDO() })
     }
 
-    return BoardDO(list)
+    return BoardDO(
+        cells = list,
+        difficulty = difficulty.toDO()
+    )
 }
+
+private fun Difficulty.toDO(): String? =
+    when (this) {
+        Difficulty.EASY -> DifficultyDO.EASY
+        Difficulty.MEDIUM -> DifficultyDO.MEDIUM
+        Difficulty.HARD -> DifficultyDO.HARD
+        Difficulty.UNKNOWN -> null
+    }
 
 fun BoardDO.toDomain(): Board {
     val list = mutableListOf<MutableList<SudokuCell>>()
@@ -59,5 +72,16 @@ fun BoardDO.toDomain(): Board {
         list.add(row.map { it.toDomain() }.toMutableList())
     }
 
-    return Board(list)
+    return Board(
+        cells = list,
+        difficulty = difficultyDOtoDomain(difficulty)
+    )
 }
+
+private fun difficultyDOtoDomain(difficultyDO: String?): Difficulty =
+    when (difficultyDO) {
+        DifficultyDO.EASY -> Difficulty.EASY
+        DifficultyDO.MEDIUM -> Difficulty.MEDIUM
+        DifficultyDO.HARD -> Difficulty.HARD
+        else -> Difficulty.UNKNOWN
+    }

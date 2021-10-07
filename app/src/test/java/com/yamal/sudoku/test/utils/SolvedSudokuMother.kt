@@ -1,13 +1,14 @@
 package com.yamal.sudoku.test.utils
 
 import com.yamal.sudoku.model.Board
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 
 object SolvedSudokuMother {
     fun solvedSudoku(): Board =
         Board(
-            listOf(
+            cells = listOf(
                 Board.rowOf(5, 3, 4, 6, 7, 8, 9, 1, 2),
                 Board.rowOf(6, 7, 2, 1, 9, 5, 3, 4, 8),
                 Board.rowOf(1, 9, 8, 3, 4, 2, 5, 6, 7),
@@ -17,7 +18,8 @@ object SolvedSudokuMother {
                 Board.rowOf(9, 6, 1, 5, 3, 7, 2, 8, 4),
                 Board.rowOf(2, 8, 7, 4, 1, 9, 6, 3, 5),
                 Board.rowOf(3, 4, 5, 2, 8, 6, 1, 7, 9)
-            )
+            ),
+            difficulty = Difficulty.UNKNOWN
         )
 
     fun solvedSudokuAsMap(): List<List<Int>> =
@@ -37,7 +39,7 @@ object SolvedSudokuMother {
 object AlmostSolvedSudokuMother {
     fun almostSolvedSudoku(): Board =
         Board(
-            listOf(
+            cells = listOf(
                 Board.rowOf(5, 3, 4, 6, 7, 8, 9, 1, 2),
                 Board.rowOf(6, 7, 2, 1, 9, 5, 3, 4, 8),
                 Board.rowOf(1, 9, 8, 3, 4, 2, 5, 6, 7),
@@ -49,7 +51,8 @@ object AlmostSolvedSudokuMother {
                 Board.rowOf(3, 4, 5, 2, 8, 6, 1, 7).also {
                     it.add(SudokuCell(SudokuCellValue.EMPTY, isFixed = false))
                 }
-            )
+            ),
+            difficulty = Difficulty.UNKNOWN
         )
 
     fun getEmptyCellCoordinates(): Pair<Int, Int> = 8 to 8

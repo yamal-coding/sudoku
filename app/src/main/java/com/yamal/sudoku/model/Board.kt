@@ -4,13 +4,17 @@ import androidx.annotation.VisibleForTesting
 import com.yamal.sudoku.game.status.data.toSudokuCell
 
 interface ReadOnlyBoard {
+    val difficulty: Difficulty
     fun getSelectedX(): Int
     fun getSelectedY(): Int
     operator fun get(x: Int, y: Int): SudokuCell
     fun getAllCells(): List<List<SudokuCell>>
 }
 
-class Board(private val cells: List<MutableList<SudokuCell>>) : ReadOnlyBoard {
+class Board(
+    private val cells: List<MutableList<SudokuCell>>,
+    override val difficulty: Difficulty
+) : ReadOnlyBoard {
 
     private val rows = mapOfCells()
     private val columns = mapOfCells()
@@ -166,11 +170,12 @@ class Board(private val cells: List<MutableList<SudokuCell>>) : ReadOnlyBoard {
     companion object {
         fun empty(): Board =
             Board(
-                listOf(
+                cells = listOf(
                     emptyRow(), emptyRow(), emptyRow(),
                     emptyRow(), emptyRow(), emptyRow(),
                     emptyRow(), emptyRow(), emptyRow()
-                )
+                ),
+                difficulty = Difficulty.UNKNOWN
             )
 
         private fun emptyRow(): MutableList<SudokuCell> =
@@ -186,7 +191,7 @@ class Board(private val cells: List<MutableList<SudokuCell>>) : ReadOnlyBoard {
         @Suppress("UNUSED_METHOD")
         fun almostDone(): Board =
             Board(
-                listOf(
+                cells = listOf(
                     rowOf(5, 3, 4, 6, 7, 8, 9, 1, 2),
                     rowOf(6, 7, 2, 1, 9, 5, 3, 4, 8),
                     rowOf(1, 9, 8, 3, 4, 2, 5, 6, 7),
@@ -198,7 +203,8 @@ class Board(private val cells: List<MutableList<SudokuCell>>) : ReadOnlyBoard {
                     rowOf(3, 4, 5, 2, 8, 6, 1, 7).also {
                         it.add(SudokuCell(SudokuCellValue.EMPTY, isFixed = false))
                     }
-                )
+                ),
+                difficulty = Difficulty.UNKNOWN
             )
 
         @VisibleForTesting
