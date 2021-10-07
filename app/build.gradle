@@ -30,6 +30,8 @@ dependencies {
     implementation project(':storage')
 
     testImplementation test_libs.junit
+    testImplementation test_libs.mockito_kotlin
+    testImplementation test_libs.coroutines_test
     androidTestImplementation test_libs.espresso_core
     androidTestImplementation test_libs.android_test_core
     androidTestImplementation test_libs.android_test_runner

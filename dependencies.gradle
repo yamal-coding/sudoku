@@ -34,5 +34,7 @@ ext {
             android_test_runner: [group: 'androidx.test', name: 'runner', version: '1.4.0'],
             android_test_rules: [group: 'androidx.test', name: 'rules', version: '1.4.0'],
             hilt_android_testing: [group: 'com.google.dagger', name: 'hilt-android-testing', version: hilt_version],
+            mockito_kotlin: [group: 'org.mockito.kotlin', name: 'mockito-kotlin', version: '3.2.0'],
+            coroutines_test: [group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-test', version: coroutines_version],
     ]
 }
