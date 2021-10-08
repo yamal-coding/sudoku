@@ -27,7 +27,7 @@ object SudokuDOMother {
         someBoardWithExpectedDOModel(Difficulty.UNKNOWN, null)
 
     fun someUnknownBoardWithExpectedDOModelWithInvalidDifficulty(): Pair<Board, BoardDO> =
-        someBoardWithExpectedDOModel(Difficulty.UNKNOWN, null)
+        someBoardWithExpectedDOModel(Difficulty.UNKNOWN, "invalid")
 
     private fun someBoardWithExpectedDOModel(domainDifficulty: Difficulty, doDifficulty: String?): Pair<Board, BoardDO> {
         val board = Board(

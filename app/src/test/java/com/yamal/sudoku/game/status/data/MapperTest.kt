@@ -7,36 +7,29 @@ import org.junit.Test
 class MapperTest {
 
     @Test
-    fun `Should map to domain layer an stored board with easy difficulty`() {
+    fun `Should map to DO layer a domain layer board with easy difficulty`() {
         val (domainBoard, expectedDOBoard) = SudokuDOMother.someEasyBoardWithExpectedDOModel()
 
         assertEquals(expectedDOBoard, domainBoard.toDO())
     }
 
     @Test
-    fun `Should map to domain layer an stored board with medium difficulty`() {
+    fun `Should map to DO layer a domain layer board with medium difficulty`() {
         val (domainBoard, expectedDOBoard) = SudokuDOMother.someMediumBoardWithExpectedDOModel()
 
         assertEquals(expectedDOBoard, domainBoard.toDO())
     }
 
     @Test
-    fun `Should map to domain layer an stored board with hard difficulty`() {
+    fun `Should map to DO layer a domain layer board with hard difficulty`() {
         val (domainBoard, expectedDOBoard) = SudokuDOMother.someHardBoardWithExpectedDOModel()
 
         assertEquals(expectedDOBoard, domainBoard.toDO())
     }
 
     @Test
-    fun `Should map to domain layer an stored board with null difficulty as unknown difficulty`() {
+    fun `Should map to DO layer a domain layer board with null difficulty when difficulty is unknown`() {
         val (domainBoard, expectedDOBoard) = SudokuDOMother.someUnknownBoardWithExpectedDOModelWithNullDifficulty()
-
-        assertEquals(expectedDOBoard, domainBoard.toDO())
-    }
-
-    @Test
-    fun `Should map to domain layer an stored board with invalid difficulty as unknown difficulty`() {
-        val (domainBoard, expectedDOBoard) = SudokuDOMother.someUnknownBoardWithExpectedDOModelWithInvalidDifficulty()
 
         assertEquals(expectedDOBoard, domainBoard.toDO())
     }

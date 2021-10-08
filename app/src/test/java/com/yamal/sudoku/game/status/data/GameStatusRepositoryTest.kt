@@ -39,6 +39,16 @@ class GameStatusRepositoryTest : CoroutinesUnitTest() {
     }
 
     @Test
+    fun `Should save board`() = runBlockingTest {
+        val (givenBoard, expectedBoardToBeStored) = SudokuDOMother.someEasyBoardWithExpectedDOModel()
+
+        repository.saveBoard(givenBoard)
+
+        verify(storage).board = expectedBoardToBeStored
+    }
+
+
+    @Test
     fun `Should remove saved board`() = runBlockingTest {
         repository.removeSavedBoard()
 
