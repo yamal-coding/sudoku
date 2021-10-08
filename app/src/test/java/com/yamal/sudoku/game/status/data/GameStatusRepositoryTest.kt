@@ -1,12 +1,15 @@
 package com.yamal.sudoku.game.status.data
 
 import com.yamal.sudoku.commons.thread.ApplicationScope
+import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.storage.BoardStorage
 import com.yamal.sudoku.test.base.CoroutinesUnitTest
 import com.yamal.sudoku.test.utils.SudokuDOMother
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -47,6 +50,19 @@ class GameStatusRepositoryTest : CoroutinesUnitTest() {
         verify(storage).board = expectedBoardToBeStored
     }
 
+    @Test
+    fun `Should return null when there is no board`() = runBlockingTest {
+        givenThereIsNotASavedBoard()
+
+        assertNull(repository.getSavedBoard())
+    }
+
+    @Test
+    fun `Should return saved board`() = runBlockingTest {
+        val expectedBoard = givenASavedBoard()
+
+        assertEquals(expectedBoard, repository.getSavedBoard())
+    }
 
     @Test
     fun `Should remove saved board`() = runBlockingTest {
@@ -69,8 +85,10 @@ class GameStatusRepositoryTest : CoroutinesUnitTest() {
         assertFalse(repository.shouldShowSetUpNewGameHint())
     }
 
-    private fun givenASavedBoard() {
-        whenever(storage.board).thenReturn(SudokuDOMother.SOME_BOARD)
+    private fun givenASavedBoard(): Board {
+        val (domainBoard, doBoard) = SudokuDOMother.someEasyBoardWithExpectedDOModel()
+        whenever(storage.board).thenReturn(doBoard)
+        return domainBoard
     }
 
     private fun givenThereIsNotASavedBoard() {

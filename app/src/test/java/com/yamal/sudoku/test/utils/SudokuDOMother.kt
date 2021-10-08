@@ -9,10 +9,6 @@ import com.yamal.sudoku.storage.model.DifficultyDO
 import com.yamal.sudoku.storage.model.SudokuCellDO
 
 object SudokuDOMother {
-    val SOME_BOARD = BoardDO(
-        cells = listOf(listOf(SudokuCellDO(value = 1, isFixed = false))),
-        difficulty = null
-    )
 
     fun someEasyBoardWithExpectedDOModel(): Pair<Board, BoardDO> =
         someBoardWithExpectedDOModel(Difficulty.EASY, DifficultyDO.EASY)
