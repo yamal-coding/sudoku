@@ -143,7 +143,10 @@ class Board(
         }
 
     override fun equals(other: Any?): Boolean =
-        other != null && other is ReadOnlyBoard && hasSameContent(other)
+        other != null
+                && other is ReadOnlyBoard
+                && hasSameContent(other)
+                && difficulty == other.difficulty
 
     private fun hasSameContent(other: ReadOnlyBoard): Boolean {
         for (x in 0..8) {
@@ -158,6 +161,7 @@ class Board(
 
     override fun hashCode(): Int {
         var result = cells.hashCode()
+        result = 31 * result + difficulty.hashCode()
         result = 31 * result + rows.hashCode()
         result = 31 * result + columns.hashCode()
         result = 31 * result + quadrants.hashCode()
