@@ -62,7 +62,7 @@ class BoardTest {
     }
 
     @Test
-    fun `Board is solved after fixing repeated repeated number in a quadrant`() {
+    fun `Board is solved after fixing repeated number in a quadrant`() {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
 
         val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()

@@ -188,7 +188,7 @@ class Board(
         private fun emptyCell(): SudokuCell =
             SudokuCell(value = SudokuCellValue.EMPTY, isFixed = false)
 
-        @Suppress("UNUSED_METHOD")
+        // TODO remove from here when DataSource is implemented
         fun almostDone(): Board =
             Board(
                 cells = listOf(
@@ -207,6 +207,7 @@ class Board(
                 difficulty = Difficulty.UNKNOWN
             )
 
+        // TODO remove from here
         @VisibleForTesting
         fun rowOf(vararg items: Int): MutableList<SudokuCell> =
             items.map { SudokuCell(it.toSudokuCell(), isFixed = false) }.toMutableList()
