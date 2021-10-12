@@ -4,7 +4,7 @@ import androidx.annotation.VisibleForTesting
 import com.yamal.sudoku.game.status.data.toSudokuCell
 
 interface ReadOnlyBoard {
-    val difficulty: Difficulty
+    val difficulty: Difficulty?
     fun getSelectedX(): Int
     fun getSelectedY(): Int
     operator fun get(x: Int, y: Int): SudokuCell
@@ -13,7 +13,7 @@ interface ReadOnlyBoard {
 
 class Board(
     private val cells: List<MutableList<SudokuCell>>,
-    override val difficulty: Difficulty
+    override val difficulty: Difficulty?
 ) : ReadOnlyBoard {
 
     private val rows = mapOfCells()
@@ -179,7 +179,7 @@ class Board(
                     emptyRow(), emptyRow(), emptyRow(),
                     emptyRow(), emptyRow(), emptyRow()
                 ),
-                difficulty = Difficulty.UNKNOWN
+                difficulty = null
             )
 
         private fun emptyRow(): MutableList<SudokuCell> =
@@ -208,7 +208,7 @@ class Board(
                         it.add(SudokuCell(SudokuCellValue.EMPTY, isFixed = false))
                     }
                 ),
-                difficulty = Difficulty.UNKNOWN
+                difficulty = null
             )
 
         // TODO remove from here

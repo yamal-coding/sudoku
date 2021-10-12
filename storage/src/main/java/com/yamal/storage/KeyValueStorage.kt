@@ -10,6 +10,15 @@ class KeyValueStorage(
     fun getBoolean(key: String, defaultValue: Boolean): Boolean =
         sharedPreferences.getBoolean(key, defaultValue)
 
+    fun getInt(key: String, defaultValue: Int): Int =
+        sharedPreferences.getInt(key, defaultValue)
+
+    fun putInt(key: String, value: Int) {
+        sharedPreferences.edit()
+            .putInt(key, value)
+            .apply()
+    }
+
     fun put(key: String, value: Boolean) {
         sharedPreferences.edit()
             .putBoolean(key, value)

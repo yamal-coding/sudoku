@@ -19,13 +19,13 @@ object SudokuDOMother {
     fun someHardBoardWithExpectedDOModel(): Pair<Board, BoardDO> =
         someBoardWithExpectedDOModel(Difficulty.HARD, DifficultyDO.HARD)
 
-    fun someUnknownBoardWithExpectedDOModelWithNullDifficulty(): Pair<Board, BoardDO> =
-        someBoardWithExpectedDOModel(Difficulty.UNKNOWN, null)
+    fun someBoardWithoutDifficultyWithExpectedDOModelWithNullDifficulty(): Pair<Board, BoardDO> =
+        someBoardWithExpectedDOModel(null, null)
 
-    fun someUnknownBoardWithExpectedDOModelWithInvalidDifficulty(): Pair<Board, BoardDO> =
-        someBoardWithExpectedDOModel(Difficulty.UNKNOWN, "invalid")
+    fun someBoardWithoutDifficultyWithExpectedDOModelWithInvalidDifficulty(): Pair<Board, BoardDO> =
+        someBoardWithExpectedDOModel(null, "invalid")
 
-    private fun someBoardWithExpectedDOModel(domainDifficulty: Difficulty, doDifficulty: String?): Pair<Board, BoardDO> {
+    private fun someBoardWithExpectedDOModel(domainDifficulty: Difficulty?, doDifficulty: String?): Pair<Board, BoardDO> {
         val board = Board(
             cells = listOf(
                 Board.rowOf(5, 3, 4, 6, 7, 8, 9, 1, 2),

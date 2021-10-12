@@ -34,7 +34,7 @@ fun ReadOnlyBoard.toDO(): BoardDO {
 
     return BoardDO(
         cells = list,
-        difficulty = difficulty.toDO()
+        difficulty = difficulty?.toDO()
     )
 }
 
@@ -54,12 +54,11 @@ private fun SudokuCell.toDO(): SudokuCellDO {
     return SudokuCellDO(value, isFixed)
 }
 
-private fun Difficulty.toDO(): String? =
+private fun Difficulty.toDO(): String =
     when (this) {
         Difficulty.EASY -> DifficultyDO.EASY
         Difficulty.MEDIUM -> DifficultyDO.MEDIUM
         Difficulty.HARD -> DifficultyDO.HARD
-        Difficulty.UNKNOWN -> null
     }
 
 fun BoardDO.toDomain(): Board {
@@ -78,10 +77,10 @@ fun BoardDO.toDomain(): Board {
 private fun SudokuCellDO.toDomain(): SudokuCell =
     SudokuCell(value.toSudokuCell(), isFixed)
 
-private fun difficultyDOtoDomain(difficultyDO: String?): Difficulty =
+private fun difficultyDOtoDomain(difficultyDO: String?): Difficulty? =
     when (difficultyDO) {
         DifficultyDO.EASY -> Difficulty.EASY
         DifficultyDO.MEDIUM -> Difficulty.MEDIUM
         DifficultyDO.HARD -> Difficulty.HARD
-        else -> Difficulty.UNKNOWN
+        else -> null
     }
