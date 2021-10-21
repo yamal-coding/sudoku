@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface BoardsDataSource {
-    fun getNewBoard(): Board
+    fun getNewBoard(): Board?
 
     fun getNewBoard(difficulty: Difficulty): Board?
 }
@@ -18,7 +18,7 @@ class BoardsDataSourceImpl @Inject constructor(
     private val randomGenerator: RandomGenerator,
     private val levelFilesInfoStorage: LevelFilesInfoStorage
 ) : BoardsDataSource {
-    override fun getNewBoard(): Board =
+    override fun getNewBoard(): Board? =
         Board.almostDone()
 
     override fun getNewBoard(difficulty: Difficulty): Board? =

@@ -8,6 +8,6 @@ import javax.inject.Singleton
 class BoardsRepository @Inject constructor(
     private val dataSource: BoardsDataSource
 ) {
-    fun getNewBoard(): Board =
+    fun getNewBoard(): Board? =
         dataSource.getNewBoard()
 }

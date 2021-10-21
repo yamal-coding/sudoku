@@ -52,8 +52,10 @@ class SudokuViewModel @Inject constructor(
     private fun startNewGame() {
         scope.launch {
             val newBoard = loadNewBoard()
-            onGameLoaded(newBoard)
-            saveBoard()
+            newBoard?.let {
+                onGameLoaded(newBoard)
+                saveBoard()
+            } // TODO handle error scenario when a board is not returned
         }
     }
 

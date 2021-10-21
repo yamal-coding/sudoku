@@ -7,5 +7,5 @@ import javax.inject.Inject
 class LoadNewBoard @Inject constructor(
     private val boardsRepository: BoardsRepository
 ) {
-    operator fun invoke(): Board = boardsRepository.getNewBoard()
+    operator fun invoke(): Board? = boardsRepository.getNewBoard()
 }
