@@ -5,12 +5,12 @@ import com.yamal.sudoku.game.status.domain.SaveBoard
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCellValue
-import com.yamal.sudoku.test.mocks.FakeBoardsDataSourceImpl
+import com.yamal.sudoku.test.mocks.FakeLevelsDataSourceImpl
 import javax.inject.Inject
 
 class GameScenario @Inject constructor(
     private val doNotShowSetUpNewGameHintAgain: DoNotShowSetUpNewGameHintAgain,
-    private val fakeBoardsDataSourceImpl: FakeBoardsDataSourceImpl,
+    private val fakeBoardsDataSourceImpl: FakeLevelsDataSourceImpl,
     private val saveBoard: SaveBoard,
 ) {
     fun givenANewGame(withAGivenSudoku: ReadOnlyBoard) {

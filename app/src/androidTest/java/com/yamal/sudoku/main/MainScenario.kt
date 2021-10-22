@@ -1,17 +1,17 @@
 package com.yamal.sudoku.main
 
-import com.yamal.sudoku.storage.BoardStorage
-import com.yamal.sudoku.storage.model.BoardDO
+import com.yamal.sudoku.game.status.data.storage.GameStatusStorage
+import com.yamal.sudoku.game.status.data.storage.model.BoardDO
 import javax.inject.Inject
 
 class MainScenario @Inject constructor(
-    private val boardStorage: BoardStorage
+    private val gameStatusStorage: GameStatusStorage
 ) {
     fun givenNoSavedGame() {
-        boardStorage.board = null
+        gameStatusStorage.board = null
     }
 
     fun givenAnySavedGame() {
-        boardStorage.board = BoardDO(listOf(listOf()), difficulty = null)
+        gameStatusStorage.board = BoardDO(listOf(listOf()), difficulty = null)
     }
 }

@@ -1,4 +1,4 @@
-package com.yamal.sudoku.storage.model
+package com.yamal.sudoku.game.status.data.storage.model
 
 // TODO add serialized names
 

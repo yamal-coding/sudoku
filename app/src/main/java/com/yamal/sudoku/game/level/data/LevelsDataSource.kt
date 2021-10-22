@@ -1,4 +1,4 @@
-package com.yamal.sudoku.game.board.data
+package com.yamal.sudoku.game.level.data
 
 import com.yamal.sudoku.commons.utils.RandomGenerator
 import com.yamal.sudoku.model.Board
@@ -6,22 +6,22 @@ import com.yamal.sudoku.model.Difficulty
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface BoardsDataSource {
-    fun getNewBoard(): Board?
+interface LevelsDataSource {
+    fun getNewLevel(): Board?
 
-    fun getNewBoard(difficulty: Difficulty): Board?
+    fun getNewLevel(difficulty: Difficulty): Board?
 }
 
 @Singleton
-class BoardsDataSourceImpl @Inject constructor(
+class LevelsDataSourceImpl @Inject constructor(
     private val levelsFileProvider: LevelsFileProvider,
     private val randomGenerator: RandomGenerator,
     private val levelFilesInfoStorage: LevelFilesInfoStorage
-) : BoardsDataSource {
-    override fun getNewBoard(): Board? =
+) : LevelsDataSource {
+    override fun getNewLevel(): Board? =
         Board.almostDone()
 
-    override fun getNewBoard(difficulty: Difficulty): Board? =
+    override fun getNewLevel(difficulty: Difficulty): Board? =
         getNewBoard(difficulty, levelFilesInfoStorage.getCurrentFileNumber(difficulty))
 
     private fun getNewBoard(difficulty: Difficulty, currentFileNumber: Int): Board? {

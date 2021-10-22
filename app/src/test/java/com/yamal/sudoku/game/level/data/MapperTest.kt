@@ -1,6 +1,5 @@
-package com.yamal.sudoku.board.data
+package com.yamal.sudoku.game.level.data
 
-import com.yamal.sudoku.game.board.data.rawLevelToDomain
 import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
 import org.junit.Assert.assertEquals

@@ -1,10 +1,10 @@
-package com.yamal.sudoku.storage
+package com.yamal.sudoku.game.status.data.storage
 
 import com.yamal.storage.KeyValueStorage
-import com.yamal.sudoku.storage.model.BoardDO
+import com.yamal.sudoku.game.status.data.storage.model.BoardDO
 import javax.inject.Inject
 
-open class BoardStorage @Inject constructor(
+open class GameStatusStorage @Inject constructor(
     private val keyValueStorage: KeyValueStorage
 ) {
     open var board: BoardDO?

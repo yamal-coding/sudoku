@@ -4,9 +4,9 @@ import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
-import com.yamal.sudoku.storage.model.BoardDO
-import com.yamal.sudoku.storage.model.DifficultyDO
-import com.yamal.sudoku.storage.model.SudokuCellDO
+import com.yamal.sudoku.game.status.data.storage.model.BoardDO
+import com.yamal.sudoku.game.status.data.storage.model.DifficultyDO
+import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
 
 object SudokuDOMother {
 

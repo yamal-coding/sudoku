@@ -1,4 +1,4 @@
-package com.yamal.sudoku.game.board.data
+package com.yamal.sudoku.game.level.data
 
 import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.model.Board

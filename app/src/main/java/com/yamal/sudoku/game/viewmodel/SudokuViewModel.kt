@@ -3,7 +3,7 @@ package com.yamal.sudoku.game.viewmodel
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
 import com.yamal.sudoku.game.status.domain.GetSavedBoard
 import com.yamal.sudoku.game.status.domain.DoNotShowSetUpNewGameHintAgain
-import com.yamal.sudoku.game.board.domain.LoadNewBoard
+import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.status.domain.SaveBoard
 import com.yamal.sudoku.game.status.domain.ShouldShowSetUpNewGameHint

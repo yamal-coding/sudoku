@@ -1,8 +1,8 @@
 package com.yamal.sudoku.test.di
 
-import com.yamal.sudoku.game.board.data.BoardsDataSource
-import com.yamal.sudoku.game.board.di.BoardsDataSourceModule
-import com.yamal.sudoku.test.mocks.FakeBoardsDataSourceImpl
+import com.yamal.sudoku.game.level.data.LevelsDataSource
+import com.yamal.sudoku.game.level.di.LevelsDataSourceModule
+import com.yamal.sudoku.test.mocks.FakeLevelsDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -11,9 +11,9 @@ import dagger.hilt.testing.TestInstallIn
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [BoardsDataSourceModule::class]
+    replaces = [LevelsDataSourceModule::class]
 )
 object BoardsDataSourceOverrideTestModule {
     @Provides
-    fun provideBoardsDataSource(impl: FakeBoardsDataSourceImpl): BoardsDataSource = impl
+    fun provideBoardsDataSource(impl: FakeLevelsDataSourceImpl): LevelsDataSource = impl
 }

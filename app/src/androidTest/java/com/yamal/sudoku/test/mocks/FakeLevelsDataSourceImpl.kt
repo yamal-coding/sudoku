@@ -1,23 +1,21 @@
 package com.yamal.sudoku.test.mocks
 
-import com.yamal.sudoku.game.board.data.BoardsDataSource
-import com.yamal.sudoku.game.status.data.toDO
+import com.yamal.sudoku.game.level.data.LevelsDataSource
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.ReadOnlyBoard
-import com.yamal.sudoku.storage.model.BoardDO
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FakeBoardsDataSourceImpl @Inject constructor() : BoardsDataSource {
+class FakeLevelsDataSourceImpl @Inject constructor() : LevelsDataSource {
 
     private var mockedBoard: ReadOnlyBoard? = null
 
-    override fun getNewBoard(): Board? =
+    override fun getNewLevel(): Board? =
         mockedBoard ?: throw IllegalStateException("A mocked board should have been set first.")
 
-    override fun getNewBoard(difficulty: Difficulty): Board? {
+    override fun getNewLevel(difficulty: Difficulty): Board? {
         TODO("Not yet implemented")
     }
 

@@ -1,4 +1,4 @@
-package com.yamal.sudoku.game.board.data
+package com.yamal.sudoku.game.level.data
 
 import com.yamal.storage.KeyValueStorage
 import com.yamal.sudoku.model.Difficulty

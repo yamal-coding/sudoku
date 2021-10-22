@@ -2,7 +2,7 @@ package com.yamal.sudoku.game.status.data
 
 import com.yamal.sudoku.commons.thread.ApplicationScope
 import com.yamal.sudoku.model.Board
-import com.yamal.sudoku.storage.BoardStorage
+import com.yamal.sudoku.game.status.data.storage.GameStatusStorage
 import com.yamal.sudoku.test.base.CoroutinesUnitTest
 import com.yamal.sudoku.test.utils.SudokuDOMother
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +19,7 @@ import org.mockito.kotlin.whenever
 @ExperimentalCoroutinesApi
 class GameStatusRepositoryTest : CoroutinesUnitTest() {
 
-    private val storage: BoardStorage = mock()
+    private val storage: GameStatusStorage = mock()
     private val scope = ApplicationScope(dispatcherProvider)
     private val repository = GameStatusRepository(
         storage,
