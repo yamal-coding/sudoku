@@ -18,7 +18,7 @@ open class GameStatusStorage @Inject constructor(
     open var showSetUpNewGameHint: Boolean
         get() = keyValueStorage.getBoolean(SHOW_SET_UP_NEW_GAME_HINT, true)
         set(value) {
-            keyValueStorage.put(SHOW_SET_UP_NEW_GAME_HINT, value)
+            keyValueStorage.putBoolean(SHOW_SET_UP_NEW_GAME_HINT, value)
         }
 
     private companion object {
