@@ -6,7 +6,7 @@ import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 
-fun rawLevelToDomain(rawLevel: String, difficulty: Difficulty): Board? {
+fun rawLevelToBoard(rawLevel: String, difficulty: Difficulty): Board? {
     val cells = mutableListOf<MutableList<SudokuCell>>(
         mutableListOf(), mutableListOf(), mutableListOf(),
         mutableListOf(), mutableListOf(), mutableListOf(),

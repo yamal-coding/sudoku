@@ -9,22 +9,23 @@ import javax.inject.Singleton
 interface LevelsDataSource {
     fun getNewLevel(): Board?
 
-    fun getNewLevel(difficulty: Difficulty): Board?
+    fun getNewLevel(difficulty: Difficulty): LevelDO?
 }
 
 @Singleton
 class LevelsDataSourceImpl @Inject constructor(
     private val levelsFileProvider: LevelsFileProvider,
     private val randomGenerator: RandomGenerator,
-    private val levelFilesInfoStorage: LevelFilesInfoStorage
+    private val levelFilesInfoStorage: LevelFilesInfoStorage,
+    private val levelIdGenerator: LevelIdGenerator
 ) : LevelsDataSource {
     override fun getNewLevel(): Board? =
         Board.almostDone()
 
-    override fun getNewLevel(difficulty: Difficulty): Board? =
+    override fun getNewLevel(difficulty: Difficulty): LevelDO? =
         getNewBoard(difficulty, levelFilesInfoStorage.getCurrentFileNumber(difficulty))
 
-    private fun getNewBoard(difficulty: Difficulty, currentFileNumber: Int): Board? {
+    private fun getNewBoard(difficulty: Difficulty, currentFileNumber: Int): LevelDO? {
         val candidateFileName = getFileName(difficulty, currentFileNumber)
         val candidateLevelsFile = levelsFileProvider.get(candidateFileName)
 
@@ -35,8 +36,13 @@ class LevelsDataSourceImpl @Inject constructor(
             if (completedBoardsIndexes.size == candidateLevelsFile.numOfBoards) {
                 getNewBoard(difficulty, currentFileNumber + 1)
             } else {
-                getRawLevel(candidateLevelsFile, completedBoardsIndexes)?.let { rawLevel ->
-                    rawLevelToDomain(rawLevel, difficulty)
+                getRawLevel(candidateLevelsFile, completedBoardsIndexes)?.let {
+                    val (levelIndex, rawBoard) = it
+                    LevelDO(
+                        id = levelIdGenerator.newId(candidateFileName, levelIndex),
+                        difficulty = difficulty,
+                        rawBoard = rawBoard
+                    )
                 }
             }
         } else {
@@ -44,7 +50,7 @@ class LevelsDataSourceImpl @Inject constructor(
         }
     }
 
-    private fun getRawLevel(file: LevelsFile, completedBoardsIndexesForGivenFile: Set<Int>): String? {
+    private fun getRawLevel(file: LevelsFile, completedBoardsIndexesForGivenFile: Set<Int>): Pair<Int, String>? {
         fun getFirstGreaterIndex(candidateIndex: Int): Int? {
             var levelIndex: Int? = null
             for (i in (candidateIndex + 1) until file.numOfBoards) {
@@ -71,9 +77,9 @@ class LevelsDataSourceImpl @Inject constructor(
 
         return if (completedBoardsIndexesForGivenFile.contains(candidateLevelIndex)) {
             val levelIndex = getFirstGreaterIndex(candidateLevelIndex) ?: getFirstLowerIndex(candidateLevelIndex)
-            levelIndex?.let { file.getRawLevel(it) }
+            levelIndex?.let { levelIndex to file.getRawLevel(it) }
         } else {
-            file.getRawLevel(candidateLevelIndex)
+            candidateLevelIndex to file.getRawLevel(candidateLevelIndex)
         }
     }
 

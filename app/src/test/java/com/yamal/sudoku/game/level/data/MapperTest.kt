@@ -10,7 +10,7 @@ import java.lang.StringBuilder
 class MapperTest {
     @Test
     fun `Should return null when rawLevel length is lower than 81`() {
-        assertNull(rawLevelToDomain("1", SOME_DIFFICULTY))
+        assertNull(rawLevelToBoard("1", SOME_DIFFICULTY))
     }
 
     @Test
@@ -20,7 +20,7 @@ class MapperTest {
             builder.append("1")
         }
         val rawLevel = builder.toString()
-        assertNull(rawLevelToDomain(rawLevel, SOME_DIFFICULTY))
+        assertNull(rawLevelToBoard(rawLevel, SOME_DIFFICULTY))
     }
 
     @Test
@@ -31,14 +31,14 @@ class MapperTest {
             builder.append("1")
         }
         val rawLevel = builder.toString()
-        assertNull(rawLevelToDomain(rawLevel, SOME_DIFFICULTY))
+        assertNull(rawLevelToBoard(rawLevel, SOME_DIFFICULTY))
     }
 
     @Test
     fun `Should return Board given a valid rawLevel`() {
         assertEquals(
             AlmostSolvedSudokuMother.almostSolvedSudoku(),
-            rawLevelToDomain(AlmostSolvedSudokuMother.getAsRawLevel(), AlmostSolvedSudokuMother.difficulty)
+            rawLevelToBoard(AlmostSolvedSudokuMother.getAsRawLevel(), AlmostSolvedSudokuMother.difficulty)
         )
     }
 
