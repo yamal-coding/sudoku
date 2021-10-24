@@ -1,6 +1,9 @@
-package com.yamal.sudoku.game.level.data
+package com.yamal.sudoku.game.level.data.datasource
 
 import com.yamal.sudoku.commons.utils.RandomGenerator
+import com.yamal.sudoku.game.level.data.LevelDO
+import com.yamal.sudoku.game.level.data.utils.LevelIdGenerator
+import com.yamal.sudoku.game.level.data.utils.LevelsFileProvider
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.Difficulty
 import javax.inject.Inject
@@ -32,7 +35,7 @@ class LevelsDataSourceImpl @Inject constructor(
         return if (candidateLevelsFile.open()) {
             setCurrentFileNumberIfNeeded(difficulty, currentFileNumber)
 
-            val completedBoardsIndexes = getCompletedBoardIndexesForGivenFile(candidateFileName)
+            val completedBoardsIndexes = levelFilesInfoStorage.getCompletedLevelsIndexesForGivenFile(candidateFileName)
             if (completedBoardsIndexes.size == candidateLevelsFile.numOfBoards) {
                 getNewBoard(difficulty, currentFileNumber + 1)
             } else {
@@ -97,10 +100,5 @@ class LevelsDataSourceImpl @Inject constructor(
         if (levelFilesInfoStorage.getCurrentFileNumber(difficulty) < fileNumber) {
             levelFilesInfoStorage.setCurrentFileNumber(difficulty, fileNumber)
         }
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    private fun getCompletedBoardIndexesForGivenFile(file: String): Set<Int> {
-        TODO()
     }
 }

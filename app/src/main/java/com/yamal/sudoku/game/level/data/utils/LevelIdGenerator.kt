@@ -1,4 +1,4 @@
-package com.yamal.sudoku.game.level.data
+package com.yamal.sudoku.game.level.data.utils
 
 import javax.inject.Inject
 

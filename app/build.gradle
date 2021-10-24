@@ -26,6 +26,8 @@ dependencies {
     implementation libs.coroutines_core
     implementation libs.coroutines_android
     implementation libs.activity_ktx
+    implementation libs.room
+    kapt libs.room_compiler
 
     implementation project(':storage')
 

@@ -1,4 +1,4 @@
-package com.yamal.sudoku.game.level.data
+package com.yamal.sudoku.game.level.data.datasource
 
 @Suppress("UNUSED_PARAMETER")
 class LevelsFile(fileName: String) {
