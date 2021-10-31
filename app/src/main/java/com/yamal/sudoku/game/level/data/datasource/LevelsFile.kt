@@ -1,34 +1,66 @@
 package com.yamal.sudoku.game.level.data.datasource
 
-@Suppress("UNUSED_PARAMETER")
-class LevelsFile(fileName: String) {
+import android.content.Context
+import java.io.IOException
+import java.io.InputStream
+import java.util.Scanner
+
+open class LevelsFile(private val fileName: String) {
 
     var numOfBoards: Int = 0
     private set
     private val loadedLevels = mutableListOf<String>()
 
-    fun open(): Boolean {
-        TODO()
-    }
+    private var scanner: Scanner? = null
+    private var inputStream: InputStream? = null
 
-    fun getRawLevel(levelIndex: Int): String {
+    open fun open(context: Context): Boolean =
+        try {
+            val inputStream = context.assets.open(fileName)
+            this.inputStream = inputStream
+            val scanner = Scanner(inputStream)
+            this.scanner = scanner
+
+            numOfBoards = scanner.nextLine().toInt()
+
+            true
+        } catch (e: IOException) {
+            false
+        } catch (e: NumberFormatException) {
+            false
+        }
+
+    open fun getRawLevel(levelIndex: Int): String? {
         if (levelIndex >= numOfBoards) {
             throw IllegalArgumentException("There are only $numOfBoards levels, can't return level number $levelIndex")
         }
 
         if (levelIndex >= loadedLevels.size) {
             var i = loadedLevels.size - 1
-            while (i < levelIndex) {
-                loadedLevels.add(readLine())
-                i++
+            var error = false
+            while (!error && i < levelIndex) {
+                val nextLine = readLine()
+                if (nextLine != null) {
+                    loadedLevels.add(nextLine)
+                    i++
+                } else {
+                    error = true
+                }
             }
         }
 
         return loadedLevels[levelIndex]
     }
 
-    private fun readLine(): String {
-        // read next line in the file equivalent to a raw level
-        TODO()
+    open fun close() {
+        scanner?.close()
+        inputStream?.close()
     }
+
+    private fun readLine(): String? =
+        try {
+            scanner?.nextLine()
+        } catch (e: NoSuchElementException) {
+            null
+        }
 }

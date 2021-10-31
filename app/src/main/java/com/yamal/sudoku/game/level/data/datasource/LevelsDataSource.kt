@@ -1,11 +1,13 @@
 package com.yamal.sudoku.game.level.data.datasource
 
+import android.content.Context
 import com.yamal.sudoku.commons.utils.RandomGenerator
 import com.yamal.sudoku.game.level.data.LevelDO
 import com.yamal.sudoku.game.level.data.utils.LevelIdGenerator
 import com.yamal.sudoku.game.level.data.utils.LevelsFileProvider
 import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.Difficulty
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,6 +19,7 @@ interface LevelsDataSource {
 
 @Singleton
 class LevelsDataSourceImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val levelsFileProvider: LevelsFileProvider,
     private val randomGenerator: RandomGenerator,
     private val levelFilesInfoStorage: LevelFilesInfoStorage,
@@ -32,7 +35,7 @@ class LevelsDataSourceImpl @Inject constructor(
         val candidateFileName = getFileName(difficulty, currentFileNumber)
         val candidateLevelsFile = levelsFileProvider.get(candidateFileName)
 
-        return if (candidateLevelsFile.open()) {
+        return if (candidateLevelsFile.open(context)) {
             setCurrentFileNumberIfNeeded(difficulty, currentFileNumber)
 
             val completedBoardsIndexes = levelFilesInfoStorage.getCompletedLevelsIndexesForGivenFile(candidateFileName)
@@ -47,6 +50,8 @@ class LevelsDataSourceImpl @Inject constructor(
                         rawBoard = rawBoard
                     )
                 }
+            }.also {
+                candidateLevelsFile.close()
             }
         } else {
             null
@@ -80,11 +85,14 @@ class LevelsDataSourceImpl @Inject constructor(
 
         return if (completedBoardsIndexesForGivenFile.contains(candidateLevelIndex)) {
             val levelIndex = getFirstGreaterIndex(candidateLevelIndex) ?: getFirstLowerIndex(candidateLevelIndex)
-            levelIndex?.let { levelIndex to file.getRawLevel(it) }
+            levelIndex?.let { buildLevel(levelIndex, file.getRawLevel(it)) }
         } else {
-            candidateLevelIndex to file.getRawLevel(candidateLevelIndex)
+            buildLevel(candidateLevelIndex, file.getRawLevel(candidateLevelIndex))
         }
     }
+
+    private fun buildLevel(index: Int, rawLevel: String?): Pair<Int, String>? =
+        rawLevel?.let { index to it }
 
     private fun getFileName(difficulty: Difficulty, fileNumber: Int): String {
         val filePrefix = when (difficulty) {
