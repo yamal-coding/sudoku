@@ -5,15 +5,12 @@ import com.yamal.sudoku.commons.utils.RandomGenerator
 import com.yamal.sudoku.game.level.data.LevelDO
 import com.yamal.sudoku.game.level.data.utils.LevelIdGenerator
 import com.yamal.sudoku.game.level.data.utils.LevelsFileProvider
-import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.Difficulty
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 interface LevelsDataSource {
-    fun getNewLevel(): Board?
-
     fun getNewLevel(difficulty: Difficulty): LevelDO?
 }
 
@@ -25,8 +22,6 @@ class LevelsDataSourceImpl @Inject constructor(
     private val levelFilesInfoStorage: LevelFilesInfoStorage,
     private val levelIdGenerator: LevelIdGenerator
 ) : LevelsDataSource {
-    override fun getNewLevel(): Board? =
-        Board.almostDone()
 
     override fun getNewLevel(difficulty: Difficulty): LevelDO? =
         getNewBoard(difficulty, levelFilesInfoStorage.getCurrentFileNumber(difficulty))
@@ -39,7 +34,7 @@ class LevelsDataSourceImpl @Inject constructor(
             setCurrentFileNumberIfNeeded(difficulty, currentFileNumber)
 
             val completedBoardsIndexes = levelFilesInfoStorage.getCompletedLevelsIndexesForGivenFile(candidateFileName)
-            if (completedBoardsIndexes.size == candidateLevelsFile.numOfBoards) {
+            if (completedBoardsIndexes.size == candidateLevelsFile.getNumOfBoards()) {
                 getNewBoard(difficulty, currentFileNumber + 1)
             } else {
                 getRawLevel(candidateLevelsFile, completedBoardsIndexes)?.let {
@@ -61,7 +56,7 @@ class LevelsDataSourceImpl @Inject constructor(
     private fun getRawLevel(file: LevelsFile, completedBoardsIndexesForGivenFile: Set<Int>): Pair<Int, String>? {
         fun getFirstGreaterIndex(candidateIndex: Int): Int? {
             var levelIndex: Int? = null
-            for (i in (candidateIndex + 1) until file.numOfBoards) {
+            for (i in (candidateIndex + 1) until file.getNumOfBoards()) {
                 if (!completedBoardsIndexesForGivenFile.contains(i)) {
                     levelIndex = i
                     break
@@ -80,7 +75,7 @@ class LevelsDataSourceImpl @Inject constructor(
             return levelIndex
         }
 
-        val numOfBoardsForGivenFile = file.numOfBoards
+        val numOfBoardsForGivenFile = file.getNumOfBoards()
         val candidateLevelIndex = randomGenerator.randomInt(from = 0, until = numOfBoardsForGivenFile)
 
         return if (completedBoardsIndexesForGivenFile.contains(candidateLevelIndex)) {
@@ -101,7 +96,7 @@ class LevelsDataSourceImpl @Inject constructor(
             Difficulty.HARD -> "hard"
         }
 
-        return "${filePrefix}_$fileNumber.txt"
+        return "${filePrefix}_$fileNumber"
     }
 
     private fun setCurrentFileNumberIfNeeded(difficulty: Difficulty, fileNumber: Int) {

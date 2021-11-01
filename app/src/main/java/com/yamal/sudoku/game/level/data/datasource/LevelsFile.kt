@@ -7,12 +7,14 @@ import java.util.Scanner
 
 open class LevelsFile(private val fileName: String) {
 
-    var numOfBoards: Int = 0
-    private set
+    private var numOfBoards: Int = 0
     private val loadedLevels = mutableListOf<String>()
 
     private var scanner: Scanner? = null
     private var inputStream: InputStream? = null
+
+    open fun getNumOfBoards(): Int =
+        numOfBoards
 
     open fun open(context: Context): Boolean =
         try {
