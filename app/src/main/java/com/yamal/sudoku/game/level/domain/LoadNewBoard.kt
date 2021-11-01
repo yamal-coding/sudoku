@@ -1,11 +1,12 @@
 package com.yamal.sudoku.game.level.domain
 
 import com.yamal.sudoku.game.level.data.LevelsRepository
-import com.yamal.sudoku.model.Board
+import com.yamal.sudoku.model.Difficulty
 import javax.inject.Inject
 
 class LoadNewBoard @Inject constructor(
     private val levelsRepository: LevelsRepository
 ) {
-    operator fun invoke(): Board? = levelsRepository.getNewLevel()
+    // TODO correctly specify difficulty from UI
+    operator fun invoke(): Level? = levelsRepository.getNewLevel(Difficulty.EASY)
 }

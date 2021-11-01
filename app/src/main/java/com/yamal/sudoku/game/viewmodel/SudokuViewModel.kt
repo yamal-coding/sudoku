@@ -15,6 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SudokuViewModel @Inject constructor(
@@ -25,7 +26,7 @@ class SudokuViewModel @Inject constructor(
     private val feedbackFactory: FeedbackFactory,
     private val shouldShowSetUpNewGameHint: ShouldShowSetUpNewGameHint,
     private val doNotShowSetUpNewGameHintAgain: DoNotShowSetUpNewGameHintAgain,
-    dispatchers: CoroutineDispatcherProvider
+    private val dispatchers: CoroutineDispatcherProvider
 ) {
 
     private val job = Job()
@@ -51,9 +52,11 @@ class SudokuViewModel @Inject constructor(
 
     private fun startNewGame() {
         scope.launch {
-            val newBoard = loadNewBoard()
-            newBoard?.let {
-                onGameLoaded(newBoard)
+            val newLevel = withContext(dispatchers.ioDispatcher) {
+                loadNewBoard()
+            }
+            newLevel?.let {
+                onGameLoaded(it.board)
                 saveBoard()
             } // TODO handle error scenario when a board is not returned
         }
