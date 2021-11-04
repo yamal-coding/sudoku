@@ -34,7 +34,7 @@ class LevelsDataSourceImplTest {
         givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
         givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
             .thenReturnRawLevel(ANY_LEVEL_INDEX, SOME_RAW_BOARD)
-        givenCompletedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = emptySet())
+        givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = emptySet())
 
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
@@ -45,12 +45,12 @@ class LevelsDataSourceImplTest {
     fun `Get level given a difficulty picking file on second attempt`() {
         val currentFileNumber = givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
         givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
-        givenCompletedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = ALL_LEVEL_INDEXES)
+        givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = ALL_LEVEL_INDEXES)
 
         givenAFileThatWillOpen(fileName = ANY_NEXT_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
             .thenReturnRawLevel(ANY_LEVEL_INDEX, SOME_RAW_BOARD)
         givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
-        givenCompletedLevelsIndexesForGivenFile(fileName = ANY_NEXT_FILE_NAME, expected = emptySet())
+        givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_NEXT_FILE_NAME, expected = emptySet())
 
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
@@ -61,7 +61,7 @@ class LevelsDataSourceImplTest {
     @Test
     fun `Get first greater level after trying to pick a random level from file`() {
         givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
-        givenCompletedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = setOf(ANY_LEVEL_INDEX))
+        givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = setOf(ANY_LEVEL_INDEX))
         givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
         givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
             .thenReturnRawLevel(ANY_HIGHER_LEVEL_INDEX, SOME_RAW_BOARD)
@@ -74,7 +74,7 @@ class LevelsDataSourceImplTest {
     @Test
     fun `Get first lower level after trying to pick a random level from file`() {
         givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
-        givenCompletedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = setOf(ANY_LEVEL_INDEX, ANY_HIGHER_LEVEL_INDEX))
+        givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = setOf(ANY_LEVEL_INDEX, ANY_HIGHER_LEVEL_INDEX))
         givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
         givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
             .thenReturnRawLevel(ANY_LOWER_LEVEL_INDEX, SOME_RAW_BOARD)
@@ -87,7 +87,7 @@ class LevelsDataSourceImplTest {
     @Test
     fun `Trying to get level from file but every level file for given difficulty is completed`() {
         givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
-        givenCompletedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = ALL_LEVEL_INDEXES)
+        givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = ALL_LEVEL_INDEXES)
         givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
         givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = false)
 
@@ -112,8 +112,8 @@ class LevelsDataSourceImplTest {
         whenever(this.getRawLevel(forIndex)).thenReturn(returnBoard)
     }
 
-    private fun givenCompletedLevelsIndexesForGivenFile(fileName: String, expected: Set<Int>) {
-        whenever(levelFilesInfoStorage.getCompletedLevelsIndexesForGivenFile(fileName)).thenReturn(expected)
+    private fun givenAlreadyReturnedLevelsIndexesForGivenFile(fileName: String, expected: Set<Int>) {
+        whenever(levelFilesInfoStorage.getAlreadyReturnedLevelsIndexesForGivenFile(fileName)).thenReturn(expected)
     }
 
     private fun givenARandomLevelIndex(from: Int, to: Int, returnIndex: Int) {

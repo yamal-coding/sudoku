@@ -6,5 +6,5 @@ import androidx.room.Query
 @Dao
 interface LevelsDao {
     @Query("SELECT `index` FROM Level WHERE levels_file == :fileName")
-    fun getCompletedLevelsIndexesForGivenFile(fileName: String): List<Int>
+    fun getAlreadyReturnedLevelsIndexesForGivenFile(fileName: String): List<Int>
 }

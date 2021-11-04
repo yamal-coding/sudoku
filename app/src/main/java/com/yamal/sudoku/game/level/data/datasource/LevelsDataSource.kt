@@ -33,11 +33,11 @@ class LevelsDataSourceImpl @Inject constructor(
         return if (candidateLevelsFile.open(context)) {
             setCurrentFileNumberIfNeeded(difficulty, currentFileNumber)
 
-            val completedBoardsIndexes = levelFilesInfoStorage.getCompletedLevelsIndexesForGivenFile(candidateFileName)
-            if (completedBoardsIndexes.size == candidateLevelsFile.getNumOfBoards()) {
+            val alreadyReturnedLevelsIndexes = levelFilesInfoStorage.getAlreadyReturnedLevelsIndexesForGivenFile(candidateFileName)
+            if (alreadyReturnedLevelsIndexes.size == candidateLevelsFile.getNumOfBoards()) {
                 getNewBoard(difficulty, currentFileNumber + 1)
             } else {
-                getRawLevel(candidateLevelsFile, completedBoardsIndexes)?.let {
+                getRawLevel(candidateLevelsFile, alreadyReturnedLevelsIndexes)?.let {
                     val (levelIndex, rawBoard) = it
                     LevelDO(
                         id = levelIdGenerator.newId(candidateFileName, levelIndex),
@@ -53,11 +53,11 @@ class LevelsDataSourceImpl @Inject constructor(
         }
     }
 
-    private fun getRawLevel(file: LevelsFile, completedBoardsIndexesForGivenFile: Set<Int>): Pair<Int, String>? {
+    private fun getRawLevel(file: LevelsFile, alreadyReturnedLevelsIndexesForGivenFile: Set<Int>): Pair<Int, String>? {
         fun getFirstGreaterIndex(candidateIndex: Int): Int? {
             var levelIndex: Int? = null
             for (i in (candidateIndex + 1) until file.getNumOfBoards()) {
-                if (!completedBoardsIndexesForGivenFile.contains(i)) {
+                if (!alreadyReturnedLevelsIndexesForGivenFile.contains(i)) {
                     levelIndex = i
                     break
                 }
@@ -68,7 +68,7 @@ class LevelsDataSourceImpl @Inject constructor(
         fun getFirstLowerIndex(candidateIndex: Int): Int? {
             var levelIndex: Int? = null
             for (i in (candidateIndex - 1) downTo 0) {
-                if (!completedBoardsIndexesForGivenFile.contains(i)) {
+                if (!alreadyReturnedLevelsIndexesForGivenFile.contains(i)) {
                     levelIndex = i
                     break
                 }
@@ -79,7 +79,7 @@ class LevelsDataSourceImpl @Inject constructor(
         val numOfBoardsForGivenFile = file.getNumOfBoards()
         val candidateLevelIndex = randomGenerator.randomInt(from = 0, until = numOfBoardsForGivenFile)
 
-        return if (completedBoardsIndexesForGivenFile.contains(candidateLevelIndex)) {
+        return if (alreadyReturnedLevelsIndexesForGivenFile.contains(candidateLevelIndex)) {
             val levelIndex = getFirstGreaterIndex(candidateLevelIndex) ?: getFirstLowerIndex(candidateLevelIndex)
             levelIndex?.let { buildLevel(levelIndex, file.getRawLevel(it)) }
         } else {

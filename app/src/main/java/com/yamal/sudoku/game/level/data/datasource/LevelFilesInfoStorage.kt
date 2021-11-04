@@ -23,8 +23,8 @@ open class LevelFilesInfoStorage @Inject constructor(
             Difficulty.HARD -> HARD_CURRENT_FILE_NUMBER_KEY
         }
 
-    open fun getCompletedLevelsIndexesForGivenFile(fileName: String): Set<Int> =
-        dao.getCompletedLevelsIndexesForGivenFile(fileName).toSet()
+    open fun getAlreadyReturnedLevelsIndexesForGivenFile(fileName: String): Set<Int> =
+        dao.getAlreadyReturnedLevelsIndexesForGivenFile(fileName).toSet()
 
     private companion object {
         const val EASY_CURRENT_FILE_NUMBER_KEY = "easy_current_file_number"
