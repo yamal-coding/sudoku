@@ -70,6 +70,7 @@ class LevelsDataSourceImpl @Inject constructor(
             for (i in (candidateIndex - 1) downTo 0) {
                 if (!completedBoardsIndexesForGivenFile.contains(i)) {
                     levelIndex = i
+                    break
                 }
             }
             return levelIndex
