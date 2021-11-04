@@ -39,6 +39,7 @@ class LevelsDataSourceImplTest {
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
         assertEquals(SOME_FILE_LEVEL, level)
+        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(ANY_FILE_NAME, ANY_LEVEL_INDEX)
     }
 
     @Test
@@ -56,6 +57,7 @@ class LevelsDataSourceImplTest {
 
         assertEquals(SOME_NEXT_FILE_LEVEL, level)
         verify(levelFilesInfoStorage).setCurrentFileNumber(ANY_DIFFICULTY, currentFileNumber + 1)
+        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(ANY_NEXT_FILE_NAME, ANY_LEVEL_INDEX)
     }
 
     @Test
@@ -69,6 +71,7 @@ class LevelsDataSourceImplTest {
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
         assertEquals(SOME_FILE_HIGHER_LEVEL, level)
+        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(ANY_FILE_NAME, ANY_HIGHER_LEVEL_INDEX)
     }
 
     @Test
@@ -82,6 +85,7 @@ class LevelsDataSourceImplTest {
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
         assertEquals(SOME_FILE_LOWER_LEVEL, level)
+        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(ANY_FILE_NAME, ANY_LOWER_LEVEL_INDEX)
     }
 
     @Test

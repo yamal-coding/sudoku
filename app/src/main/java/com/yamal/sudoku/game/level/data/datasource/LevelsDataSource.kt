@@ -39,6 +39,8 @@ class LevelsDataSourceImpl @Inject constructor(
             } else {
                 getRawLevel(candidateLevelsFile, alreadyReturnedLevelsIndexes)?.let {
                     val (levelIndex, rawBoard) = it
+                    levelFilesInfoStorage.markLevelAsAlreadyReturned(candidateFileName, levelIndex)
+
                     LevelDO(
                         id = levelIdGenerator.newId(candidateFileName, levelIndex),
                         difficulty = difficulty,
