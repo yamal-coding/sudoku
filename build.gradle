@@ -1,4 +1,17 @@
 buildscript {
+    ext {
+        sdk_version = 31
+        min_api_level = 21
+        gradle_version = '7.0.0'
+        kotlin_version = '1.6.10'
+        coroutines_version = '1.5.1'
+        junit_version = '4.13.2'
+        hilt_version = '2.38.1'
+        activity_ktx_version = '1.2.3'
+        room_version = '2.3.0'
+        android_compat = '1.4.2'
+        gson = '2.8.9'
+    }
     repositories {
         mavenCentral()
         google()
@@ -7,9 +20,9 @@ buildscript {
     dependencies {
         apply from: "dependencies.gradle"
 
-        classpath build_plugins.android_gradle
-        classpath build_plugins.kotlin_plugin
-        classpath build_plugins.hilt_gradle_plugin
+        classpath "com.android.tools.build:gradle:$gradle_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
 
@@ -59,9 +72,9 @@ subprojects {
     }
 
     dependencies {
-        implementation libs.kotlin_stdlib
-        implementation libs.hilt_android
-        kapt libs.hilt_compiler
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+        implementation "com.google.dagger:hilt-android:$hilt_version"
+        kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     }
 }
 

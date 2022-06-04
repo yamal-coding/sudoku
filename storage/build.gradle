@@ -1,4 +1,4 @@
 dependencies {
-    implementation libs.android_compat
-    implementation libs.gson
+    implementation "androidx.appcompat:appcompat:$android_compat"
+    implementation "com.google.code.gson:gson:$gson"
 }
