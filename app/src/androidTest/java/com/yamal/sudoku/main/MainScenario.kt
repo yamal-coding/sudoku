@@ -12,6 +12,6 @@ class MainScenario @Inject constructor(
     }
 
     fun givenAnySavedGame() {
-        gameStatusStorage.board = BoardDO(listOf(listOf()), difficulty = null)
+        gameStatusStorage.board = BoardDO(listOf())
     }
 }

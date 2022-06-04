@@ -1,14 +1,12 @@
 package com.yamal.sudoku.game.viewmodel
 
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
+import com.yamal.sudoku.game.domain.Game
+import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.status.domain.GetSavedBoard
-import com.yamal.sudoku.game.status.domain.DoNotShowSetUpNewGameHintAgain
 import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.status.domain.SaveBoard
-import com.yamal.sudoku.game.status.domain.ShouldShowSetUpNewGameHint
-import com.yamal.sudoku.game.view.FeedbackFactory
-import com.yamal.sudoku.model.Board
 import com.yamal.sudoku.model.SudokuCellValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -23,29 +21,26 @@ class SudokuViewModel @Inject constructor(
     private val saveBoard: SaveBoard,
     private val removeSavedBoard: RemoveSavedBoard,
     private val loadNewBoard: LoadNewBoard,
-    private val feedbackFactory: FeedbackFactory,
-    private val shouldShowSetUpNewGameHint: ShouldShowSetUpNewGameHint,
-    private val doNotShowSetUpNewGameHintAgain: DoNotShowSetUpNewGameHintAgain,
     private val dispatchers: CoroutineDispatcherProvider
 ) {
 
     private val job = Job()
     private val scope = CoroutineScope(job + dispatchers.mainDispatcher)
 
-    private lateinit var board: Board
-    private var isSetUpMode = true
+    private lateinit var game: Game
+
+    private val board: Board
+        get() = game.currentBoard
     private var gameFinished = false
 
     private val _state = MutableStateFlow<SudokuViewState>(SudokuViewState.Loading)
     val state: StateFlow<SudokuViewState> = _state
 
     fun onCreate(
-        isSetUpNewGameMode: Boolean,
         isNewGame: Boolean
     ) {
         when {
             isNewGame -> startNewGame()
-            isSetUpNewGameMode -> scope.launch { onSettingUpNewGame() }
             else -> lookForSavedBoard()
         }
     }
@@ -66,60 +61,42 @@ class SudokuViewModel @Inject constructor(
         scope.launch {
             val savedBoard = getSavedBoard()
 
-            if (savedBoard == null) {
-                onSettingUpNewGame()
-            } else {
+            if (savedBoard != null) {
                 onGameLoaded(savedBoard)
-            }
-        }
-    }
-
-    private suspend fun onSettingUpNewGame() {
-        val shouldShowSetUpHint = shouldShowSetUpNewGameHint()
-
-        board = Board.empty()
-        _state.value = SudokuViewState.SettingUpNewGame(board)
-
-        if (shouldShowSetUpHint && feedbackFactory.showSetUpNewGameHintDialog()) {
-            doNotShowSetUpNewGameHintAgain()
+            } // else // TODO handle error scenario when a saved board is not returned
         }
     }
 
     private fun onGameLoaded(savedBoard: Board) {
-        board = savedBoard
-        isSetUpMode = false
+        game = Game(savedBoard)
         _state.value = SudokuViewState.NewGameLoaded(board)
     }
 
-    fun finishSetUpAndStartGame() {
-        isSetUpMode = false
-        _state.value = SudokuViewState.SetUpFinished
-        saveBoard()
-    }
-
     fun onCellSelected(x: Int, y: Int) {
-        if (!gameFinished && (!board[x, y].isFixed || isSetUpMode)) {
-            board.selectCell(x, y)
-            _state.value = SudokuViewState.UpdateBoard(board)
+        if (!gameFinished && (!board[x, y].isFixed)) {
+            game.selectCell(x, y)
+            _state.value = SudokuViewState.UpdateBoard(
+                board,
+                selectedRow = x,
+                selectedColumn = y
+            )
         }
     }
 
     fun selectNumber(value: SudokuCellValue) {
         if (!gameFinished) {
-            if (isSetUpMode) {
-                board.fixSelectedCell(value)
-                _state.value = SudokuViewState.UpdateBoard(board)
-            } else if (!board.selectedCell.isFixed) {
-                board.setSelectedCell(value)
-                _state.value = SudokuViewState.UpdateBoard(board)
-
-                checkGame()
-            }
+            game.setSelectedCell(value)
+            _state.value = SudokuViewState.UpdateBoard(
+                board,
+                selectedRow = game.selectedRow,
+                selectedColumn = game.selectedColumn
+            )
+            checkGame()
         }
     }
 
     private fun checkGame() {
-        if (board.isSolved()) {
+        if (game.isSolved()) {
             gameFinished = true
             _state.value = SudokuViewState.GameFinished
             removeSavedBoard()
@@ -129,7 +106,7 @@ class SudokuViewModel @Inject constructor(
     }
 
     private fun saveBoard() {
-        saveBoard(board)
+        saveBoard(game.currentBoard)
     }
 
     fun onDestroy() {

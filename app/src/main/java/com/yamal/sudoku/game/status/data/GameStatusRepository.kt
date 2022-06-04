@@ -2,8 +2,8 @@ package com.yamal.sudoku.game.status.data
 
 import com.yamal.sudoku.commons.thread.ApplicationScope
 import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
-import com.yamal.sudoku.model.Board
-import com.yamal.sudoku.model.ReadOnlyBoard
+import com.yamal.sudoku.game.domain.Board
+import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.game.status.data.storage.GameStatusStorage
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -34,16 +34,6 @@ class GameStatusRepository @Inject constructor(
     fun removeSavedBoard() {
         scope.launch(dispatchers.ioDispatcher) {
             gameStatusStorage.board = null
-        }
-    }
-
-    suspend fun shouldShowSetUpNewGameHint(): Boolean = withContext(dispatchers.ioDispatcher) {
-        gameStatusStorage.showSetUpNewGameHint
-    }
-
-    fun doNotShowSetUpNewGameHintAgain() {
-        scope.launch(dispatchers.ioDispatcher) {
-            gameStatusStorage.showSetUpNewGameHint = false
         }
     }
 }

@@ -15,14 +15,7 @@ open class GameStatusStorage @Inject constructor(
             } ?: keyValueStorage.remove(BOARD_KEY)
         }
 
-    open var showSetUpNewGameHint: Boolean
-        get() = keyValueStorage.getBoolean(SHOW_SET_UP_NEW_GAME_HINT, true)
-        set(value) {
-            keyValueStorage.putBoolean(SHOW_SET_UP_NEW_GAME_HINT, value)
-        }
-
     private companion object {
         const val BOARD_KEY = "board"
-        const val SHOW_SET_UP_NEW_GAME_HINT = "show_set_up_new_game_hint"
     }
 }

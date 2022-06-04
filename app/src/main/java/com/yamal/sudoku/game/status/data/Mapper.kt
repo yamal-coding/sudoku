@@ -1,12 +1,11 @@
 package com.yamal.sudoku.game.status.data
 
-import com.yamal.sudoku.model.Board
-import com.yamal.sudoku.model.Difficulty
-import com.yamal.sudoku.model.ReadOnlyBoard
+import com.yamal.sudoku.game.domain.BOARD_SIDE
+import com.yamal.sudoku.game.domain.Board
+import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.game.status.data.storage.model.BoardDO
-import com.yamal.sudoku.game.status.data.storage.model.DifficultyDO
 import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
 import java.lang.IllegalStateException
 
@@ -26,15 +25,16 @@ fun Int.toSudokuCell(): SudokuCellValue =
     }
 
 fun ReadOnlyBoard.toDO(): BoardDO {
-    val list = mutableListOf<List<SudokuCellDO>>()
+    val list = mutableListOf<SudokuCellDO>()
 
-    getAllCells().forEach { row ->
-        list.add(row.map { it.toDO() })
+    for (row in 0 until BOARD_SIDE) {
+        for (col in 0 until BOARD_SIDE) {
+            list.add(this[row, col].toDO())
+        }
     }
 
     return BoardDO(
-        cells = list,
-        difficulty = difficulty?.toDO()
+        cells = list
     )
 }
 
@@ -54,33 +54,18 @@ private fun SudokuCell.toDO(): SudokuCellDO {
     return SudokuCellDO(value, isFixed)
 }
 
-private fun Difficulty.toDO(): String =
-    when (this) {
-        Difficulty.EASY -> DifficultyDO.EASY
-        Difficulty.MEDIUM -> DifficultyDO.MEDIUM
-        Difficulty.HARD -> DifficultyDO.HARD
-    }
-
 fun BoardDO.toDomain(): Board {
-    val list = mutableListOf<MutableList<SudokuCell>>()
+    val list = mutableListOf<SudokuCell>()
 
-    cells.forEach { row ->
-        list.add(row.map { it.toDomain() }.toMutableList())
+    cells.forEach { cell ->
+        list.add(cell.toDomain())
     }
 
     return Board(
         cells = list,
-        difficulty = difficultyDOtoDomain(difficulty)
     )
 }
 
 private fun SudokuCellDO.toDomain(): SudokuCell =
     SudokuCell(value.toSudokuCell(), isFixed)
 
-private fun difficultyDOtoDomain(difficultyDO: String?): Difficulty? =
-    when (difficultyDO) {
-        DifficultyDO.EASY -> Difficulty.EASY
-        DifficultyDO.MEDIUM -> Difficulty.MEDIUM
-        DifficultyDO.HARD -> Difficulty.HARD
-        else -> null
-    }

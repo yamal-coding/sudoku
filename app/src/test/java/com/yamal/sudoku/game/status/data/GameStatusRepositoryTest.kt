@@ -1,7 +1,7 @@
 package com.yamal.sudoku.game.status.data
 
 import com.yamal.sudoku.commons.thread.ApplicationScope
-import com.yamal.sudoku.model.Board
+import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.status.data.storage.GameStatusStorage
 import com.yamal.sudoku.test.base.CoroutinesUnitTest
 import com.yamal.sudoku.test.utils.SudokuDOMother
@@ -43,7 +43,7 @@ class GameStatusRepositoryTest : CoroutinesUnitTest() {
 
     @Test
     fun `Should save board`() = runBlockingTest {
-        val (givenBoard, expectedBoardToBeStored) = SudokuDOMother.someEasyBoardWithExpectedDOModel()
+        val (givenBoard, expectedBoardToBeStored) = SudokuDOMother.someBoardWithExpectedDOModel()
 
         repository.saveBoard(givenBoard)
 
@@ -71,35 +71,13 @@ class GameStatusRepositoryTest : CoroutinesUnitTest() {
         verify(storage).board = null
     }
 
-    @Test
-    fun `Should return true when show set up new game hint should be shown`() = runBlockingTest {
-        whenShowNewGameHintShouldBeShown()
-
-        assertTrue(repository.shouldShowSetUpNewGameHint())
-    }
-
-    @Test
-    fun `Should return false when show set up new game hint should not be shown`() = runBlockingTest {
-        whenShowNewGameHintShouldNotBeShown()
-
-        assertFalse(repository.shouldShowSetUpNewGameHint())
-    }
-
     private fun givenASavedBoard(): Board {
-        val (domainBoard, doBoard) = SudokuDOMother.someEasyBoardWithExpectedDOModel()
+        val (domainBoard, doBoard) = SudokuDOMother.someBoardWithExpectedDOModel()
         whenever(storage.board).thenReturn(doBoard)
         return domainBoard
     }
 
     private fun givenThereIsNotASavedBoard() {
         whenever(storage.board).thenReturn(null)
-    }
-
-    private fun whenShowNewGameHintShouldBeShown() {
-        whenever(storage.showSetUpNewGameHint).thenReturn(true)
-    }
-
-    private fun whenShowNewGameHintShouldNotBeShown() {
-        whenever(storage.showSetUpNewGameHint).thenReturn(false)
     }
 }

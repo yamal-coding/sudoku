@@ -36,10 +36,6 @@ class MainViewModel @Inject constructor(
         navigator.openNewGame()
     }
 
-    fun openExistingGameSetUp() {
-        navigator.openExistingGameSetUp()
-    }
-
     fun openSavedGame() {
         navigator.openSavedGame()
     }

@@ -12,7 +12,7 @@ import androidx.annotation.VisibleForTesting
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.utils.getColorFromAttr
-import com.yamal.sudoku.model.ReadOnlyBoard
+import com.yamal.sudoku.game.domain.ReadOnlyBoard
 
 class SudokuBoardView @JvmOverloads constructor(
     context: Context,
@@ -23,6 +23,8 @@ class SudokuBoardView @JvmOverloads constructor(
 
     private var isHighlighted = false
     private var readOnlyBoard: ReadOnlyBoard? = null
+    private var selectedRow: Int? = null
+    private var selectedColumn: Int? = null
     private var cellWidth: Float = 0F
     private var boardWidth: Float = 0F
     private var textHeight: Float = 0F
@@ -67,14 +69,17 @@ class SudokuBoardView @JvmOverloads constructor(
         invalidate()
     }
 
+    @Suppress("UNUSED")
     fun unHighlightBackground() {
         isHighlighted = false
         invalidate()
     }
 
-    fun setBoard(onlyBoard: ReadOnlyBoard?) {
+    fun setBoard(onlyBoard: ReadOnlyBoard?, selectedRow: Int?, selectedColumn: Int?) {
         onlyBoard?.let {
             this.readOnlyBoard = onlyBoard
+            this.selectedRow = selectedRow
+            this.selectedColumn = selectedColumn
             invalidate()
         }
     }
@@ -110,7 +115,7 @@ class SudokuBoardView @JvmOverloads constructor(
                     val cell = board[i, j]
                     if (!isHighlighted) {
                         var paint: Paint? = null
-                        val cellIsSelected = i == board.getSelectedX() && j == board.getSelectedY()
+                        val cellIsSelected = i == selectedRow && j == selectedColumn
 
                         when {
                             cellIsSelected && cell.isFixed && cell.value != SudokuCellValue.EMPTY -> {

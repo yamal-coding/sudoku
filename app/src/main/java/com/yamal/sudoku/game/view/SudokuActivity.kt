@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import com.yamal.sudoku.R
 import com.yamal.sudoku.game.viewmodel.SudokuViewModel
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
-import com.yamal.sudoku.model.ReadOnlyBoard
+import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCellValue
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -39,7 +38,6 @@ class SudokuActivity : AppCompatActivity() {
         setUpListeners()
 
         viewModel.onCreate(
-            isSetUpNewGameMode = intent.getBooleanExtra(IS_SET_UP_GAME_MODE_EXTRA, false),
             isNewGame = intent.getBooleanExtra(IS_NEW_GAME_EXTRA, false)
         )
 
@@ -47,9 +45,8 @@ class SudokuActivity : AppCompatActivity() {
             viewModel.state.collect {
                 when (it) {
                     is SudokuViewState.Loading -> { /* Nothing to do */ }
-                    is SudokuViewState.SettingUpNewGame -> onSettingUpNewGame(it.initialBoard)
                     is SudokuViewState.NewGameLoaded -> onNewGameLoaded(it.board)
-                    is SudokuViewState.UpdateBoard -> updateBoard(it.board)
+                    is SudokuViewState.UpdateBoard -> updateBoard(it.board, it.selectedRow, it.selectedColumn)
                     is SudokuViewState.SetUpFinished -> onSetUpFinished()
                     is SudokuViewState.GameFinished -> onGameFinished()
                 }
@@ -97,23 +94,13 @@ class SudokuActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSettingUpNewGame(initialBoard: ReadOnlyBoard) {
-        setTitle(getString(R.string.set_up_new_game_mode_title))
-        with(startGameButton) {
-            visibility = View.VISIBLE
-            setOnClickListener { viewModel.finishSetUpAndStartGame() }
-        }
-        removeCellButton.visibility =  View.VISIBLE
-        updateBoard(initialBoard)
-    }
-
     private fun onNewGameLoaded(board: ReadOnlyBoard) {
-        updateBoard(board)
+        updateBoard(board, selectedRow = null, selectedColumn = null)
         removeCellButton.visibility =  View.VISIBLE
     }
 
-    private fun updateBoard(onlyBoard: ReadOnlyBoard) {
-        board.setBoard(onlyBoard)
+    private fun updateBoard(onlyBoard: ReadOnlyBoard, selectedRow: Int?, selectedColumn: Int?) {
+        board.setBoard(onlyBoard, selectedRow = selectedRow, selectedColumn = selectedColumn)
     }
 
     private fun onSetUpFinished() {
@@ -140,12 +127,12 @@ class SudokuActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
 
+    @Suppress("UNUSED")
     private fun setTitle(title: String) {
         toolbar.title = title
     }
 
     companion object {
-        const val IS_SET_UP_GAME_MODE_EXTRA = "is_set_up_game_mode"
         const val IS_NEW_GAME_EXTRA = "is_new_game"
     }
 }

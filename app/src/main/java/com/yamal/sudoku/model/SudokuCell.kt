@@ -1,6 +1,6 @@
 package com.yamal.sudoku.model
 
 data class SudokuCell(
-    var value: SudokuCellValue,
-    var isFixed: Boolean
+    val value: SudokuCellValue,
+    val isFixed: Boolean
 )

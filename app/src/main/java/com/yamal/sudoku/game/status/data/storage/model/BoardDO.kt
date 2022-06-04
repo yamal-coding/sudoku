@@ -8,12 +8,5 @@ data class SudokuCellDO(
 )
 
 data class BoardDO(
-    val cells: List<List<SudokuCellDO>>,
-    val difficulty: String?
+    val cells: List<SudokuCellDO>,
 )
-
-object DifficultyDO {
-    const val EASY = "easy"
-    const val MEDIUM = "medium"
-    const val HARD = "hard"
-}

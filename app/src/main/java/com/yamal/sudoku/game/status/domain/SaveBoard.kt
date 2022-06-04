@@ -1,6 +1,6 @@
 package com.yamal.sudoku.game.status.domain
 
-import com.yamal.sudoku.model.ReadOnlyBoard
+import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.game.status.data.GameStatusRepository
 import javax.inject.Inject
 

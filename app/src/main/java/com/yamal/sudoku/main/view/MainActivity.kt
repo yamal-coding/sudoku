@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var loadSavedGameButton: Button
     private lateinit var newGameButton: Button
-    private lateinit var setUpNewGameButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
     private fun bindViews() {
         loadSavedGameButton = findViewById(R.id.load_saved_game_button)
         newGameButton = findViewById(R.id.new_board_button)
-        setUpNewGameButton = findViewById(R.id.setup_new_game)
     }
 
     override fun onResume() {
@@ -71,9 +69,6 @@ class MainActivity : AppCompatActivity() {
     private fun setUpOpenNewGameButtons() {
         newGameButton.setOnClickListener {
             viewModel.openNewGame()
-        }
-        setUpNewGameButton.setOnClickListener {
-            viewModel.openExistingGameSetUp()
         }
     }
 

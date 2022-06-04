@@ -55,14 +55,6 @@
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
             android:text="@string/new_game_button"/>
-
-        <Button
-            android:id="@+id/setup_new_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:text="@string/set_up_existing_game"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,7 @@ package com.yamal.sudoku.test.viewactions
 
 import android.view.View
 import com.yamal.sudoku.game.view.SudokuBoardView
-import com.yamal.sudoku.model.ReadOnlyBoard
+import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher

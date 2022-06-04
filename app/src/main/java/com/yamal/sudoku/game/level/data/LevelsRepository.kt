@@ -15,7 +15,7 @@ class LevelsRepository @Inject constructor(
             Level(
                 id = levelDO.id,
                 difficulty = levelDO.difficulty,
-                board = rawLevelToBoard(levelDO.rawBoard, levelDO.difficulty) ?: return null
+                board = rawLevelToBoard(levelDO.rawBoard) ?: return null
             )
         }
 }
