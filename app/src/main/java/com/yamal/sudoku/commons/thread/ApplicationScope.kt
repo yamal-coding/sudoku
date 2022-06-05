@@ -1,5 +1,7 @@
 package com.yamal.sudoku.commons.thread
 
+import com.yamal.sudoku.commons.thread.di.DefaultDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
@@ -8,8 +10,8 @@ import kotlin.coroutines.CoroutineContext
 
 @Singleton
 class ApplicationScope @Inject constructor(
-    private val dispatcherProvider: CoroutineDispatcherProvider
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
 ) : CoroutineScope {
     override val coroutineContext: CoroutineContext
-        get() = SupervisorJob() +  dispatcherProvider.defaultDispatcher
+        get() = SupervisorJob() + defaultDispatcher
 }

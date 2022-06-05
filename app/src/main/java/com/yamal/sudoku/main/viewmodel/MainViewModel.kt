@@ -1,8 +1,9 @@
 package com.yamal.sudoku.main.viewmodel
 
-import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
+import com.yamal.sudoku.commons.thread.di.MainDispatcher
 import com.yamal.sudoku.main.Navigator
 import com.yamal.sudoku.main.domain.HasSavedBoard
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,14 +14,14 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val hasSavedBoard: HasSavedBoard,
     private val navigator: Navigator,
-    dispatchers: CoroutineDispatcherProvider
+    @MainDispatcher mainDispatcher: CoroutineDispatcher,
 ) {
 
     private val _state = MutableStateFlow<MainViewState>(MainViewState.LoadingGame)
     val state: StateFlow<MainViewState> = _state
 
     private val job = Job()
-    private val scope = CoroutineScope(job + dispatchers.mainDispatcher)
+    private val scope = CoroutineScope(job + mainDispatcher)
 
     fun onResume() {
         scope.launch {

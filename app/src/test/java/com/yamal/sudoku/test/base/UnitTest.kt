@@ -1,19 +1,17 @@
 package com.yamal.sudoku.test.base
 
-import com.yamal.sudoku.test.overrides.CoroutinesTestDispatcherProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 
 @ExperimentalCoroutinesApi
-abstract class CoroutinesUnitTest {
+abstract class UnitTest {
 
-    private val testDispatcher = TestCoroutineDispatcher()
-    val dispatcherProvider = CoroutinesTestDispatcherProvider(testDispatcher)
+    val testDispatcher = UnconfinedTestDispatcher()
 
     @Before
     fun setUpTestDispatcher() {
@@ -22,7 +20,6 @@ abstract class CoroutinesUnitTest {
 
     @After
     fun resetTestDispatcher() {
-        testDispatcher.cleanupTestCoroutines()
         Dispatchers.resetMain()
     }
 }

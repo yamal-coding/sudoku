@@ -1,6 +1,7 @@
 package com.yamal.sudoku.game.viewmodel
 
-import com.yamal.sudoku.commons.thread.CoroutineDispatcherProvider
+import com.yamal.sudoku.commons.thread.di.IODispatcher
+import com.yamal.sudoku.commons.thread.di.MainDispatcher
 import com.yamal.sudoku.game.domain.Game
 import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.status.domain.GetSavedBoard
@@ -8,12 +9,9 @@ import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.status.domain.SaveBoard
 import com.yamal.sudoku.model.SudokuCellValue
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SudokuViewModel @Inject constructor(
@@ -21,11 +19,12 @@ class SudokuViewModel @Inject constructor(
     private val saveBoard: SaveBoard,
     private val removeSavedBoard: RemoveSavedBoard,
     private val loadNewBoard: LoadNewBoard,
-    private val dispatchers: CoroutineDispatcherProvider
+    @MainDispatcher mainDispatcher: CoroutineDispatcher,
+    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
 
     private val job = Job()
-    private val scope = CoroutineScope(job + dispatchers.mainDispatcher)
+    private val scope = CoroutineScope(job + mainDispatcher)
 
     private lateinit var game: Game
 
@@ -47,7 +46,7 @@ class SudokuViewModel @Inject constructor(
 
     private fun startNewGame() {
         scope.launch {
-            val newLevel = withContext(dispatchers.ioDispatcher) {
+            val newLevel = withContext(ioDispatcher) {
                 loadNewBoard()
             }
             newLevel?.let {
