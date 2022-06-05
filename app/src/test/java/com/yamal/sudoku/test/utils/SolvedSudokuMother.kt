@@ -62,7 +62,7 @@ object AlmostSolvedSudokuMother {
             }
         )
 
-    fun getAsRawLevel(): String =
+    const val almostSolvedSudokuAsRawLevel: String =
         "534678912672195348198342567859761423426853791713924856961537284287419635345286170"
 
     fun getEmptyCellCoordinates(): Pair<Int, Int> = 8 to 8

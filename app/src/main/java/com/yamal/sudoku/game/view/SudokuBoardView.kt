@@ -84,7 +84,7 @@ class SudokuBoardView @JvmOverloads constructor(
         }
     }
 
-    @Suppress("DrawAllocation")
+    @Suppress("DrawAllocation", "MagicNumber")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
@@ -104,6 +104,7 @@ class SudokuBoardView @JvmOverloads constructor(
         canvas.drawBoard()
     }
 
+    @Suppress("NestedBlockDepth", "MagicNumber")
     private fun Canvas.drawNumbers() {
         readOnlyBoard?.let { board ->
             if (isHighlighted) {
@@ -151,6 +152,7 @@ class SudokuBoardView @JvmOverloads constructor(
         )
     }
 
+    @Suppress("MagicNumber")
     private fun Canvas.drawBoard() {
         // Outline rectangle
         drawRect(0F, 0F, boardWidth, boardWidth, prominentPaint)

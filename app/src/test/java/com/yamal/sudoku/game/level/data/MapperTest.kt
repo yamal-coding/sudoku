@@ -37,7 +37,7 @@ class MapperTest {
     fun `Should return Board given a valid rawLevel`() {
         assertEquals(
             AlmostSolvedSudokuMother.almostSolvedSudoku(),
-            rawLevelToBoard(AlmostSolvedSudokuMother.getAsRawLevel())
+            rawLevelToBoard(AlmostSolvedSudokuMother.almostSolvedSudokuAsRawLevel)
         )
     }
 }

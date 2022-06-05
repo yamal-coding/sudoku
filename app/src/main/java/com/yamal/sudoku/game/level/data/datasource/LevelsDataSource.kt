@@ -33,7 +33,8 @@ class LevelsDataSourceImpl @Inject constructor(
         return if (candidateLevelsFile.open(context)) {
             setCurrentFileNumberIfNeeded(difficulty, currentFileNumber)
 
-            val alreadyReturnedLevelsIndexes = levelFilesInfoStorage.getAlreadyReturnedLevelsIndexesForGivenFile(candidateFileName)
+            val alreadyReturnedLevelsIndexes = levelFilesInfoStorage
+                .getAlreadyReturnedLevelsIndexesForGivenFile(candidateFileName)
             if (alreadyReturnedLevelsIndexes.size == candidateLevelsFile.getNumOfBoards()) {
                 getNewBoard(difficulty, currentFileNumber + 1)
             } else {

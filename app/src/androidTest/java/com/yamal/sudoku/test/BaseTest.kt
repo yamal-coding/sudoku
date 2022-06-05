@@ -10,6 +10,7 @@ import org.junit.Rule
 import javax.inject.Inject
 import javax.inject.Provider
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class BaseTest<T : Activity>(
     private val testClass: Class<T>
 ) {

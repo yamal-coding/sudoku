@@ -9,6 +9,7 @@ import com.yamal.sudoku.game.status.data.storage.model.BoardDO
 import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
 import java.lang.IllegalStateException
 
+@Suppress("MagicNumber")
 fun Int.toSudokuCell(): SudokuCellValue =
     when (this) {
         0 -> SudokuCellValue.EMPTY
@@ -38,6 +39,7 @@ fun ReadOnlyBoard.toDO(): BoardDO {
     )
 }
 
+@Suppress("MagicNumber")
 private fun SudokuCell.toDO(): SudokuCellDO {
     val value = when (this.value) {
         SudokuCellValue.EMPTY -> 0

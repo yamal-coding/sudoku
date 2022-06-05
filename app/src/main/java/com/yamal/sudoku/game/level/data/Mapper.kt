@@ -1,5 +1,6 @@
 package com.yamal.sudoku.game.level.data
 
+import com.yamal.sudoku.game.domain.BOARD_SIDE
 import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.model.SudokuCell
@@ -8,7 +9,7 @@ import com.yamal.sudoku.model.SudokuCellValue
 fun rawLevelToBoard(rawLevel: String): Board? {
     val cells = mutableListOf<SudokuCell>()
 
-    if (rawLevel.length != 81) {
+    if (rawLevel.length != BOARD_SIDE * BOARD_SIDE) {
         return null
     }
 

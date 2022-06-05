@@ -6,7 +6,7 @@ import com.yamal.sudoku.commons.utils.get
 import com.yamal.sudoku.commons.utils.set
 
 const val BOARD_SIDE = 9
-const val QUADRANTS_PER_SIDE = 9
+const val QUADRANTS_PER_SIDE = 3
 
 interface ReadOnlyBoard {
     operator fun get(row: Int, col: Int): SudokuCell
@@ -41,9 +41,9 @@ data class Board(
 class Game(
     private val board: Board,
 ) {
-    private val occurrencesOfEachValuePerRow = occurrencesOfEachValuePerArea()
-    private val occurrencesOfEachValuePerColumn = occurrencesOfEachValuePerArea()
-    private val occurrencesOfEachValuePerQuadrant = occurrencesOfEachValuePerArea()
+    private val occurrencesOfEachValuePerRow = initOccurrencesOfEachValuePerLine()
+    private val occurrencesOfEachValuePerColumn = initOccurrencesOfEachValuePerLine()
+    private val occurrencesOfEachValuePerQuadrant = initOccurrencesOfEachValuePerQuadrant()
 
     var selectedRow: Int? = null
         private set
@@ -60,10 +60,13 @@ class Game(
 
                 if (cell.value != SudokuCellValue.EMPTY) {
                     val cellValue = cell.value
-                    occurrencesOfEachValuePerRow[row][cellValue] = occurrencesOfEachValuePerRow[row][cellValue]!! + 1
-                    occurrencesOfEachValuePerColumn[col][cellValue] = occurrencesOfEachValuePerColumn[col][cellValue]!! + 1
-                    occurrencesOfEachValuePerQuadrant[quadrantByRowAndColumn(row, col)][cellValue] =
-                        occurrencesOfEachValuePerQuadrant[quadrantByRowAndColumn(row, col)][cellValue]!! + 1
+                    occurrencesOfEachValuePerRow[row][cellValue] =
+                        occurrencesOfEachValuePerRow[row][cellValue]!! + 1
+                    occurrencesOfEachValuePerColumn[col][cellValue] =
+                        occurrencesOfEachValuePerColumn[col][cellValue]!! + 1
+                    val quadrant = quadrantByRowAndColumn(row, col)
+                    occurrencesOfEachValuePerQuadrant[quadrant][cellValue] =
+                        occurrencesOfEachValuePerQuadrant[quadrant][cellValue]!! + 1
                 }
             }
         }
@@ -109,7 +112,7 @@ class Game(
         return rowsAreOk && columnsAreOk && quadrantsAreOk
     }
 
-    private fun occurrencesOfEachValuePerArea(): List<MutableMap<SudokuCellValue, Int>> =
+    private fun initOccurrencesOfEachValuePerLine(): List<MutableMap<SudokuCellValue, Int>> =
         (0 until BOARD_SIDE).map {
             val occurrencesOfValues = mutableMapOf<SudokuCellValue, Int>()
 
@@ -122,10 +125,25 @@ class Game(
             occurrencesOfValues
         }
 
-    private fun quadrantByRowAndColumn(row: Int, column: Int): Int {
-        val quadrantForRow = row / QUADRANTS_PER_SIDE
-        val quadrantForColumn = column / QUADRANTS_PER_SIDE
-        return quadrantForRow * quadrantForColumn
+    private fun initOccurrencesOfEachValuePerQuadrant(): List<List<MutableMap<SudokuCellValue, Int>>> =
+        (0 until QUADRANTS_PER_SIDE).map {
+            (0 until QUADRANTS_PER_SIDE).map {
+                val occurrencesOfValues = mutableMapOf<SudokuCellValue, Int>()
+
+                SudokuCellValue.values().forEach {
+                    if (it != SudokuCellValue.EMPTY) {
+                        occurrencesOfValues[it] = 0
+                    }
+                }
+
+                occurrencesOfValues
+            }
+        }
+
+    private fun quadrantByRowAndColumn(row: Int, column: Int): Pair<Int, Int> {
+        val quadrantRow = row / QUADRANTS_PER_SIDE
+        val quadrantColumn = column / QUADRANTS_PER_SIDE
+        return quadrantRow to quadrantColumn
     }
 
     private fun decreaseOccurrencesOfValue(row: Int, column: Int, value: SudokuCellValue) {
@@ -141,4 +159,9 @@ class Game(
         occurrencesOfEachValuePerQuadrant[quadrantByRowAndColumn(row, column)][value] =
             occurrencesOfEachValuePerQuadrant[quadrantByRowAndColumn(row, column)][value]!! + 1
     }
+
+    private operator fun List<List<MutableMap<SudokuCellValue, Int>>>.get(
+        position: Pair<Int, Int>
+    ): MutableMap<SudokuCellValue, Int> =
+        this[position.first][position.second]
 }

@@ -1,0 +1,47 @@
+build:
+  maxIssues: 0
+  weights:
+    complexity: 2
+    formatting: 1
+    LongParameterList: 1
+    comments: 1
+
+complexity:
+  TooManyFunctions:
+    active: false
+  LongMethod:
+    active: false
+  LongParameterList:
+    active: false
+  ComplexMethod:
+    active: true
+    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/generated/source/kapt/**"
+
+empty-blocks:
+  EmptyFunctionBlock:
+    active: false
+style:
+  MagicNumber:
+    active: true
+    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/generated/source/kapt/**"
+  NewLineAtEndOfFile:
+    active: false
+  UnusedPrivateMember:
+    active: false
+  MaxLineLength:
+    active: true
+    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/generated/source/kapt/**"
+  UnusedImports:
+    active: true
+  ReturnCount:
+    active: false
+
+naming:
+  ConstructorParameterNaming:
+    active: false
+  MatchingDeclarationName:
+    active: false
+
+exceptions:
+  TooGenericExceptionThrown:
+    active: false

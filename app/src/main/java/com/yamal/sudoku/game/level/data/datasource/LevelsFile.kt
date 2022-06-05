@@ -16,6 +16,7 @@ open class LevelsFile(private val fileName: String) {
     open fun getNumOfBoards(): Int =
         numOfBoards
 
+    @Suppress("SwallowedException")
     open fun open(context: Context): Boolean =
         try {
             val inputStream = context.assets.open(fileName)
@@ -59,6 +60,7 @@ open class LevelsFile(private val fileName: String) {
         inputStream?.close()
     }
 
+    @Suppress("SwallowedException")
     private fun readLine(): String? =
         try {
             scanner?.nextLine()

@@ -24,6 +24,23 @@ buildscript {
     }
 }
 
+plugins {
+    id("io.gitlab.arturbosch.detekt").version("1.18.1")
+}
+
+detekt {
+    source = files(rootProject.rootDir)
+    config = files("$projectDir/detekt.yml")
+    buildUponDefaultConfig = true
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        xml.destination = file("$buildDir/reports/detekt/detekt-checkstyle.xml")
+        html.destination = file("$buildDir/reports/detekt/detekt-report.html")
+    }
+}
+
 allprojects {
     repositories {
         mavenCentral()

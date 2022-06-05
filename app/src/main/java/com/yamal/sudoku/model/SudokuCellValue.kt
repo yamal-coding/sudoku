@@ -1,5 +1,6 @@
 package com.yamal.sudoku.model
 
+@Suppress("MagicNumber")
 enum class SudokuCellValue(private val label: String, val intValue: Int) {
     EMPTY("", 0),
     ONE("1", 1),

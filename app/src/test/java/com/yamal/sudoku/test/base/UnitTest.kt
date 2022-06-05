@@ -8,6 +8,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 
+@Suppress("UnnecessaryAbstractClass")
 @ExperimentalCoroutinesApi
 abstract class UnitTest {
 
