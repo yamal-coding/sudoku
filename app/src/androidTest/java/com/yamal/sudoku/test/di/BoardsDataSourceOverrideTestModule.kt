@@ -1,6 +1,6 @@
 package com.yamal.sudoku.test.di
 
-import com.yamal.sudoku.game.level.data.LevelsDataSource
+import com.yamal.sudoku.game.level.data.datasource.LevelsDataSource
 import com.yamal.sudoku.game.level.di.LevelsDataSourceModule
 import com.yamal.sudoku.test.mocks.FakeLevelsDataSourceImpl
 import dagger.Module
