@@ -3,7 +3,7 @@ buildscript {
         sdk_version = 31
         min_api_level = 21
         gradle_version = '7.2.1'
-        kotlin_version = '1.6.21'
+        kotlin_version = '1.6.10'
         coroutines_version = '1.6.2'
         junit_version = '4.13.2'
         hilt_version = '2.42'
@@ -11,6 +11,7 @@ buildscript {
         room_version = '2.4.2'
         android_compat = '1.4.2'
         gson = '2.8.9'
+        compose_version = '1.1.1'
     }
     repositories {
         mavenCentral()
@@ -75,8 +76,8 @@ subprojects {
         }
 
         compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_8
-            targetCompatibility JavaVersion.VERSION_1_8
+            sourceCompatibility JavaVersion.VERSION_11
+            targetCompatibility JavaVersion.VERSION_11
         }
 
         lintOptions {

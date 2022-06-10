@@ -13,7 +13,8 @@
             android:name=".game.view.SudokuActivity" />
         <activity
             android:name=".main.view.MainActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="portrait" />
+        <activity android:name=".main.ui.MainComposeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
