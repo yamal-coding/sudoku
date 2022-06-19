@@ -12,6 +12,7 @@ buildscript {
         android_compat = '1.4.2'
         gson = '2.8.9'
         compose_version = '1.1.1'
+        moshi_version = '1.13.0'
     }
     repositories {
         mavenCentral()

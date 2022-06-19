@@ -6,6 +6,8 @@ import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.game.status.data.storage.GameStatusStorage
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,6 +23,9 @@ class GameStatusRepository @Inject constructor(
     suspend fun hasSavedBoard(): Boolean = withContext(ioDispatcher) {
         gameStatusStorage.board != null
     }
+
+    fun observeBoard(): Flow<Board?> =
+        gameStatusStorage.observeBoard().map { it?.toDomain() }
 
     suspend fun getSavedBoard(): Board? = withContext(ioDispatcher) {
         gameStatusStorage.board?.toDomain()
