@@ -7,12 +7,14 @@ data class SudokuColors(
     val cellText: Color,
     val cellBackground: Color,
     val fixedCellBackground: Color,
+    val divider: Color,
 )
 
 val LightColors = SudokuColors(
     cellText = Color.Black,
     cellBackground = Color.White,
     fixedCellBackground = Color.LightGray,
+    divider = Color.Black,
 )
 
 val DarkColors = LightColors // TODO define dark colors
