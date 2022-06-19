@@ -4,9 +4,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.yamal.sudoku.game.navigation.ContinueGameDestination
+import com.yamal.sudoku.game.navigation.NewGameDestination
 import com.yamal.sudoku.start.ui.StartScreen
 
-@Suppress("UNUSED_PARAMETER")
 fun NavGraphBuilder.startNavGraph(navController: NavController) {
     composable(
         route = StartDestination.route
@@ -14,10 +15,10 @@ fun NavGraphBuilder.startNavGraph(navController: NavController) {
         StartScreen(
             viewModel = hiltViewModel(),
             onContinueGame = {
-                // TODO not yet implemented
+                navController.navigate(ContinueGameDestination.route)
             },
             onStartNewGame = {
-                // TODO not yet implemented
+                navController.navigate(NewGameDestination.route)
             }
         )
     }
