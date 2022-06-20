@@ -1,4 +1,4 @@
-package com.yamal.sudoku.main.domain
+package com.yamal.sudoku.start.domain
 
 import com.yamal.sudoku.commons.thread.di.IODispatcher
 import com.yamal.sudoku.game.status.data.GameStatusRepository

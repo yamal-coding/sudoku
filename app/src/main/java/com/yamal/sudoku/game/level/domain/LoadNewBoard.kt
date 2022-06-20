@@ -8,5 +8,5 @@ class LoadNewBoard @Inject constructor(
     private val levelsRepository: LevelsRepository
 ) {
     // TODO correctly specify difficulty from UI
-    operator fun invoke(): Level? = levelsRepository.getNewLevel(Difficulty.EASY)
+    suspend operator fun invoke(): Level? = levelsRepository.getNewLevel(Difficulty.EASY)
 }

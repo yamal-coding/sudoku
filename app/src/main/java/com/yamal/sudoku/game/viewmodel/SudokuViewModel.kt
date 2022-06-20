@@ -1,7 +1,7 @@
 package com.yamal.sudoku.game.viewmodel
 
-import com.yamal.sudoku.commons.thread.di.IODispatcher
-import com.yamal.sudoku.commons.thread.di.MainDispatcher
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.yamal.sudoku.game.domain.Game
 import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.status.domain.GetSavedBoard
@@ -9,11 +9,7 @@ import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.status.domain.SaveBoard
 import com.yamal.sudoku.model.SudokuCellValue
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -23,12 +19,7 @@ class SudokuViewModel @Inject constructor(
     private val saveBoard: SaveBoard,
     private val removeSavedBoard: RemoveSavedBoard,
     private val loadNewBoard: LoadNewBoard,
-    @MainDispatcher mainDispatcher: CoroutineDispatcher,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
-) {
-
-    private val job = Job()
-    private val scope = CoroutineScope(job + mainDispatcher)
+) : ViewModel() {
 
     private lateinit var game: Game
 
@@ -49,10 +40,8 @@ class SudokuViewModel @Inject constructor(
     }
 
     private fun startNewGame() {
-        scope.launch {
-            val newLevel = withContext(ioDispatcher) {
-                loadNewBoard()
-            }
+        viewModelScope.launch {
+            val newLevel = loadNewBoard()
             newLevel?.let {
                 onGameLoaded(it.board)
                 saveBoard()
@@ -61,7 +50,7 @@ class SudokuViewModel @Inject constructor(
     }
 
     private fun lookForSavedBoard() {
-        scope.launch {
+        viewModelScope.launch {
             val savedBoard = getSavedBoard()
 
             if (savedBoard != null) {
@@ -110,9 +99,5 @@ class SudokuViewModel @Inject constructor(
 
     private fun saveBoard() {
         saveBoard(game.currentBoard)
-    }
-
-    fun onDestroy() {
-        job.cancel()
     }
 }

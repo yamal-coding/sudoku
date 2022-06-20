@@ -113,11 +113,6 @@ class SudokuActivity : AppCompatActivity() {
         removeCellButton.visibility = View.GONE
     }
 
-    override fun onDestroy() {
-        viewModel.onDestroy()
-        super.onDestroy()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             android.R.id.home -> {

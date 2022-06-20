@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
-import com.yamal.sudoku.main.ui.viewmodel.MainComposeViewModel
+import com.yamal.sudoku.start.ui.viewmodel.StartViewModel
 
 @Composable
 fun StartScreen(
-    viewModel: MainComposeViewModel,
+    viewModel: StartViewModel,
     onContinueGame: () -> Unit,
     onStartNewGame: () -> Unit,
 ) {
