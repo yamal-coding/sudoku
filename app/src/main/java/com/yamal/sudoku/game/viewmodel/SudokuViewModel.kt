@@ -9,11 +9,13 @@ import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.status.domain.SaveBoard
 import com.yamal.sudoku.model.SudokuCellValue
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
+@HiltViewModel
 class SudokuViewModel @Inject constructor(
     private val getSavedBoard: GetSavedBoard,
     private val saveBoard: SaveBoard,

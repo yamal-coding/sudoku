@@ -9,8 +9,6 @@
         android:theme="@style/AppTheme"
         android:name=".CoreBaseApplication"
         tools:ignore="AllowBackup">
-        <activity
-            android:name=".game.view.SudokuActivity" />
         <activity android:name=".main.ui.MainActivity"
             android:exported="true">
             <intent-filter>

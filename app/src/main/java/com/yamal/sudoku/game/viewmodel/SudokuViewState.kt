@@ -10,6 +10,5 @@ sealed class SudokuViewState {
         val selectedRow: Int?,
         val selectedColumn: Int?,
     ): SudokuViewState()
-    object SetUpFinished : SudokuViewState()
     object GameFinished : SudokuViewState()
 }
