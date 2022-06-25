@@ -5,7 +5,7 @@ import com.yamal.sudoku.game.domain.ReadOnlyBoard
 sealed class SudokuViewState {
     object Idle : SudokuViewState()
     object Loading : SudokuViewState()
-     class UpdatedBoard(
+    class UpdatedBoard(
         val board: ReadOnlyBoard,
         val selectedRow: Int?,
         val selectedColumn: Int?,

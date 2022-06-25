@@ -11,7 +11,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface LevelsDataSource {
-    fun getNewLevel(difficulty: Difficulty): LevelDO?
+    suspend fun getNewLevel(difficulty: Difficulty): LevelDO?
 }
 
 @Singleton
@@ -23,10 +23,10 @@ class LevelsDataSourceImpl @Inject constructor(
     private val levelIdGenerator: LevelIdGenerator
 ) : LevelsDataSource {
 
-    override fun getNewLevel(difficulty: Difficulty): LevelDO? =
+    override suspend fun getNewLevel(difficulty: Difficulty): LevelDO? =
         getNewBoard(difficulty, levelFilesInfoStorage.getCurrentFileNumber(difficulty))
 
-    private fun getNewBoard(difficulty: Difficulty, currentFileNumber: Int): LevelDO? {
+    private suspend fun getNewBoard(difficulty: Difficulty, currentFileNumber: Int): LevelDO? {
         val candidateFileName = getFileName(difficulty, currentFileNumber)
         val candidateLevelsFile = levelsFileProvider.get(candidateFileName)
 
@@ -103,7 +103,7 @@ class LevelsDataSourceImpl @Inject constructor(
         return "${filePrefix}_$fileNumber"
     }
 
-    private fun setCurrentFileNumberIfNeeded(difficulty: Difficulty, fileNumber: Int) {
+    private suspend fun setCurrentFileNumberIfNeeded(difficulty: Difficulty, fileNumber: Int) {
         if (levelFilesInfoStorage.getCurrentFileNumber(difficulty) < fileNumber) {
             levelFilesInfoStorage.setCurrentFileNumber(difficulty, fileNumber)
         }
