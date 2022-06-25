@@ -72,12 +72,14 @@ class Game(
         }
     }
 
-    fun selectCell(row: Int, column: Int) {
+    fun selectCell(row: Int, column: Int): Boolean =
         if (!board[row, column].isFixed) {
             selectedRow = row
             selectedColumn = column
+            true
+        } else {
+            false
         }
-    }
 
     fun setSelectedCell(newValue: SudokuCellValue) {
         val row = selectedRow

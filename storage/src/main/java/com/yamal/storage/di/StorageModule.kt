@@ -2,7 +2,6 @@ package com.yamal.storage.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.gson.GsonBuilder
 import com.yamal.storage.KeyValueStorage
 import dagger.Module
 import dagger.Provides
@@ -27,6 +26,5 @@ object StorageModule {
     ): KeyValueStorage =
         KeyValueStorage(
             sharedPreferences = sharedPreferences,
-            gson = GsonBuilder().create()
         )
 }

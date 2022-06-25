@@ -12,5 +12,5 @@ class StartViewModel @Inject constructor(
 ) : ViewModel() {
 
     val shouldShowContinueButton: Flow<Boolean>
-        get() = hasSavedBoard.observe()
+        get() = hasSavedBoard()
 }

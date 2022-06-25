@@ -7,7 +7,7 @@ import com.yamal.sudoku.model.Difficulty
 import javax.inject.Inject
 
 open class LevelFilesInfoStorage @Inject constructor(
-    private val keyValueStorage: KeyValueStorage,
+    private val keyValueStorage: KeyValueStorage, // TODO use datastore
     private val dao: LevelsDao,
 ) {
     open fun getCurrentFileNumber(difficulty: Difficulty): Int =

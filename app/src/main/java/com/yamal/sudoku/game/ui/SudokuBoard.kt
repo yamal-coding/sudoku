@@ -22,7 +22,10 @@ import com.yamal.sudoku.model.SudokuCell
 @Composable
 fun SudokuBoard(
     modifier: Modifier,
-    board: ReadOnlyBoard
+    board: ReadOnlyBoard,
+    selectedRow: Int?,
+    selectedColumn: Int?,
+    onCellSelected: (row: Int, column: Int) -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -38,8 +41,11 @@ fun SudokuBoard(
                     SudokuCell(
                         modifier = Modifier.weight(1F),
                         sudokuCellValue = cell.value,
-                        onSelected = { /*TODO*/ },
-                        isFixed = cell.isFixed
+                        onSelected = {
+                            onCellSelected(row, column)
+                        },
+                        isFixed = cell.isFixed,
+                        isSelected = row == selectedRow && column == selectedColumn,
                     )
                     if ((column + 1) % QUADRANTS_PER_SIDE == 0) {
                         StrongVerticalDivider()
@@ -63,22 +69,22 @@ private fun SudokuCell(
     sudokuCellValue: SudokuCellValue,
     onSelected: () -> Unit,
     isFixed: Boolean,
+    isSelected: Boolean,
 ) {
     Box(
         modifier = modifier
             .aspectRatio(1F)
             .background(
-                if (isFixed) {
-                    SudokuTheme.colors.fixedCellBackground
-                } else {
-                    SudokuTheme.colors.cellBackground
+                when {
+                    isFixed -> SudokuTheme.colors.fixedCellBackground
+                    isSelected -> SudokuTheme.colors.selectedCellBackground
+                    else -> SudokuTheme.colors.cellBackground
                 }
             )
             .`if`(!isFixed) {
                 clickable { onSelected() }
             }
-            .padding(1.dp)
-        ,
+            .padding(1.dp),
         contentAlignment = Alignment.Center
     ) {
         getSudokuCellIconOrNullIfEmpty(sudokuCellValue)?.let {
@@ -95,32 +101,38 @@ fun SudokuCellPreview() {
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
-            SudokuBoard(modifier = Modifier.padding(8.dp), board = Board(
-                cells = notFixedCells(
-                    5, 3, 4, 6, 7, 8, 9, 1, 2,
-                    6, 7, 2, 1, 9, 5, 3, 4, 8,
-                    1, 0, 8, 3, 4, 2, 5, 6, 7,
-                    8, 5, 9, 7, 6, 1, 4, 2, 3,
-                    4, 2, 6, 8, 5, 3, 7, 9, 1,
-                    7, 1, 3, 9, 2, 4, 8, 5, 6,
-                    9, 6, 1, 5, 0, 7, 0, 8, 4,
-                    2, 8, 7, 4, 1, 9, 6, 3, 5,
-                    3, 4, 5, 0, 8, 6, 1,
-                ).also {
-                    it.add(
-                        SudokuCell(
-                            SudokuCellValue.ONE,
-                            isFixed = true
+            SudokuBoard(
+                modifier = Modifier.padding(8.dp),
+                board = Board(
+                    cells = notFixedCells(
+                        5, 3, 4, 6, 7, 8, 9, 1, 2,
+                        6, 7, 2, 1, 9, 5, 3, 4, 8,
+                        1, 0, 8, 3, 4, 2, 5, 6, 7,
+                        8, 5, 9, 7, 6, 1, 4, 2, 3,
+                        4, 2, 6, 8, 5, 3, 7, 9, 1,
+                        7, 1, 3, 9, 2, 4, 8, 5, 6,
+                        9, 6, 1, 5, 0, 7, 0, 8, 4,
+                        2, 8, 7, 4, 1, 9, 6, 3, 5,
+                        3, 4, 5, 0, 8, 6, 1,
+                    ).also {
+                        it.add(
+                            SudokuCell(
+                                SudokuCellValue.ONE,
+                                isFixed = true
+                            )
                         )
-                    )
-                    it.add(
-                        SudokuCell(
-                            SudokuCellValue.EMPTY,
-                            isFixed = false
+                        it.add(
+                            SudokuCell(
+                                SudokuCellValue.EMPTY,
+                                isFixed = false
+                            )
                         )
-                    )
-                }
-            ))
+                    }
+                ),
+                selectedRow = null,
+                selectedColumn = null,
+                onCellSelected = { _, _ -> }
+            )
 
             NumberPad(
                 modifier = Modifier.padding(8.dp),

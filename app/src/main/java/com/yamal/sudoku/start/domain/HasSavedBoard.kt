@@ -12,11 +12,8 @@ class HasSavedBoard @Inject constructor(
     private val repository: GameStatusRepository,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
-    suspend operator fun invoke(): Boolean =
-        repository.hasSavedBoard()
-
-    fun observe(): Flow<Boolean> =
-        repository.observeBoard().map {
+    operator fun invoke(): Flow<Boolean> =
+        repository.getSavedBoard().map {
             it != null
         }.flowOn(ioDispatcher)
 }

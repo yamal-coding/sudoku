@@ -10,7 +10,6 @@ buildscript {
         activity_ktx_version = '1.4.0'
         room_version = '2.4.2'
         android_compat = '1.4.2'
-        gson = '2.8.9'
         compose_version = '1.1.1'
         moshi_version = '1.13.0'
     }
