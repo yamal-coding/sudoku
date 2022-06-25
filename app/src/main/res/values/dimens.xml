@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="sudoku_soft_width">1dp</dimen>
-    <dimen name="sudoku_prominent_line_width">3dp</dimen>
-</resources>
