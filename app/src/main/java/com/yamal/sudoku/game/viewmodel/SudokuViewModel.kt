@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yamal.sudoku.game.domain.Game
 import com.yamal.sudoku.game.domain.Board
+import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.game.status.domain.GetSavedBoard
 import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
@@ -25,7 +26,7 @@ class SudokuViewModel @Inject constructor(
 
     private lateinit var game: Game
 
-    private val board: Board
+    private val board: ReadOnlyBoard
         get() = game.currentBoard
     private var gameFinished = false
 

@@ -23,6 +23,11 @@ data class Board(
         cells[row, col] = cells[row, col].copy(value = value)
     }
 
+    fun copy(): Board =
+        Board(
+            mutableListOf<SudokuCell>().also { it.addAll(cells) }
+        )
+
     companion object {
         fun empty(): Board =
             Board(
@@ -50,7 +55,7 @@ class Game(
     var selectedColumn: Int? = null
         private set
 
-    val currentBoard: Board
+    val currentBoard: ReadOnlyBoard
         get() = board.copy()
 
     init {
