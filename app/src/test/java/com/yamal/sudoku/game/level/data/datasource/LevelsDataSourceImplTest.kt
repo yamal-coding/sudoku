@@ -6,12 +6,15 @@ import com.yamal.sudoku.game.level.data.LevelDO
 import com.yamal.sudoku.game.level.data.utils.LevelIdGenerator
 import com.yamal.sudoku.game.level.data.utils.LevelsFileProvider
 import com.yamal.sudoku.model.Difficulty
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
+@ExperimentalCoroutinesApi
 class LevelsDataSourceImplTest {
 
     private val context: Context = mock()
@@ -29,10 +32,10 @@ class LevelsDataSourceImplTest {
     )
 
     @Test
-    fun `Get level given a difficulty picking file on first attempt`() {
+    fun `Get level given a difficulty picking file on first attempt`() = runTest {
         givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
-        givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
-        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
+        givenARandomLevelIndex()
+        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, thatWillOpen = true)
             .thenReturnRawLevel(ANY_LEVEL_INDEX, SOME_RAW_BOARD)
         givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = emptySet())
 
@@ -43,14 +46,14 @@ class LevelsDataSourceImplTest {
     }
 
     @Test
-    fun `Get level given a difficulty picking file on second attempt`() {
+    fun `Get level given a difficulty picking file on second attempt`() = runTest {
         val currentFileNumber = givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
-        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
+        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, thatWillOpen = true)
         givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = ALL_LEVEL_INDEXES)
 
-        givenAFileThatWillOpen(fileName = ANY_NEXT_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
+        givenAFileThatWillOpen(fileName = ANY_NEXT_FILE_NAME, thatWillOpen = true)
             .thenReturnRawLevel(ANY_LEVEL_INDEX, SOME_RAW_BOARD)
-        givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
+        givenARandomLevelIndex()
         givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_NEXT_FILE_NAME, expected = emptySet())
 
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
@@ -61,11 +64,11 @@ class LevelsDataSourceImplTest {
     }
 
     @Test
-    fun `Get first greater level after trying to pick a random level from file`() {
+    fun `Get first greater level after trying to pick a random level from file`() = runTest {
         givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
         givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = setOf(ANY_LEVEL_INDEX))
-        givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
-        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
+        givenARandomLevelIndex()
+        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, thatWillOpen = true)
             .thenReturnRawLevel(ANY_HIGHER_LEVEL_INDEX, SOME_RAW_BOARD)
 
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
@@ -75,11 +78,11 @@ class LevelsDataSourceImplTest {
     }
 
     @Test
-    fun `Get first lower level after trying to pick a random level from file`() {
+    fun `Get first lower level after trying to pick a random level from file`() = runTest {
         givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
         givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = setOf(ANY_LEVEL_INDEX, ANY_HIGHER_LEVEL_INDEX))
-        givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
-        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = true)
+        givenARandomLevelIndex()
+        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, thatWillOpen = true)
             .thenReturnRawLevel(ANY_LOWER_LEVEL_INDEX, SOME_RAW_BOARD)
 
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
@@ -89,25 +92,25 @@ class LevelsDataSourceImplTest {
     }
 
     @Test
-    fun `Trying to get level from file but every level file for given difficulty is completed`() {
+    fun `Trying to get level from file but every level file for given difficulty is completed`() = runTest {
         givenCurrentFileNumber(forGivenDifficulty = ANY_DIFFICULTY)
         givenAlreadyReturnedLevelsIndexesForGivenFile(fileName = ANY_FILE_NAME, expected = ALL_LEVEL_INDEXES)
-        givenARandomLevelIndex(from = 0, to = ANY_NUM_OF_LEVELS, returnIndex = ANY_LEVEL_INDEX)
-        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, withNumOfLevels = ANY_NUM_OF_LEVELS, thatWillOpen = false)
+        givenARandomLevelIndex()
+        givenAFileThatWillOpen(fileName = ANY_FILE_NAME, thatWillOpen = false)
 
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
         assertEquals(null, level)
     }
 
-    private fun givenCurrentFileNumber(forGivenDifficulty: Difficulty): Int = ANY_CURRENT_FILE_NUMBER.also {
+    private suspend fun givenCurrentFileNumber(forGivenDifficulty: Difficulty): Int = ANY_CURRENT_FILE_NUMBER.also {
         whenever(levelFilesInfoStorage.getCurrentFileNumber(forGivenDifficulty))
             .thenReturn(it)
     }
 
-    private fun givenAFileThatWillOpen(fileName: String, withNumOfLevels: Int, thatWillOpen: Boolean): LevelsFile =
+    private fun givenAFileThatWillOpen(fileName: String, thatWillOpen: Boolean): LevelsFile =
         mock<LevelsFile>().also { file ->
-            whenever(file.getNumOfBoards()).thenReturn(withNumOfLevels)
+            whenever(file.getNumOfBoards()).thenReturn(ANY_NUM_OF_LEVELS)
             whenever(file.open(context)).thenReturn(thatWillOpen)
             whenever(levelsFileProvider.get(fileName)).thenReturn(file)
         }
@@ -120,8 +123,8 @@ class LevelsDataSourceImplTest {
         whenever(levelFilesInfoStorage.getAlreadyReturnedLevelsIndexesForGivenFile(fileName)).thenReturn(expected)
     }
 
-    private fun givenARandomLevelIndex(from: Int, to: Int, returnIndex: Int) {
-        whenever(randomGenerator.randomInt(from, to)).thenReturn(returnIndex)
+    private fun givenARandomLevelIndex() {
+        whenever(randomGenerator.randomInt(0, ANY_NUM_OF_LEVELS)).thenReturn(ANY_LEVEL_INDEX)
     }
 
     private companion object {
