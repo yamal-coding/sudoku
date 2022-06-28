@@ -22,7 +22,7 @@ val SudokuIcons.One: ImageVector
                 lineToRelative(-5.0f, 1.5f)
                 verticalLineTo(4.5f)
                 lineToRelative(5.0f, -1.5f)
-                verticalLineTo(20.0f)
+                verticalLineTo(24.0f)
                 horizontalLineTo(13.50f)
                 verticalLineTo(0.0f)
                 close()
