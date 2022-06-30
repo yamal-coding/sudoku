@@ -6,7 +6,9 @@ import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.game.status.data.storage.model.BoardDO
+import com.yamal.sudoku.game.status.data.storage.model.DifficultyDO
 import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
+import com.yamal.sudoku.model.Difficulty
 import java.lang.IllegalStateException
 
 @Suppress("MagicNumber")
@@ -35,7 +37,8 @@ fun ReadOnlyBoard.toDO(): BoardDO {
     }
 
     return BoardDO(
-        cells = list
+        cells = list,
+        difficulty = difficulty.toDO()
     )
 }
 
@@ -56,7 +59,7 @@ private fun SudokuCell.toDO(): SudokuCellDO {
     return SudokuCellDO(value, isFixed)
 }
 
-fun BoardDO.toDomain(): Board {
+fun BoardDO.toDomain(): Board? {
     val list = mutableListOf<SudokuCell>()
 
     cells.forEach { cell ->
@@ -65,8 +68,24 @@ fun BoardDO.toDomain(): Board {
 
     return Board(
         cells = list,
+        difficulty = difficultyFromString(difficulty) ?: return null
     )
 }
+
+private fun Difficulty.toDO(): String =
+    when (this) {
+        Difficulty.EASY -> DifficultyDO.EASY
+        Difficulty.MEDIUM -> DifficultyDO.MEDIUM
+        Difficulty.HARD -> DifficultyDO.HARD
+    }
+
+private fun difficultyFromString(value: String): Difficulty? =
+    when (value) {
+        DifficultyDO.EASY -> Difficulty.EASY
+        DifficultyDO.MEDIUM -> Difficulty.MEDIUM
+        DifficultyDO.HARD -> Difficulty.HARD
+        else -> null
+    }
 
 private fun SudokuCellDO.toDomain(): SudokuCell =
     SudokuCell(value.toSudokuCell(), isFixed)

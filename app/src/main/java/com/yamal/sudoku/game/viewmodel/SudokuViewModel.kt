@@ -81,31 +81,19 @@ class SudokuViewModel @Inject constructor(
 
     private fun onGameLoaded(savedBoard: Board) {
         game = Game(savedBoard)
-        _state.value = SudokuViewState.UpdatedBoard(
-            board,
-            selectedRow = null,
-            selectedColumn = null
-        )
+        updateBoard(x = null, y = null)
     }
 
     fun onCellSelected(x: Int, y: Int) {
         if (!gameFinished && game.selectCell(x, y)) {
-            _state.value = SudokuViewState.UpdatedBoard(
-                board,
-                selectedRow = x,
-                selectedColumn = y
-            )
+            updateBoard(x = x, y = y)
         }
     }
 
     fun selectNumber(value: SudokuCellValue) {
         if (!gameFinished) {
             game.setSelectedCell(value)
-            _state.value = SudokuViewState.UpdatedBoard(
-                board,
-                selectedRow = game.selectedRow,
-                selectedColumn = game.selectedColumn
-            )
+            updateBoard(x = game.selectedRow, y = game.selectedColumn)
             checkGame()
         }
     }
@@ -122,5 +110,13 @@ class SudokuViewModel @Inject constructor(
 
     private fun saveBoard() {
         saveBoard(game.currentBoard)
+    }
+
+    private fun updateBoard(x: Int?, y: Int?) {
+        _state.value = SudokuViewState.UpdatedBoard(
+            board,
+            selectedRow = x,
+            selectedColumn = y,
+        )
     }
 }

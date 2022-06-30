@@ -12,4 +12,11 @@ data class SudokuCellDO(
 @JsonClass(generateAdapter = true)
 data class BoardDO(
     @Json(name = "cells") val cells: List<SudokuCellDO>,
+    @Json(name = "difficulty") val difficulty: String
 )
+
+object DifficultyDO {
+    const val EASY = "easy"
+    const val MEDIUM = "medium"
+    const val HARD = "hard"
+}

@@ -2,6 +2,7 @@ package com.yamal.sudoku.test.utils
 
 import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.status.data.toSudokuCell
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 
@@ -26,7 +27,8 @@ object SolvedSudokuMother {
                 9, 6, 1, 5, 3, 7, 2, 8, 4,
                 2, 8, 7, 4, 1, 9, 6, 3, 5,
                 3, 4, 5, 2, 8, 6, 1, 7, 9
-            )
+            ),
+            difficulty = Difficulty.EASY,
         )
 
     fun solvedSudokuAsMap(): List<Int> =
@@ -59,7 +61,8 @@ object AlmostSolvedSudokuMother {
                 3, 4, 5, 2, 8, 6, 1, 7
             ).also {
                 it.add(SudokuCell(SudokuCellValue.EMPTY, isFixed = false))
-            }
+            },
+            difficulty = Difficulty.EASY,
         )
 
     const val almostSolvedSudokuAsRawLevel: String =
