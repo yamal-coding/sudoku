@@ -9,6 +9,7 @@ import com.yamal.sudoku.game.status.domain.GetSavedBoard
 import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.status.domain.SaveBoard
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.SudokuCellValue
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -33,23 +34,27 @@ class SudokuViewModel @Inject constructor(
     private val _state = MutableStateFlow<SudokuViewState>(SudokuViewState.Idle)
     val state: Flow<SudokuViewState> = _state
 
-    fun initGame(
-        isNewGame: Boolean
-    ) {
-        if (gameIsNotInitialized()) {
-            when {
-                isNewGame -> startNewGame()
-                else -> lookForSavedBoard()
-            }
+    fun initNewGame(difficulty: Difficulty) {
+        onGameNotInitialized {
+            startNewGame(difficulty)
         }
     }
 
-    private fun gameIsNotInitialized(): Boolean =
-        _state.compareAndSet(expect = SudokuViewState.Idle, update = SudokuViewState.Loading)
+    fun initExistingGame() {
+        onGameNotInitialized {
+            lookForSavedBoard()
+        }
+    }
 
-    private fun startNewGame() {
+    private inline fun onGameNotInitialized(block: () -> Unit) {
+        if (_state.compareAndSet(expect = SudokuViewState.Idle, update = SudokuViewState.Loading)) {
+            block()
+        }
+    }
+
+    private fun startNewGame(difficulty: Difficulty) {
         viewModelScope.launch {
-            val newLevel = loadNewBoard()
+            val newLevel = loadNewBoard(difficulty)
             if (newLevel != null) {
                 onGameLoaded(newLevel.board)
                 saveBoard()

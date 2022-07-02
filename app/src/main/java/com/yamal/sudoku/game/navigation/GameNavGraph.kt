@@ -5,7 +5,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.yamal.sudoku.game.ui.GameScreen
+import com.yamal.sudoku.game.ui.ExistingGameScreen
+import com.yamal.sudoku.game.ui.NewGameScreen
+import com.yamal.sudoku.model.Difficulty
 
 fun NavGraphBuilder.gameNavGraph(
     navController: NavController,
@@ -13,29 +15,47 @@ fun NavGraphBuilder.gameNavGraph(
     composable(
         route =  ContinueGameDestination.route
     ) {
-        GameScreenImpl(
-            isNewGame = false,
-            navController = navController,
+        ExistingGameScreen(
+            viewModel = hiltViewModel(),
+            onBackClicked = {
+                navController.popBackStack()
+            }
         )
     }
     composable(
-        route = NewGameDestination.route
+        route = NewEasyGameDestination.route
     ) {
-        GameScreenImpl(
-            isNewGame = true,
+        NewGameScreenImpl(
             navController = navController,
+            difficulty = Difficulty.EASY
+        )
+    }
+    composable(
+        route = NewMediumGameDestination.route
+    ) {
+        NewGameScreenImpl(
+            navController = navController,
+            difficulty = Difficulty.MEDIUM
+        )
+    }
+    composable(
+        route = NewHardGameDestination.route
+    ) {
+        NewGameScreenImpl(
+            navController = navController,
+            difficulty = Difficulty.HARD
         )
     }
 }
 
 @Composable
-private fun GameScreenImpl(
-    isNewGame: Boolean,
+private fun NewGameScreenImpl(
     navController: NavController,
+    difficulty: Difficulty,
 ) {
-    GameScreen(
-        isNewGame = isNewGame,
+    NewGameScreen(
         viewModel = hiltViewModel(),
+        difficulty = difficulty,
         onBackClicked = {
             navController.popBackStack()
         }

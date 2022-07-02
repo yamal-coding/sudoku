@@ -28,9 +28,38 @@ import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 
 @Composable
-fun GameScreen(
-    isNewGame: Boolean,
+fun ExistingGameScreen(
     viewModel: SudokuViewModel,
+    onBackClicked: () -> Unit,
+) {
+    GameScreen(
+        viewModel = viewModel,
+        onInit = {
+            viewModel.initExistingGame()
+        },
+        onBackClicked = onBackClicked,
+    )
+}
+
+@Composable
+fun NewGameScreen(
+    difficulty: Difficulty,
+    viewModel: SudokuViewModel,
+    onBackClicked: () -> Unit,
+) {
+    GameScreen(
+        viewModel = viewModel,
+        onInit = {
+            viewModel.initNewGame(difficulty)
+        },
+        onBackClicked = onBackClicked,
+    )
+}
+
+@Composable
+private fun GameScreen(
+    viewModel: SudokuViewModel,
+    onInit: () -> Unit,
     onBackClicked: () -> Unit,
 ) {
     Scaffold(
@@ -45,7 +74,7 @@ fun GameScreen(
         }
     ) {
         LaunchedEffect(viewModel) {
-            viewModel.initGame(isNewGame = isNewGame)
+            onInit()
         }
 
         val state by viewModel.state.collectAsState(initial = SudokuViewState.Idle)
