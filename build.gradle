@@ -1,7 +1,7 @@
 buildscript {
     ext {
         sdk_version = 31
-        min_api_level = 21
+        min_api_level = 23
         gradle_version = '7.2.1'
         kotlin_version = '1.7.0'
         coroutines_version = '1.6.2'
