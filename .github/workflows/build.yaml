@@ -14,7 +14,7 @@ jobs:
       - name: Assemble
         run: ./gradlew clean assembleDebug
       - name: Detekt
-        run: ./gradlew detekt
+        run: ./gradlew clean detekt
       - name: Lint
         run: ./gradlew lint
       - name: Unit Tests

@@ -4,7 +4,9 @@ import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.game.status.data.storage.model.BoardDO
+import com.yamal.sudoku.game.status.data.storage.model.DifficultyDO
 import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
+import com.yamal.sudoku.model.Difficulty
 
 object SudokuDOMother {
 
@@ -23,7 +25,8 @@ object SudokuDOMother {
                     3, 4, 5, 2, 8, 6, 1, 7
                 ).also {
                     it.add(SudokuCell(SudokuCellValue.EMPTY, isFixed = true))
-                }
+                },
+            difficulty = Difficulty.EASY,
         )
 
         val expectedBoardDO = BoardDO(
@@ -39,7 +42,8 @@ object SudokuDOMother {
                 3, 4, 5, 2, 8, 6, 1, 7
             ).also {
                 it.add(SudokuCellDO(0, isFixed = true))
-            }
+            },
+            difficulty = DifficultyDO.EASY,
         )
 
         return board to expectedBoardDO

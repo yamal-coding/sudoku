@@ -1,99 +1,104 @@
 package com.yamal.sudoku.game.viewmodel
 
-import com.yamal.sudoku.commons.thread.di.IODispatcher
-import com.yamal.sudoku.commons.thread.di.MainDispatcher
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.yamal.sudoku.game.domain.Game
 import com.yamal.sudoku.game.domain.Board
+import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.game.status.domain.GetSavedBoard
 import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
 import com.yamal.sudoku.game.status.domain.SaveBoard
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.SudokuCellValue
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
+@HiltViewModel
 class SudokuViewModel @Inject constructor(
     private val getSavedBoard: GetSavedBoard,
     private val saveBoard: SaveBoard,
     private val removeSavedBoard: RemoveSavedBoard,
     private val loadNewBoard: LoadNewBoard,
-    @MainDispatcher mainDispatcher: CoroutineDispatcher,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
-) {
-
-    private val job = Job()
-    private val scope = CoroutineScope(job + mainDispatcher)
+) : ViewModel() {
 
     private lateinit var game: Game
 
-    private val board: Board
+    private val board: ReadOnlyBoard
         get() = game.currentBoard
     private var gameFinished = false
 
-    private val _state = MutableStateFlow<SudokuViewState>(SudokuViewState.Loading)
-    val state: StateFlow<SudokuViewState> = _state
+    private val _state = MutableStateFlow<SudokuViewState>(SudokuViewState.Idle)
+    val state: Flow<SudokuViewState> = _state
 
-    fun onCreate(
-        isNewGame: Boolean
-    ) {
-        when {
-            isNewGame -> startNewGame()
-            else -> lookForSavedBoard()
+    fun initNewGame(difficulty: Difficulty) {
+        onGameNotInitialized {
+            startNewGame(difficulty)
         }
     }
 
-    private fun startNewGame() {
-        scope.launch {
-            val newLevel = withContext(ioDispatcher) {
-                loadNewBoard()
-            }
-            newLevel?.let {
-                onGameLoaded(it.board)
-                saveBoard()
-            } // TODO handle error scenario when a board is not returned
+    fun initExistingGame() {
+        onGameNotInitialized {
+            lookForSavedBoard()
         }
+    }
+
+    private inline fun onGameNotInitialized(block: () -> Unit) {
+        if (_state.compareAndSet(expect = SudokuViewState.Idle, update = SudokuViewState.Loading)) {
+            block()
+        }
+    }
+
+    private fun startNewGame(difficulty: Difficulty) {
+        viewModelScope.launch {
+            val newLevel = loadNewBoard(difficulty)
+            if (newLevel != null) {
+                onGameLoaded(newLevel.board)
+                saveBoard()
+            } else {
+                onNewBoardNotFound()
+            }
+        }
+    }
+
+    private fun onNewBoardNotFound() {
+        _state.value = SudokuViewState.NewBoardNotFound
     }
 
     private fun lookForSavedBoard() {
-        scope.launch {
+        viewModelScope.launch {
             val savedBoard = getSavedBoard()
 
             if (savedBoard != null) {
                 onGameLoaded(savedBoard)
-            } // else // TODO handle error scenario when a saved board is not returned
+            } else {
+                onSavedGameNotFound()
+            }
         }
+    }
+
+    private fun onSavedGameNotFound() {
+        _state.value = SudokuViewState.SavedGameNotFound
     }
 
     private fun onGameLoaded(savedBoard: Board) {
         game = Game(savedBoard)
-        _state.value = SudokuViewState.NewGameLoaded(board)
+        updateBoard(x = null, y = null)
     }
 
     fun onCellSelected(x: Int, y: Int) {
-        if (!gameFinished && (!board[x, y].isFixed)) {
-            game.selectCell(x, y)
-            _state.value = SudokuViewState.UpdateBoard(
-                board,
-                selectedRow = x,
-                selectedColumn = y
-            )
+        if (!gameFinished && game.selectCell(x, y)) {
+            updateBoard(x = x, y = y)
         }
     }
 
     fun selectNumber(value: SudokuCellValue) {
         if (!gameFinished) {
             game.setSelectedCell(value)
-            _state.value = SudokuViewState.UpdateBoard(
-                board,
-                selectedRow = game.selectedRow,
-                selectedColumn = game.selectedColumn
-            )
+            updateBoard(x = game.selectedRow, y = game.selectedColumn)
             checkGame()
         }
     }
@@ -101,7 +106,7 @@ class SudokuViewModel @Inject constructor(
     private fun checkGame() {
         if (game.isSolved()) {
             gameFinished = true
-            _state.value = SudokuViewState.GameFinished
+            _state.value = SudokuViewState.GameFinished(board)
             removeSavedBoard()
         } else {
             saveBoard()
@@ -112,7 +117,11 @@ class SudokuViewModel @Inject constructor(
         saveBoard(game.currentBoard)
     }
 
-    fun onDestroy() {
-        job.cancel()
+    private fun updateBoard(x: Int?, y: Int?) {
+        _state.value = SudokuViewState.UpdatedBoard(
+            board,
+            selectedRow = x,
+            selectedColumn = y,
+        )
     }
 }

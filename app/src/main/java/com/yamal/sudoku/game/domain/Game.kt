@@ -4,16 +4,19 @@ import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.commons.utils.get
 import com.yamal.sudoku.commons.utils.set
+import com.yamal.sudoku.model.Difficulty
 
 const val BOARD_SIDE = 9
 const val QUADRANTS_PER_SIDE = 3
 
 interface ReadOnlyBoard {
+    val difficulty: Difficulty
     operator fun get(row: Int, col: Int): SudokuCell
 }
 
 data class Board(
     private val cells: MutableList<SudokuCell>,
+    override val difficulty: Difficulty,
 ) : ReadOnlyBoard {
 
     override fun get(row: Int, col: Int): SudokuCell =
@@ -23,8 +26,14 @@ data class Board(
         cells[row, col] = cells[row, col].copy(value = value)
     }
 
+    fun copy(): Board =
+        Board(
+            mutableListOf<SudokuCell>().also { it.addAll(cells) },
+            difficulty = difficulty
+        )
+
     companion object {
-        fun empty(): Board =
+        fun empty(difficulty: Difficulty): Board =
             Board(
                 mutableListOf<SudokuCell>().apply {
                     repeat(BOARD_SIDE * BOARD_SIDE) {
@@ -33,7 +42,8 @@ data class Board(
                             isFixed = false
                         ))
                     }
-                }
+                },
+                difficulty = difficulty
             )
     }
 }
@@ -50,7 +60,7 @@ class Game(
     var selectedColumn: Int? = null
         private set
 
-    val currentBoard: Board
+    val currentBoard: ReadOnlyBoard
         get() = board.copy()
 
     init {
@@ -72,12 +82,14 @@ class Game(
         }
     }
 
-    fun selectCell(row: Int, column: Int) {
+    fun selectCell(row: Int, column: Int): Boolean =
         if (!board[row, column].isFixed) {
             selectedRow = row
             selectedColumn = column
+            true
+        } else {
+            false
         }
-    }
 
     fun setSelectedCell(newValue: SudokuCellValue) {
         val row = selectedRow

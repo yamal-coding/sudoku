@@ -1,5 +1,6 @@
 package com.yamal.sudoku.game.level.data
 
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -9,7 +10,7 @@ import java.lang.StringBuilder
 class MapperTest {
     @Test
     fun `Should return null when rawLevel length is lower than 81`() {
-        assertNull(rawLevelToBoard("1"))
+        assertNull(rawLevelToBoard("1", ANY_DIFFICULTY))
     }
 
     @Test
@@ -19,7 +20,7 @@ class MapperTest {
             builder.append("1")
         }
         val rawLevel = builder.toString()
-        assertNull(rawLevelToBoard(rawLevel))
+        assertNull(rawLevelToBoard(rawLevel, ANY_DIFFICULTY))
     }
 
     @Test
@@ -30,14 +31,21 @@ class MapperTest {
             builder.append("1")
         }
         val rawLevel = builder.toString()
-        assertNull(rawLevelToBoard(rawLevel))
+        assertNull(rawLevelToBoard(rawLevel, ANY_DIFFICULTY))
     }
 
     @Test
     fun `Should return Board given a valid rawLevel`() {
         assertEquals(
             AlmostSolvedSudokuMother.almostSolvedSudoku(),
-            rawLevelToBoard(AlmostSolvedSudokuMother.almostSolvedSudokuAsRawLevel)
+            rawLevelToBoard(
+                rawLevel = AlmostSolvedSudokuMother.almostSolvedSudokuAsRawLevel,
+                difficulty = AlmostSolvedSudokuMother.almostSolvedSudoku().difficulty
+            )
         )
+    }
+
+    private companion object {
+        val ANY_DIFFICULTY = Difficulty.EASY
     }
 }

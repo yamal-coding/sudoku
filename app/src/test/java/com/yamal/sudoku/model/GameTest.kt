@@ -14,7 +14,7 @@ class GameTest {
 
     @Test
     fun `Empty board is not solved`() {
-        assertFalse(Game(Board.empty()).isSolved())
+        assertFalse(Game(Board.empty(SOME_DIFFICULTY)).isSolved())
     }
 
     @Test
@@ -28,7 +28,7 @@ class GameTest {
     fun `Board is solved when initialized as empty and filled from the beginning`() {
         val cellValues = SolvedSudokuMother.solvedSudokuAsMap()
 
-        val game = Game(Board.empty())
+        val game = Game(Board.empty(SOME_DIFFICULTY))
         for (x in 0..8) {
             for (y in 0..8) {
                 game.selectCell(x, y)
@@ -82,5 +82,9 @@ class GameTest {
         game.setSelectedCell(AlmostSolvedSudokuMother.getRemainingCellValue())
 
         assertTrue(game.isSolved())
+    }
+
+    private companion object {
+        val SOME_DIFFICULTY = Difficulty.EASY
     }
 }

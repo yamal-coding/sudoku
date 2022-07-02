@@ -23,7 +23,7 @@ empty-blocks:
 style:
   MagicNumber:
     active: true
-    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/generated/source/kapt/**"
+    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/generated/source/kapt/**,**/commons/ui/numbers/**"
   NewLineAtEndOfFile:
     active: false
   UnusedPrivateMember:
