@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -89,6 +90,7 @@ private fun GameScreen(
                     updatedBoard = state as SudokuViewState.UpdatedBoard,
                     onCellSelected = viewModel::onCellSelected,
                     onValueSelected = viewModel::selectNumber,
+                    onUndo = viewModel::undo,
                 )
             }
         }
@@ -100,6 +102,7 @@ private fun UpdatedBoard(
     updatedBoard: SudokuViewState.UpdatedBoard,
     onCellSelected: (row: Int, column: Int) -> Unit,
     onValueSelected: (SudokuCellValue) -> Unit,
+    onUndo: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -122,6 +125,13 @@ private fun UpdatedBoard(
             modifier = Modifier.padding(8.dp),
             onValueSelected = onValueSelected
         )
+        Button(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            onClick = onUndo,
+            enabled = updatedBoard.canUndo
+        ) {
+            Text(text = stringResource(id = R.string.undo_button))
+        }
     }
 }
 
@@ -177,12 +187,14 @@ private fun UpdatedBoardPreview() {
             ),
             selectedRow = null,
             selectedColumn = null,
+            canUndo = true,
         )
 
         UpdatedBoard(
             updatedBoard = state,
             onCellSelected = { _, _ -> },
-            onValueSelected = {}
+            onValueSelected = {},
+            onUndo = {},
         )
     }
 }
