@@ -30,6 +30,10 @@ class SudokuViewModel @Inject constructor(
     private val _state = MutableStateFlow<SudokuViewState>(SudokuViewState.Idle)
     val state: Flow<SudokuViewState> = _state
 
+    private val _shouldShowClearBoardConfirmationDialog = MutableStateFlow(false)
+    val shouldShowClearBoardConfirmationDialog: Flow<Boolean> =
+        _shouldShowClearBoardConfirmationDialog
+
     fun initNewGame(difficulty: Difficulty) {
         onGameNotInitialized {
             startNewGame(difficulty)
@@ -107,7 +111,17 @@ class SudokuViewModel @Inject constructor(
         }
     }
 
+    fun showClearBoardConfirmationDialog() {
+        _shouldShowClearBoardConfirmationDialog.value = true
+    }
+
+    fun hideClearBoardConfirmationDialog() {
+        _shouldShowClearBoardConfirmationDialog.value = false
+    }
+
     fun clear() {
+        hideClearBoardConfirmationDialog()
+
         if (!gameFinished) {
             game.clear()
             updateBoard(x = game.selectedRow, y = game.selectedColumn)

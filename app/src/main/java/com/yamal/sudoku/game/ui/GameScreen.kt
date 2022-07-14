@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.BackButton
+import com.yamal.sudoku.commons.ui.Dialog
 import com.yamal.sudoku.commons.ui.SudokuTopBar
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.domain.Board
@@ -88,11 +89,16 @@ private fun GameScreen(
             is SudokuViewState.SavedGameNotFound -> { /* TODO */ }
             is SudokuViewState.GameFinished -> { /* TODO */ }
             is SudokuViewState.UpdatedBoard -> {
+                val shouldShowClearBoardConfirmationDialog by
+                    viewModel.shouldShowClearBoardConfirmationDialog.collectAsState(initial = false)
                 UpdatedBoard(
                     updatedBoard = state as SudokuViewState.UpdatedBoard,
                     onCellSelected = viewModel::onCellSelected,
                     onValueSelected = viewModel::selectNumber,
                     onUndo = viewModel::undo,
+                    shouldShowClearBoardConfirmationDialog = shouldShowClearBoardConfirmationDialog,
+                    onShowClearBoardConfirmationDialog = viewModel::showClearBoardConfirmationDialog,
+                    onHideClearBoardConfirmationDialog = viewModel::hideClearBoardConfirmationDialog,
                     onClear = viewModel::clear,
                 )
             }
@@ -106,8 +112,18 @@ private fun UpdatedBoard(
     onCellSelected: (row: Int, column: Int) -> Unit,
     onValueSelected: (SudokuCellValue) -> Unit,
     onUndo: () -> Unit,
+    shouldShowClearBoardConfirmationDialog: Boolean,
+    onShowClearBoardConfirmationDialog: () -> Unit,
+    onHideClearBoardConfirmationDialog: () -> Unit,
     onClear: () -> Unit,
 ) {
+    if (shouldShowClearBoardConfirmationDialog) {
+        ClearBoardConfirmationDialog(
+            onHideClearBoardConfirmationDialog = onHideClearBoardConfirmationDialog,
+            onClear = onClear
+        )
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
@@ -128,13 +144,29 @@ private fun UpdatedBoard(
         MovementsPad(
             canUndo = updatedBoard.canUndo,
             onUndo = onUndo,
-            onClear = onClear
+            onClear = onShowClearBoardConfirmationDialog
         )
         NumberPad(
             modifier = Modifier.padding(8.dp),
             onValueSelected = onValueSelected
         )
     }
+}
+
+@Composable
+private fun ClearBoardConfirmationDialog(
+    onHideClearBoardConfirmationDialog: () -> Unit,
+    onClear: () -> Unit,
+) {
+    Dialog(
+        title = stringResource(id = R.string.clear_board_confirmation_dialog_title),
+        subtitle = stringResource(id = R.string.clear_board_confirmation_dialog_subtitle),
+        onDismissRequest = onHideClearBoardConfirmationDialog,
+        leftButtonText = stringResource(id = R.string.clear_board_confirmation_dialog_ok_button),
+        onLeftButtonClick = onClear,
+        rightButtonText = stringResource(id = R.string.clear_board_confirmation_dialog_cancel_button),
+        onRightButtonClick = onHideClearBoardConfirmationDialog
+    )
 }
 
 @Composable
@@ -223,6 +255,9 @@ private fun UpdatedBoardPreview() {
             onCellSelected = { _, _ -> },
             onValueSelected = {},
             onUndo = {},
+            shouldShowClearBoardConfirmationDialog = false,
+            onShowClearBoardConfirmationDialog = {},
+            onHideClearBoardConfirmationDialog = {},
             onClear = {},
         )
     }
