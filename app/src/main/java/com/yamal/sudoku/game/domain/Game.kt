@@ -54,7 +54,11 @@ private data class Movement(
     val column: Int,
     val previousValue: SudokuCellValue,
     val newValue: SudokuCellValue,
-)
+) {
+    fun isTheSameAs(otherMovement: Movement) =
+        row == otherMovement.row && column == otherMovement.column
+                && newValue == otherMovement.newValue
+}
 
 class Game(
     private val board: Board,
@@ -135,7 +139,7 @@ class Game(
     }
 
     private fun registerMovement(movement: Movement) {
-        if (movementsDone.isEmpty() || movementsDone.peek() != movement) {
+        if (movementsDone.isEmpty() || !movementsDone.peek().isTheSameAs(movement)) {
             movementsDone.push(movement)
         }
     }

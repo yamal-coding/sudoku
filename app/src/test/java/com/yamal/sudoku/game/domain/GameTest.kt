@@ -1,11 +1,12 @@
-package com.yamal.sudoku.model
+package com.yamal.sudoku.game.domain
 
 import com.yamal.sudoku.commons.utils.getAsSudokuBoard
-import com.yamal.sudoku.game.domain.Game
-import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.status.data.toSudokuCell
+import com.yamal.sudoku.model.Difficulty
+import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
 import com.yamal.sudoku.test.utils.SolvedSudokuMother
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -82,6 +83,47 @@ class GameTest {
         game.setSelectedCell(AlmostSolvedSudokuMother.getRemainingCellValue())
 
         assertTrue(game.isSolved())
+    }
+
+    @Test
+    fun `should register movement`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+
+        assertTrue(game.canUndo)
+    }
+
+    @Test
+    fun `should undo movement`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+
+        game.undo()
+        assertEquals(game.currentBoard[x, y].value, SudokuCellValue.EMPTY)
+    }
+
+    @Test
+    fun `should not register same movement twice`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+
+        game.undo()
+        assertEquals(game.currentBoard[x, y].value, SudokuCellValue.EMPTY)
+        assertFalse(game.canUndo)
     }
 
     private companion object {
