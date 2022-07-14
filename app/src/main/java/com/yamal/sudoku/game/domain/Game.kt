@@ -5,6 +5,7 @@ import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.commons.utils.get
 import com.yamal.sudoku.commons.utils.set
 import com.yamal.sudoku.model.Difficulty
+import java.util.Stack
 
 const val BOARD_SIDE = 9
 const val QUADRANTS_PER_SIDE = 3
@@ -48,6 +49,17 @@ data class Board(
     }
 }
 
+private data class Movement(
+    val row: Int,
+    val column: Int,
+    val previousValue: SudokuCellValue,
+    val newValue: SudokuCellValue,
+) {
+    fun isTheSameAs(otherMovement: Movement) =
+        row == otherMovement.row && column == otherMovement.column
+                && newValue == otherMovement.newValue
+}
+
 class Game(
     private val board: Board,
 ) {
@@ -60,10 +72,19 @@ class Game(
     var selectedColumn: Int? = null
         private set
 
+    private val movementsDone = Stack<Movement>()
+
+    val canUndo: Boolean
+        get() = movementsDone.isNotEmpty()
+
     val currentBoard: ReadOnlyBoard
         get() = board.copy()
 
     init {
+        init()
+    }
+
+    private fun init() {
         for (row in 0 until BOARD_SIDE) {
             for (col in 0 until BOARD_SIDE) {
                 val cell = board[row, col]
@@ -95,7 +116,20 @@ class Game(
         val row = selectedRow
         val column = selectedColumn
         if (row != null && column != null && !board[row, column].isFixed) {
-            val previousValue = board[row, column].value
+            val movement = Movement(
+                row = row,
+                column = column,
+                previousValue = board[row, column].value,
+                newValue = newValue
+            )
+
+            updateCell(movement)
+            registerMovement(movement)
+        }
+    }
+
+    private fun updateCell(movement: Movement) {
+        with (movement) {
             if (previousValue != SudokuCellValue.EMPTY) {
                 decreaseOccurrencesOfValue(row, column, previousValue)
             }
@@ -105,6 +139,12 @@ class Game(
             }
 
             board[row, column] = newValue
+        }
+    }
+
+    private fun registerMovement(movement: Movement) {
+        if (movementsDone.isEmpty() || !movementsDone.peek().isTheSameAs(movement)) {
+            movementsDone.push(movement)
         }
     }
 
@@ -122,6 +162,28 @@ class Game(
         }
 
         return rowsAreOk && columnsAreOk && quadrantsAreOk
+    }
+
+    fun undo() {
+        if (canUndo) {
+            val lastMovement = movementsDone.pop()
+
+            updateCell(lastMovement.copy(
+                previousValue = lastMovement.newValue,
+                newValue = lastMovement.previousValue
+            ))
+        }
+    }
+
+    fun clear() {
+        for (row in 0 until BOARD_SIDE) {
+            for (col in 0 until BOARD_SIDE) {
+                if (!board[row, col].isFixed) {
+                    board[row, col] = SudokuCellValue.EMPTY
+                }
+            }
+        }
+        init()
     }
 
     private fun initOccurrencesOfEachValuePerLine(): List<MutableMap<SudokuCellValue, Int>> =

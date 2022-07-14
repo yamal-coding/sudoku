@@ -9,6 +9,7 @@ sealed class SudokuViewState {
         val board: ReadOnlyBoard,
         val selectedRow: Int?,
         val selectedColumn: Int?,
+        val canUndo: Boolean,
     ) : SudokuViewState()
     data class GameFinished(
         val board: ReadOnlyBoard,

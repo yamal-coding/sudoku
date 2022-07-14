@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yamal.sudoku.game.domain.Game
 import com.yamal.sudoku.game.domain.Board
-import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.game.status.domain.GetSavedBoard
 import com.yamal.sudoku.game.level.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.RemoveSavedBoard
@@ -26,13 +25,14 @@ class SudokuViewModel @Inject constructor(
 ) : ViewModel() {
 
     private lateinit var game: Game
-
-    private val board: ReadOnlyBoard
-        get() = game.currentBoard
     private var gameFinished = false
 
     private val _state = MutableStateFlow<SudokuViewState>(SudokuViewState.Idle)
     val state: Flow<SudokuViewState> = _state
+
+    private val _shouldShowClearBoardConfirmationDialog = MutableStateFlow(false)
+    val shouldShowClearBoardConfirmationDialog: Flow<Boolean> =
+        _shouldShowClearBoardConfirmationDialog
 
     fun initNewGame(difficulty: Difficulty) {
         onGameNotInitialized {
@@ -103,10 +103,36 @@ class SudokuViewModel @Inject constructor(
         }
     }
 
+    fun undo() {
+        if (!gameFinished) {
+            game.undo()
+            updateBoard(x = game.selectedRow, y = game.selectedColumn)
+            saveBoard()
+        }
+    }
+
+    fun showClearBoardConfirmationDialog() {
+        _shouldShowClearBoardConfirmationDialog.value = true
+    }
+
+    fun hideClearBoardConfirmationDialog() {
+        _shouldShowClearBoardConfirmationDialog.value = false
+    }
+
+    fun clear() {
+        hideClearBoardConfirmationDialog()
+
+        if (!gameFinished) {
+            game.clear()
+            updateBoard(x = game.selectedRow, y = game.selectedColumn)
+            saveBoard()
+        }
+    }
+
     private fun checkGame() {
         if (game.isSolved()) {
             gameFinished = true
-            _state.value = SudokuViewState.GameFinished(board)
+            _state.value = SudokuViewState.GameFinished(game.currentBoard)
             removeSavedBoard()
         } else {
             saveBoard()
@@ -119,9 +145,10 @@ class SudokuViewModel @Inject constructor(
 
     private fun updateBoard(x: Int?, y: Int?) {
         _state.value = SudokuViewState.UpdatedBoard(
-            board,
+            game.currentBoard,
             selectedRow = x,
             selectedColumn = y,
+            canUndo = game.canUndo
         )
     }
 }
