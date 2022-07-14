@@ -106,6 +106,13 @@ class SudokuViewModel @Inject constructor(
         }
     }
 
+    fun clear() {
+        if (!gameFinished) {
+            game.clear()
+            updateBoard(x = game.selectedRow, y = game.selectedColumn)
+        }
+    }
+
     private fun checkGame() {
         if (game.isSolved()) {
             gameFinished = true

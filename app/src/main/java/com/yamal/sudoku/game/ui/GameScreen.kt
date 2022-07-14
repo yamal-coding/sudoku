@@ -2,7 +2,9 @@ package com.yamal.sudoku.game.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
@@ -91,6 +93,7 @@ private fun GameScreen(
                     onCellSelected = viewModel::onCellSelected,
                     onValueSelected = viewModel::selectNumber,
                     onUndo = viewModel::undo,
+                    onClear = viewModel::clear,
                 )
             }
         }
@@ -103,6 +106,7 @@ private fun UpdatedBoard(
     onCellSelected: (row: Int, column: Int) -> Unit,
     onValueSelected: (SudokuCellValue) -> Unit,
     onUndo: () -> Unit,
+    onClear: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -121,17 +125,15 @@ private fun UpdatedBoard(
             selectedColumn = updatedBoard.selectedColumn,
             onCellSelected = onCellSelected,
         )
+        MovementsPad(
+            canUndo = updatedBoard.canUndo,
+            onUndo = onUndo,
+            onClear = onClear
+        )
         NumberPad(
             modifier = Modifier.padding(8.dp),
             onValueSelected = onValueSelected
         )
-        Button(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            onClick = onUndo,
-            enabled = updatedBoard.canUndo
-        ) {
-            Text(text = stringResource(id = R.string.undo_button))
-        }
     }
 }
 
@@ -151,6 +153,32 @@ private fun DifficultyLabel(
         text = stringResource(id = labelResId)
     )
 }
+
+@Composable
+private fun MovementsPad(
+    canUndo: Boolean,
+    onUndo: () -> Unit,
+    onClear: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Button(
+            onClick = onClear,
+        ) {
+            Text(text = stringResource(id = R.string.clear_button))
+        }
+        Button(
+            onClick = onUndo,
+            enabled = canUndo
+        ) {
+            Text(text = stringResource(id = R.string.undo_button))
+        }
+    }
+}
+
 
 @Suppress("MagicNumber")
 @Preview
@@ -195,6 +223,7 @@ private fun UpdatedBoardPreview() {
             onCellSelected = { _, _ -> },
             onValueSelected = {},
             onUndo = {},
+            onClear = {},
         )
     }
 }

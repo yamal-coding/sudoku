@@ -81,6 +81,10 @@ class Game(
         get() = board.copy()
 
     init {
+        init()
+    }
+
+    private fun init() {
         for (row in 0 until BOARD_SIDE) {
             for (col in 0 until BOARD_SIDE) {
                 val cell = board[row, col]
@@ -169,6 +173,17 @@ class Game(
                 newValue = lastMovement.previousValue
             ))
         }
+    }
+
+    fun clear() {
+        for (row in 0 until BOARD_SIDE) {
+            for (col in 0 until BOARD_SIDE) {
+                if (!board[row, col].isFixed) {
+                    board[row, col] = SudokuCellValue.EMPTY
+                }
+            }
+        }
+        init()
     }
 
     private fun initOccurrencesOfEachValuePerLine(): List<MutableMap<SudokuCellValue, Int>> =
