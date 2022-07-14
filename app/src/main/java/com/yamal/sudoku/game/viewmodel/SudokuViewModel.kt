@@ -103,6 +103,7 @@ class SudokuViewModel @Inject constructor(
         if (!gameFinished) {
             game.undo()
             updateBoard(x = game.selectedRow, y = game.selectedColumn)
+            saveBoard()
         }
     }
 
@@ -110,6 +111,7 @@ class SudokuViewModel @Inject constructor(
         if (!gameFinished) {
             game.clear()
             updateBoard(x = game.selectedRow, y = game.selectedColumn)
+            saveBoard()
         }
     }
 
