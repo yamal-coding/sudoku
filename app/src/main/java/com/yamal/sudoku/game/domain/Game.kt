@@ -113,9 +113,7 @@ class Game(
         }
 
     fun setSelectedCell(newValue: SudokuCellValue) {
-        val row = selectedRow
-        val column = selectedColumn
-        if (row != null && column != null && !board[row, column].isFixed) {
+        onValidSelectedCell { row, column ->
             val movement = Movement(
                 row = row,
                 column = column,
@@ -125,6 +123,20 @@ class Game(
 
             updateCell(movement)
             registerMovement(movement)
+        }
+    }
+
+    fun setPossibleValue(possibleValue: SudokuCellValue) {
+        onValidSelectedCell { row, column ->
+            // TODO update possibilities property from SudokuCell and register movement
+        }
+    }
+
+    private inline fun onValidSelectedCell(block: (row: Int, column: Int) -> Unit) {
+        val row = selectedRow
+        val column = selectedColumn
+        if (row != null && column != null && !board[row, column].isFixed) {
+            block(row, column)
         }
     }
 

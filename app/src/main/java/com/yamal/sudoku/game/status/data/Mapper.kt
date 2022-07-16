@@ -11,19 +11,29 @@ import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
 import com.yamal.sudoku.model.Difficulty
 import java.lang.IllegalStateException
 
-@Suppress("MagicNumber")
+private const val EMPTY_INT_VALUE = 0
+private const val ONE_INT_VALUE = 1
+private const val TWO_INT_VALUE = 2
+private const val THREE_INT_VALUE = 3
+private const val FOUR_INT_VALUE = 4
+private const val FIVE_INT_VALUE = 5
+private const val SIX_INT_VALUE = 6
+private const val SEVEN_INT_VALUE = 7
+private const val EIGHT_INT_VALUE = 8
+private const val NINE_INT_VALUE = 9
+
 fun Int.toSudokuCell(): SudokuCellValue =
     when (this) {
-        0 -> SudokuCellValue.EMPTY
-        1 -> SudokuCellValue.ONE
-        2 -> SudokuCellValue.TWO
-        3 -> SudokuCellValue.THREE
-        4 -> SudokuCellValue.FOUR
-        5 -> SudokuCellValue.FIVE
-        6 -> SudokuCellValue.SIX
-        7 -> SudokuCellValue.SEVEN
-        8 -> SudokuCellValue.EIGHT
-        9 -> SudokuCellValue.NINE
+        EMPTY_INT_VALUE -> SudokuCellValue.EMPTY
+        ONE_INT_VALUE -> SudokuCellValue.ONE
+        TWO_INT_VALUE -> SudokuCellValue.TWO
+        THREE_INT_VALUE -> SudokuCellValue.THREE
+        FOUR_INT_VALUE -> SudokuCellValue.FOUR
+        FIVE_INT_VALUE -> SudokuCellValue.FIVE
+        SIX_INT_VALUE -> SudokuCellValue.SIX
+        SEVEN_INT_VALUE -> SudokuCellValue.SEVEN
+        EIGHT_INT_VALUE -> SudokuCellValue.EIGHT
+        NINE_INT_VALUE -> SudokuCellValue.NINE
         else -> throw IllegalStateException("Can't parse sudoku with cell value $this")
     }
 
@@ -42,22 +52,27 @@ fun ReadOnlyBoard.toDO(): BoardDO {
     )
 }
 
-@Suppress("MagicNumber")
 private fun SudokuCell.toDO(): SudokuCellDO {
-    val value = when (this.value) {
-        SudokuCellValue.EMPTY -> 0
-        SudokuCellValue.ONE -> 1
-        SudokuCellValue.TWO -> 2
-        SudokuCellValue.THREE -> 3
-        SudokuCellValue.FOUR -> 4
-        SudokuCellValue.FIVE -> 5
-        SudokuCellValue.SIX -> 6
-        SudokuCellValue.SEVEN -> 7
-        SudokuCellValue.EIGHT -> 8
-        SudokuCellValue.NINE -> 9
-    }
-    return SudokuCellDO(value, isFixed)
+    return SudokuCellDO(
+        value = value.toInt(),
+        isFixed = isFixed,
+        possibilities = possibilities?.map { it.toInt() },
+    )
 }
+
+private fun SudokuCellValue.toInt(): Int =
+    when (this) {
+        SudokuCellValue.EMPTY -> EMPTY_INT_VALUE
+        SudokuCellValue.ONE -> ONE_INT_VALUE
+        SudokuCellValue.TWO -> TWO_INT_VALUE
+        SudokuCellValue.THREE -> THREE_INT_VALUE
+        SudokuCellValue.FOUR -> FOUR_INT_VALUE
+        SudokuCellValue.FIVE -> FIVE_INT_VALUE
+        SudokuCellValue.SIX -> SIX_INT_VALUE
+        SudokuCellValue.SEVEN -> SEVEN_INT_VALUE
+        SudokuCellValue.EIGHT -> EIGHT_INT_VALUE
+        SudokuCellValue.NINE -> NINE_INT_VALUE
+    }
 
 fun BoardDO.toDomain(): Board? {
     val list = mutableListOf<SudokuCell>()
@@ -68,7 +83,7 @@ fun BoardDO.toDomain(): Board? {
 
     return Board(
         cells = list,
-        difficulty = difficultyFromString(difficulty) ?: return null
+        difficulty = difficultyFromString(difficulty) ?: return null,
     )
 }
 
@@ -88,5 +103,8 @@ private fun difficultyFromString(value: String): Difficulty? =
     }
 
 private fun SudokuCellDO.toDomain(): SudokuCell =
-    SudokuCell(value.toSudokuCell(), isFixed)
-
+    SudokuCell(
+        value.toSudokuCell(),
+        isFixed,
+        possibilities = possibilities?.map { it.toSudokuCell() }?.toSet(),
+    )

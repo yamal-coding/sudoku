@@ -34,6 +34,9 @@ class SudokuViewModel @Inject constructor(
     val shouldShowClearBoardConfirmationDialog: Flow<Boolean> =
         _shouldShowClearBoardConfirmationDialog
 
+    private val _isPossibilitiesModeEnabled = MutableStateFlow(false)
+    val isPossibilitiesModeEnabled: Flow<Boolean> = _isPossibilitiesModeEnabled
+
     fun initNewGame(difficulty: Difficulty) {
         onGameNotInitialized {
             startNewGame(difficulty)
@@ -97,10 +100,24 @@ class SudokuViewModel @Inject constructor(
 
     fun selectNumber(value: SudokuCellValue) {
         if (!gameFinished) {
-            game.setSelectedCell(value)
-            updateBoard(x = game.selectedRow, y = game.selectedColumn)
-            checkGame()
+            if (_isPossibilitiesModeEnabled.value) {
+                addPossibilityToSelectedCell(possibleValue = value)
+            } else {
+                updateActualSelectedCell(value)
+            }
         }
+    }
+
+    private fun addPossibilityToSelectedCell(possibleValue: SudokuCellValue) {
+        game.setPossibleValue(possibleValue)
+        updateBoard(x = game.selectedRow, y = game.selectedColumn)
+        saveBoard()
+    }
+
+    private fun updateActualSelectedCell(value: SudokuCellValue) {
+        game.setSelectedCell(value)
+        updateBoard(x = game.selectedRow, y = game.selectedColumn)
+        checkGame()
     }
 
     fun undo() {
@@ -127,6 +144,14 @@ class SudokuViewModel @Inject constructor(
             updateBoard(x = game.selectedRow, y = game.selectedColumn)
             saveBoard()
         }
+    }
+
+    fun onEnablePossibilitiesMode() {
+        _isPossibilitiesModeEnabled.value = true
+    }
+
+    fun onDisablePossibilitiesMode() {
+        _isPossibilitiesModeEnabled.value = false
     }
 
     private fun checkGame() {
