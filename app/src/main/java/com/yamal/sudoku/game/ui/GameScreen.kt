@@ -234,13 +234,21 @@ private fun UpdatedBoardPreview() {
                     it.add(
                         SudokuCell(
                             SudokuCellValue.ONE,
-                            isFixed = true
+                            isFixed = true,
+                            possibilities = null,
                         )
                     )
                     it.add(
                         SudokuCell(
                             SudokuCellValue.EMPTY,
-                            isFixed = false
+                            isFixed = false,
+                            possibilities = setOf(
+                                SudokuCellValue.ONE,
+                                SudokuCellValue.TWO,
+                                SudokuCellValue.FIVE,
+                                SudokuCellValue.SEVEN,
+                                SudokuCellValue.NINE
+                            ),
                         )
                     )
                 }
