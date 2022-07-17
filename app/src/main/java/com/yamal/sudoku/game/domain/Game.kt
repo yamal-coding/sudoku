@@ -114,7 +114,8 @@ class Game(
 
     private fun updateCell(movement: SetValueMovement) {
         with (movement) {
-            if (previousCellState is PreviousCellState.SingleValue && previousCellState.value != SudokuCellValue.EMPTY) {
+            if (previousCellState is PreviousCellState.SingleValue
+                && previousCellState.value != SudokuCellValue.EMPTY) {
                 decreaseOccurrencesOfValue(row, column, previousCellState.value)
             }
 
