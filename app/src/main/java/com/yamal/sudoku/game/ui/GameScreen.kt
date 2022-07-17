@@ -271,7 +271,7 @@ private fun UpdatedBoardPreview() {
                         SudokuCell(
                             SudokuCellValue.EMPTY,
                             isFixed = false,
-                            possibilities = setOf(
+                            possibilities = mutableSetOf(
                                 SudokuCellValue.ONE,
                                 SudokuCellValue.TWO,
                                 SudokuCellValue.FIVE,

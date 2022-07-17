@@ -109,7 +109,7 @@ class SudokuViewModel @Inject constructor(
     }
 
     private fun addPossibilityToSelectedCell(possibleValue: SudokuCellValue) {
-        game.setPossibleValue(possibleValue)
+        game.addOrRemovePossibleValue(possibleValue)
         updateBoard(x = game.selectedRow, y = game.selectedColumn)
         saveBoard()
     }

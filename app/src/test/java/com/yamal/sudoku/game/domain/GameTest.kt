@@ -3,6 +3,7 @@ package com.yamal.sudoku.game.domain
 import com.yamal.sudoku.commons.utils.getAsSudokuBoard
 import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.model.Difficulty
+import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
 import com.yamal.sudoku.test.utils.SolvedSudokuMother
@@ -15,7 +16,7 @@ class GameTest {
 
     @Test
     fun `Empty board is not solved`() {
-        assertFalse(Game(Board.empty(SOME_DIFFICULTY)).isSolved())
+        assertFalse(Game(empty(SOME_DIFFICULTY)).isSolved())
     }
 
     @Test
@@ -29,7 +30,7 @@ class GameTest {
     fun `Board is solved when initialized as empty and filled from the beginning`() {
         val cellValues = SolvedSudokuMother.solvedSudokuAsMap()
 
-        val game = Game(Board.empty(SOME_DIFFICULTY))
+        val game = Game(empty(SOME_DIFFICULTY))
         for (x in 0..8) {
             for (y in 0..8) {
                 game.selectCell(x, y)
@@ -138,6 +139,21 @@ class GameTest {
         game.clear()
         assertEquals(game.currentBoard, AlmostSolvedSudokuMother.almostSolvedSudoku())
     }
+
+    private fun empty(difficulty: Difficulty): Board =
+        Board(
+            mutableListOf<SudokuCell>().apply {
+                repeat(BOARD_SIDE * BOARD_SIDE) {
+                    add(
+                        SudokuCell(
+                            value = SudokuCellValue.EMPTY,
+                            isFixed = false
+                        )
+                    )
+                }
+            },
+            difficulty = difficulty
+        )
 
     private companion object {
         val SOME_DIFFICULTY = Difficulty.EASY
