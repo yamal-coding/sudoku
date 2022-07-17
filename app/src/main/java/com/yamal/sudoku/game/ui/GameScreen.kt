@@ -91,6 +91,9 @@ private fun GameScreen(
             is SudokuViewState.UpdatedBoard -> {
                 val shouldShowClearBoardConfirmationDialog by
                     viewModel.shouldShowClearBoardConfirmationDialog.collectAsState(initial = false)
+                val isPossibilitiesModeEnabled by
+                    viewModel.isPossibilitiesModeEnabled.collectAsState(initial = false)
+
                 UpdatedBoard(
                     updatedBoard = state as SudokuViewState.UpdatedBoard,
                     onCellSelected = viewModel::onCellSelected,
@@ -100,6 +103,9 @@ private fun GameScreen(
                     onShowClearBoardConfirmationDialog = viewModel::showClearBoardConfirmationDialog,
                     onHideClearBoardConfirmationDialog = viewModel::hideClearBoardConfirmationDialog,
                     onClear = viewModel::clear,
+                    isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                    onEnablePossibilitiesMode = viewModel::onEnablePossibilitiesMode,
+                    onDisablePossibilitiesMode = viewModel::onDisablePossibilitiesMode,
                 )
             }
         }
@@ -116,6 +122,9 @@ private fun UpdatedBoard(
     onShowClearBoardConfirmationDialog: () -> Unit,
     onHideClearBoardConfirmationDialog: () -> Unit,
     onClear: () -> Unit,
+    isPossibilitiesModeEnabled: Boolean,
+    onEnablePossibilitiesMode: () -> Unit,
+    onDisablePossibilitiesMode: () -> Unit,
 ) {
     if (shouldShowClearBoardConfirmationDialog) {
         ClearBoardConfirmationDialog(
@@ -144,7 +153,10 @@ private fun UpdatedBoard(
         MovementsPad(
             canUndo = updatedBoard.canUndo,
             onUndo = onUndo,
-            onClear = onShowClearBoardConfirmationDialog
+            onClear = onShowClearBoardConfirmationDialog,
+            isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+            onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+            onDisablePossibilitiesMode = onDisablePossibilitiesMode,
         )
         NumberPad(
             modifier = Modifier.padding(8.dp),
@@ -191,6 +203,9 @@ private fun MovementsPad(
     canUndo: Boolean,
     onUndo: () -> Unit,
     onClear: () -> Unit,
+    isPossibilitiesModeEnabled: Boolean,
+    onEnablePossibilitiesMode: () -> Unit,
+    onDisablePossibilitiesMode: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -208,9 +223,23 @@ private fun MovementsPad(
         ) {
             Text(text = stringResource(id = R.string.undo_button))
         }
+        Button(
+            onClick = if (isPossibilitiesModeEnabled) {
+                onDisablePossibilitiesMode
+            } else {
+                onEnablePossibilitiesMode
+            }
+        ) {
+            Text(text = stringResource(
+                id = if (isPossibilitiesModeEnabled) {
+                    R.string.annotate_button_on
+                } else {
+                    R.string.annotate_button_off
+                }
+            ))
+        }
     }
 }
-
 
 @Suppress("MagicNumber")
 @Preview
@@ -234,13 +263,21 @@ private fun UpdatedBoardPreview() {
                     it.add(
                         SudokuCell(
                             SudokuCellValue.ONE,
-                            isFixed = true
+                            isFixed = true,
+                            possibilities = null,
                         )
                     )
                     it.add(
                         SudokuCell(
                             SudokuCellValue.EMPTY,
-                            isFixed = false
+                            isFixed = false,
+                            possibilities = setOf(
+                                SudokuCellValue.ONE,
+                                SudokuCellValue.TWO,
+                                SudokuCellValue.FIVE,
+                                SudokuCellValue.SEVEN,
+                                SudokuCellValue.NINE
+                            ),
                         )
                     )
                 }
@@ -259,6 +296,9 @@ private fun UpdatedBoardPreview() {
             onShowClearBoardConfirmationDialog = {},
             onHideClearBoardConfirmationDialog = {},
             onClear = {},
+            isPossibilitiesModeEnabled = false,
+            onEnablePossibilitiesMode = {},
+            onDisablePossibilitiesMode = {},
         )
     }
 }

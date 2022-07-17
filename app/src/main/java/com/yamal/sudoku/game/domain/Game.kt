@@ -1,64 +1,7 @@
 package com.yamal.sudoku.game.domain
 
-import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
-import com.yamal.sudoku.commons.utils.get
-import com.yamal.sudoku.commons.utils.set
-import com.yamal.sudoku.model.Difficulty
 import java.util.Stack
-
-const val BOARD_SIDE = 9
-const val QUADRANTS_PER_SIDE = 3
-
-interface ReadOnlyBoard {
-    val difficulty: Difficulty
-    operator fun get(row: Int, col: Int): SudokuCell
-}
-
-data class Board(
-    private val cells: MutableList<SudokuCell>,
-    override val difficulty: Difficulty,
-) : ReadOnlyBoard {
-
-    override fun get(row: Int, col: Int): SudokuCell =
-        cells[row, col]
-
-    operator fun set(row: Int, col: Int, value: SudokuCellValue) {
-        cells[row, col] = cells[row, col].copy(value = value)
-    }
-
-    fun copy(): Board =
-        Board(
-            mutableListOf<SudokuCell>().also { it.addAll(cells) },
-            difficulty = difficulty
-        )
-
-    companion object {
-        fun empty(difficulty: Difficulty): Board =
-            Board(
-                mutableListOf<SudokuCell>().apply {
-                    repeat(BOARD_SIDE * BOARD_SIDE) {
-                        add(SudokuCell(
-                            value = SudokuCellValue.EMPTY,
-                            isFixed = false
-                        ))
-                    }
-                },
-                difficulty = difficulty
-            )
-    }
-}
-
-private data class Movement(
-    val row: Int,
-    val column: Int,
-    val previousValue: SudokuCellValue,
-    val newValue: SudokuCellValue,
-) {
-    fun isTheSameAs(otherMovement: Movement) =
-        row == otherMovement.row && column == otherMovement.column
-                && newValue == otherMovement.newValue
-}
 
 class Game(
     private val board: Board,
@@ -113,13 +56,23 @@ class Game(
         }
 
     fun setSelectedCell(newValue: SudokuCellValue) {
-        val row = selectedRow
-        val column = selectedColumn
-        if (row != null && column != null && !board[row, column].isFixed) {
-            val movement = Movement(
+        onValidSelectedCell { row, column ->
+            val previousCell = board[row, column]
+            val previousCellState =
+                if (previousCell.value == SudokuCellValue.EMPTY
+                    && !previousCell.possibilities.isNullOrEmpty()
+                ) {
+                    PreviousCellState.Possibilities(
+                        possibilities = previousCell.possibilities.map { it }.toSet()
+                    )
+                } else {
+                    PreviousCellState.SingleValue(previousCell.value)
+                }
+
+            val movement = SetValueMovement(
                 row = row,
                 column = column,
-                previousValue = board[row, column].value,
+                previousCellState = previousCellState,
                 newValue = newValue
             )
 
@@ -128,10 +81,42 @@ class Game(
         }
     }
 
-    private fun updateCell(movement: Movement) {
+    fun addOrRemovePossibleValue(possibleValue: SudokuCellValue) {
+        onValidSelectedCell { row, column ->
+            if (possibleValue == SudokuCellValue.EMPTY) {
+                setSelectedCell(possibleValue)
+            } else {
+                val previousValue = board[row, column].value.takeIf { it != SudokuCellValue.EMPTY }
+                val shouldRemovePossibility =
+                    board[row, column].possibilities?.contains(possibleValue) == true
+
+                val movement = SetPossibilitiesMovement(
+                    row = row,
+                    column = column,
+                    previousCellValue = previousValue,
+                    newPossibilities = setOf(possibleValue),
+                    shouldAddPossibilities = !shouldRemovePossibility
+                )
+
+                updateCell(movement)
+                registerMovement(movement)
+            }
+        }
+    }
+
+    private inline fun onValidSelectedCell(block: (row: Int, column: Int) -> Unit) {
+        val row = selectedRow
+        val column = selectedColumn
+        if (row != null && column != null && !board[row, column].isFixed) {
+            block(row, column)
+        }
+    }
+
+    private fun updateCell(movement: SetValueMovement) {
         with (movement) {
-            if (previousValue != SudokuCellValue.EMPTY) {
-                decreaseOccurrencesOfValue(row, column, previousValue)
+            if (previousCellState is PreviousCellState.SingleValue
+                && previousCellState.value != SudokuCellValue.EMPTY) {
+                decreaseOccurrencesOfValue(row, column, previousCellState.value)
             }
 
             if (newValue != SudokuCellValue.EMPTY) {
@@ -139,6 +124,21 @@ class Game(
             }
 
             board[row, column] = newValue
+        }
+    }
+
+    private fun updateCell(movement: SetPossibilitiesMovement) {
+        with (movement) {
+            if (previousCellValue != null && previousCellValue != SudokuCellValue.EMPTY) {
+                decreaseOccurrencesOfValue(row, column, previousCellValue)
+                board[row, column] = SudokuCellValue.EMPTY
+            }
+
+            if (movement.shouldAddPossibilities) {
+                board.addPossibilities(row, column, movement.newPossibilities)
+            } else {
+                board.removePossibilities(row, column, movement.newPossibilities)
+            }
         }
     }
 
@@ -166,12 +166,53 @@ class Game(
 
     fun undo() {
         if (canUndo) {
-            val lastMovement = movementsDone.pop()
+            when (val lastMovement = movementsDone.pop()) {
+                is SetValueMovement -> undoSetValueMovement(lastMovement)
+                is SetPossibilitiesMovement -> undoSetPossibilitiesMovement(lastMovement)
+            }
+        }
+    }
 
-            updateCell(lastMovement.copy(
-                previousValue = lastMovement.newValue,
-                newValue = lastMovement.previousValue
-            ))
+    private fun undoSetValueMovement(movement: SetValueMovement) {
+        when (val previousCellState = movement.previousCellState) {
+            is PreviousCellState.SingleValue -> {
+                updateCell(
+                    movement.copy(
+                        previousCellState = PreviousCellState.SingleValue(movement.newValue),
+                        newValue = previousCellState.value
+                    )
+                )
+            }
+            is PreviousCellState.Possibilities -> {
+                updateCell(
+                    SetPossibilitiesMovement(
+                        row = movement.row,
+                        column = movement.column,
+                        previousCellValue = movement.newValue,
+                        newPossibilities = previousCellState.possibilities,
+                        shouldAddPossibilities = true
+                    )
+                )
+            }
+        }
+    }
+
+    private fun undoSetPossibilitiesMovement(movement: SetPossibilitiesMovement) {
+        if (movement.previousCellValue != null) {
+            updateCell(
+                SetValueMovement(
+                    row = movement.row,
+                    column = movement.column,
+                    previousCellState = PreviousCellState.Possibilities(movement.newPossibilities),
+                    newValue = movement.previousCellValue
+                )
+            )
+        } else {
+            updateCell(
+                movement.copy(
+                    shouldAddPossibilities = !movement.shouldAddPossibilities,
+                )
+            )
         }
     }
 

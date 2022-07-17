@@ -10,4 +10,6 @@
     <string name="clear_board_confirmation_dialog_subtitle">All your progress in this game will be lost</string>
     <string name="clear_board_confirmation_dialog_ok_button">Clear</string>
     <string name="clear_board_confirmation_dialog_cancel_button">Cancel</string>
+    <string name="annotate_button_off">Annotations (Off)</string>
+    <string name="annotate_button_on">Annotations (On)</string>
 </resources>

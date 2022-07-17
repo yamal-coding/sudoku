@@ -9,10 +9,9 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.yamal.sudoku.commons.ui.numbers.One
-import com.yamal.sudoku.commons.ui.numbers.SudokuIcons
 import com.yamal.sudoku.model.SudokuCellValue
 
 // TODO use number image vectors instead of random icons
@@ -21,7 +20,7 @@ fun getSudokuCellIconOrNullIfEmpty(
 ): ImageVector? =
     when (value) {
         SudokuCellValue.EMPTY -> null
-        SudokuCellValue.ONE -> SudokuIcons.One
+        SudokuCellValue.ONE -> Icons.Default.Refresh
         SudokuCellValue.TWO -> Icons.Default.Add
         SudokuCellValue.THREE -> Icons.Default.ArrowBack
         SudokuCellValue.FOUR -> Icons.Default.ThumbUp

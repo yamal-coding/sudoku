@@ -3,11 +3,13 @@ package com.yamal.sudoku.game.domain
 import com.yamal.sudoku.commons.utils.getAsSudokuBoard
 import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.model.Difficulty
+import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
 import com.yamal.sudoku.test.utils.SolvedSudokuMother
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -15,7 +17,7 @@ class GameTest {
 
     @Test
     fun `Empty board is not solved`() {
-        assertFalse(Game(Board.empty(SOME_DIFFICULTY)).isSolved())
+        assertFalse(Game(empty(SOME_DIFFICULTY)).isSolved())
     }
 
     @Test
@@ -29,7 +31,7 @@ class GameTest {
     fun `Board is solved when initialized as empty and filled from the beginning`() {
         val cellValues = SolvedSudokuMother.solvedSudokuAsMap()
 
-        val game = Game(Board.empty(SOME_DIFFICULTY))
+        val game = Game(empty(SOME_DIFFICULTY))
         for (x in 0..8) {
             for (y in 0..8) {
                 game.selectCell(x, y)
@@ -111,6 +113,20 @@ class GameTest {
     }
 
     @Test
+    fun `should undo movement, select new value and then board should be solved`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+        game.undo()
+        game.setSelectedCell(AlmostSolvedSudokuMother.getRemainingCellValue())
+
+        assertTrue(game.isSolved())
+    }
+
+    @Test
     fun `should not register same movement twice`() {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
@@ -139,7 +155,240 @@ class GameTest {
         assertEquals(game.currentBoard, AlmostSolvedSudokuMother.almostSolvedSudoku())
     }
 
+    @Test
+    fun `should add possibility to empty cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+
+        assertEquals(setOf(SOME_POSSIBILITY), game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should undo adding possibility to empty cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.undo()
+
+        assertEquals(game.currentBoard[x, y].value, SudokuCellValue.EMPTY)
+    }
+
+    @Test
+    fun `should add possibility to non-empty cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+
+        assertEquals(game.currentBoard[x, y].value, SudokuCellValue.EMPTY)
+        assertEquals(setOf(SOME_POSSIBILITY), game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should undo adding possibility to non-empty cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.undo()
+
+        assertEquals(
+            game.currentBoard[x, y].value,
+            AlmostSolvedSudokuMother.getWrongRemainingCellValue()
+        )
+        assertNull(game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should add possibility to existing possibilities set on cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.addOrRemovePossibleValue(SOME_OTHER_POSSIBILITY)
+
+        assertEquals(
+            setOf(SOME_POSSIBILITY, SOME_OTHER_POSSIBILITY),
+            game.currentBoard[x, y].possibilities
+        )
+    }
+
+    @Test
+    fun `should undo adding possibility to existing possibilities set on cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.addOrRemovePossibleValue(SOME_OTHER_POSSIBILITY)
+        game.undo()
+
+        assertEquals(setOf(SOME_POSSIBILITY), game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should set value to existing possibilities set on cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+
+        assertEquals(
+            game.currentBoard[x, y].value,
+            AlmostSolvedSudokuMother.getWrongRemainingCellValue()
+        )
+        assertNull(game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should undo setting value to existing possibilities set on cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+        game.undo()
+
+        assertEquals(game.currentBoard[x, y].value, SudokuCellValue.EMPTY)
+        assertEquals(setOf(SOME_POSSIBILITY), game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should set value to existing possibilities set on cell and then board is solved`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getRemainingCellValue())
+
+        assertTrue(game.isSolved())
+    }
+
+    @Test
+    fun `should remove existing possibilities set on cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.setSelectedCell(SudokuCellValue.EMPTY)
+
+        assertEquals(game.currentBoard[x, y].value, SudokuCellValue.EMPTY)
+        assertNull(game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should undo removing existing possibilities set on cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.setSelectedCell(SudokuCellValue.EMPTY)
+        game.undo()
+
+        assertEquals(setOf(SOME_POSSIBILITY), game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should remove existing possibilities set on cell when possibility is empty`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.addOrRemovePossibleValue(SudokuCellValue.EMPTY)
+
+        assertEquals(game.currentBoard[x, y].value, SudokuCellValue.EMPTY)
+        assertNull(game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should undo removing existing possibilities set on cell when possibility is empty`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.addOrRemovePossibleValue(SudokuCellValue.EMPTY)
+        game.undo()
+
+        assertEquals(setOf(SOME_POSSIBILITY), game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should remove existing possibility when it is set again`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+
+        assertEquals(emptySet<SudokuCellValue>(), game.currentBoard[x, y].possibilities)
+    }
+
+    @Test
+    fun `should undo removing existing possibility when it is set again`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.addOrRemovePossibleValue(SOME_POSSIBILITY)
+        game.undo()
+
+        assertEquals(setOf(SOME_POSSIBILITY), game.currentBoard[x, y].possibilities)
+    }
+
+    private fun empty(difficulty: Difficulty): Board =
+        Board(
+            mutableListOf<SudokuCell>().apply {
+                repeat(BOARD_SIDE * BOARD_SIDE) {
+                    add(
+                        SudokuCell(
+                            value = SudokuCellValue.EMPTY,
+                            isFixed = false,
+                            possibilities = null,
+                        )
+                    )
+                }
+            },
+            difficulty = difficulty
+        )
+
     private companion object {
         val SOME_DIFFICULTY = Difficulty.EASY
+        val SOME_POSSIBILITY = SudokuCellValue.EIGHT
+        val SOME_OTHER_POSSIBILITY = SudokuCellValue.NINE
     }
 }
