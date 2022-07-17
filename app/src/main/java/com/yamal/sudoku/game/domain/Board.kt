@@ -34,7 +34,7 @@ data class Board(
             row = row,
             col = col,
             possibilities = possibilities,
-            operator = MutableSet<SudokuCellValue>::plus
+            operator = Set<SudokuCellValue>::plus
         )
     }
 
@@ -43,7 +43,7 @@ data class Board(
             row = row,
             col = col,
             possibilities = possibilities,
-            operator = MutableSet<SudokuCellValue>::minus
+            operator = Set<SudokuCellValue>::minus
         )
     }
 
@@ -51,11 +51,11 @@ data class Board(
         row: Int,
         col: Int,
         possibilities: Set<SudokuCellValue>,
-        operator: MutableSet<SudokuCellValue>.(elements: Iterable<SudokuCellValue>) -> Set<SudokuCellValue>
+        operator: Set<SudokuCellValue>.(elements: Iterable<SudokuCellValue>) -> Set<SudokuCellValue>
     ) {
-        val currentPossibilities = cells[row, col].possibilities ?: mutableSetOf()
+        val currentPossibilities = cells[row, col].possibilities ?: setOf()
         val newPossibilities = currentPossibilities.operator(possibilities)
-        cells[row, col] = cells[row, col].copy(possibilities = newPossibilities.toMutableSet())
+        cells[row, col] = cells[row, col].copy(possibilities = newPossibilities.toSet())
     }
 
     fun copy(): Board =

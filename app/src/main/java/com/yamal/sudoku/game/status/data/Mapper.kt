@@ -106,5 +106,5 @@ private fun SudokuCellDO.toDomain(): SudokuCell =
     SudokuCell(
         value.toSudokuCell(),
         isFixed,
-        possibilities = possibilities?.map { it.toSudokuCell() }?.toMutableSet(),
+        possibilities = possibilities?.map { it.toSudokuCell() }?.toSet(),
     )

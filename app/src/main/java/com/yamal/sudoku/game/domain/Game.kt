@@ -63,7 +63,7 @@ class Game(
                     && !previousCell.possibilities.isNullOrEmpty()
                 ) {
                     PreviousCellState.Possibilities(
-                        possibilities = previousCell.possibilities.map { it }.toMutableSet()
+                        possibilities = previousCell.possibilities.map { it }.toSet()
                     )
                 } else {
                     PreviousCellState.SingleValue(previousCell.value)
@@ -94,7 +94,7 @@ class Game(
                     row = row,
                     column = column,
                     previousCellValue = previousValue,
-                    newPossibilities = mutableSetOf(possibleValue),
+                    newPossibilities = setOf(possibleValue),
                     shouldAddPossibilities = !shouldRemovePossibility
                 )
 

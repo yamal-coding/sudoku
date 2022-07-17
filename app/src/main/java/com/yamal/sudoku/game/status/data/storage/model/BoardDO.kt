@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 data class SudokuCellDO(
     @Json(name = "value") val value: Int,
     @Json(name = "isFixed") val isFixed: Boolean,
-    @Json(name = "possibilities") val possibilities: List<Int>?,
+    @Json(name = "possibilities") val possibilities: List<Int>? = null,
 )
 
 @JsonClass(generateAdapter = true)
