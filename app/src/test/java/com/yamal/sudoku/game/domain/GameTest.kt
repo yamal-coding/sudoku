@@ -152,6 +152,7 @@ class GameTest {
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
 
         game.clear()
+        assertFalse(game.canUndo)
         assertEquals(game.currentBoard, AlmostSolvedSudokuMother.almostSolvedSudoku())
     }
 

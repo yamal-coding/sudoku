@@ -225,6 +225,7 @@ class Game(
             }
         }
         init()
+        movementsDone.clear()
     }
 
     private fun initOccurrencesOfEachValuePerLine(): List<MutableMap<SudokuCellValue, Int>> =
