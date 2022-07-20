@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.domain.ReadOnlyBoard
@@ -105,7 +106,7 @@ private fun CellValueIcon(
     getSudokuCellIconOrNullIfEmpty(value)?.let {
         Icon(
             modifier = modifier,
-            imageVector = it,
+            painter = painterResource(id = it),
             contentDescription = null
         )
     }
