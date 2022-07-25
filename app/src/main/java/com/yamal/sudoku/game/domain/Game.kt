@@ -143,7 +143,15 @@ class Game(
     }
 
     private fun registerMovement(movement: Movement) {
-        if (movementsDone.isEmpty() || !movementsDone.peek().isTheSameAs(movement)) {
+        val isFirstValidMovement = when (movement) {
+            is SetValueMovement ->
+                movementsDone.isEmpty() && movement.newValue != SudokuCellValue.EMPTY
+            is SetPossibilitiesMovement ->
+                movementsDone.isEmpty()
+        }
+        val isNotRepeatedMovement = movementsDone.isNotEmpty()
+                && !movementsDone.peek().isTheSameAs(movement)
+        if (isFirstValidMovement || isNotRepeatedMovement) {
             movementsDone.push(movement)
         }
     }

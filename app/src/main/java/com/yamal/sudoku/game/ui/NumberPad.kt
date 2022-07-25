@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,12 +22,14 @@ fun NumberPad(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        SudokuCellValue.values().forEach {
-            NumberButton(
-                cellValue = it,
-                onClick = onValueSelected
-            )
-        }
+        SudokuCellValue.values()
+            .filter { it != SudokuCellValue.EMPTY }
+            .forEach {
+                NumberButton(
+                    cellValue = it,
+                    onClick = onValueSelected
+                )
+            }
     }
 }
 
@@ -44,7 +44,7 @@ private fun RowScope.NumberButton(
     ) {
         getSudokuCellIconOrNullIfEmpty(cellValue)?.let {
             Icon(painter = painterResource(id = it), contentDescription = null)
-        } ?: Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+        }
     }
 }
 

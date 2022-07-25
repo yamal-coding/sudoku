@@ -143,6 +143,18 @@ class GameTest {
     }
 
     @Test
+    fun `should not register removing empty cell value when it is the first movement`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(SudokuCellValue.EMPTY)
+
+        assertFalse(game.canUndo)
+    }
+
+    @Test
     fun `should clear board resetting it to its initial state`() {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)

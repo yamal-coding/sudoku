@@ -98,7 +98,7 @@ class SudokuViewModel @Inject constructor(
         }
     }
 
-    fun selectNumber(value: SudokuCellValue) {
+    fun setCellValue(value: SudokuCellValue) {
         if (!gameFinished) {
             if (_isPossibilitiesModeEnabled.value) {
                 addPossibilityToSelectedCell(possibleValue = value)

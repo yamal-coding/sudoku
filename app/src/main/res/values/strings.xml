@@ -6,10 +6,11 @@
     <string name="difficulty_hard">Hard</string>
     <string name="undo_button">Undo</string>
     <string name="clear_button">Clear</string>
+    <string name="remove_button">Remove</string>
     <string name="clear_board_confirmation_dialog_title">¿Are you sure you want to clear the board?</string>
     <string name="clear_board_confirmation_dialog_subtitle">All your progress in this game will be lost</string>
     <string name="clear_board_confirmation_dialog_ok_button">Clear</string>
     <string name="clear_board_confirmation_dialog_cancel_button">Cancel</string>
-    <string name="annotate_button_off">Annotations (Off)</string>
-    <string name="annotate_button_on">Annotations (On)</string>
+    <string name="annotate_button_off">Notes (Off)</string>
+    <string name="annotate_button_on">Notes (On)</string>
 </resources>
