@@ -97,7 +97,7 @@ private fun GameScreen(
                 UpdatedBoard(
                     updatedBoard = state as SudokuViewState.UpdatedBoard,
                     onCellSelected = viewModel::onCellSelected,
-                    onValueSelected = viewModel::selectNumber,
+                    onValueSelected = viewModel::setCellValue,
                     onUndo = viewModel::undo,
                     shouldShowClearBoardConfirmationDialog = shouldShowClearBoardConfirmationDialog,
                     onShowClearBoardConfirmationDialog = viewModel::showClearBoardConfirmationDialog,
@@ -106,6 +106,7 @@ private fun GameScreen(
                     isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
                     onEnablePossibilitiesMode = viewModel::onEnablePossibilitiesMode,
                     onDisablePossibilitiesMode = viewModel::onDisablePossibilitiesMode,
+                    onRemoveCellValue = { viewModel.setCellValue(SudokuCellValue.EMPTY) }
                 )
             }
         }
@@ -125,6 +126,7 @@ private fun UpdatedBoard(
     isPossibilitiesModeEnabled: Boolean,
     onEnablePossibilitiesMode: () -> Unit,
     onDisablePossibilitiesMode: () -> Unit,
+    onRemoveCellValue: () -> Unit,
 ) {
     if (shouldShowClearBoardConfirmationDialog) {
         ClearBoardConfirmationDialog(
@@ -157,6 +159,7 @@ private fun UpdatedBoard(
             isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
             onEnablePossibilitiesMode = onEnablePossibilitiesMode,
             onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+            onRemoveCellValue = onRemoveCellValue
         )
         NumberPad(
             modifier = Modifier.padding(8.dp),
@@ -206,6 +209,7 @@ private fun MovementsPad(
     isPossibilitiesModeEnabled: Boolean,
     onEnablePossibilitiesMode: () -> Unit,
     onDisablePossibilitiesMode: () -> Unit,
+    onRemoveCellValue: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -222,6 +226,11 @@ private fun MovementsPad(
             enabled = canUndo
         ) {
             Text(text = stringResource(id = R.string.undo_button))
+        }
+        Button(
+            onClick = onRemoveCellValue
+        ) {
+            Text(text = stringResource(id = R.string.remove_button))
         }
         Button(
             onClick = if (isPossibilitiesModeEnabled) {
@@ -299,6 +308,7 @@ private fun UpdatedBoardPreview() {
             isPossibilitiesModeEnabled = false,
             onEnablePossibilitiesMode = {},
             onDisablePossibilitiesMode = {},
+            onRemoveCellValue = {},
         )
     }
 }
