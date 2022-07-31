@@ -1,30 +1,13 @@
 package com.yamal.sudoku.game.ui
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.yamal.sudoku.R
-import com.yamal.sudoku.commons.ui.BackButton
-import com.yamal.sudoku.commons.ui.Dialog
-import com.yamal.sudoku.commons.ui.SudokuTopBar
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
-import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.game.viewmodel.SudokuViewModel
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
@@ -35,14 +18,12 @@ import com.yamal.sudoku.model.SudokuCellValue
 @Composable
 fun ExistingGameScreen(
     viewModel: SudokuViewModel,
-    onBackClicked: () -> Unit,
 ) {
     GameScreen(
         viewModel = viewModel,
         onInit = {
             viewModel.initExistingGame()
         },
-        onBackClicked = onBackClicked,
     )
 }
 
@@ -50,67 +31,51 @@ fun ExistingGameScreen(
 fun NewGameScreen(
     difficulty: Difficulty,
     viewModel: SudokuViewModel,
-    onBackClicked: () -> Unit,
 ) {
     GameScreen(
         viewModel = viewModel,
         onInit = {
             viewModel.initNewGame(difficulty)
         },
-        onBackClicked = onBackClicked,
     )
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 private fun GameScreen(
     viewModel: SudokuViewModel,
     onInit: () -> Unit,
-    onBackClicked: () -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            SudokuTopBar(
-                navigationIcon = {
-                    BackButton(
-                        onBackClicked = onBackClicked
-                    )
-                }
+    LaunchedEffect(viewModel) {
+        onInit()
+    }
+
+    val state by viewModel.state.collectAsState(initial = SudokuViewState.Idle)
+    when (state) {
+        is SudokuViewState.Idle -> {}
+        is SudokuViewState.Loading -> {}
+        is SudokuViewState.NewBoardNotFound -> { /* TODO */ }
+        is SudokuViewState.SavedGameNotFound -> { /* TODO */ }
+        is SudokuViewState.GameFinished -> { /* TODO */ }
+        is SudokuViewState.UpdatedBoard -> {
+            val shouldShowClearBoardConfirmationDialog by
+            viewModel.shouldShowClearBoardConfirmationDialog.collectAsState(initial = false)
+            val isPossibilitiesModeEnabled by
+            viewModel.isPossibilitiesModeEnabled.collectAsState(initial = false)
+
+            UpdatedBoard(
+                updatedBoard = state as SudokuViewState.UpdatedBoard,
+                onCellSelected = viewModel::onCellSelected,
+                onValueSelected = viewModel::setCellValue,
+                onUndo = viewModel::undo,
+                shouldShowClearBoardConfirmationDialog = shouldShowClearBoardConfirmationDialog,
+                onShowClearBoardConfirmationDialog = viewModel::showClearBoardConfirmationDialog,
+                onHideClearBoardConfirmationDialog = viewModel::hideClearBoardConfirmationDialog,
+                onClear = viewModel::clear,
+                isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                onEnablePossibilitiesMode = viewModel::onEnablePossibilitiesMode,
+                onDisablePossibilitiesMode = viewModel::onDisablePossibilitiesMode,
+                onRemoveCellValue = { viewModel.setCellValue(SudokuCellValue.EMPTY) }
             )
-        }
-    ) {
-        LaunchedEffect(viewModel) {
-            onInit()
-        }
-
-        val state by viewModel.state.collectAsState(initial = SudokuViewState.Idle)
-        when (state) {
-            is SudokuViewState.Idle -> {}
-            is SudokuViewState.Loading -> {}
-            is SudokuViewState.NewBoardNotFound -> { /* TODO */ }
-            is SudokuViewState.SavedGameNotFound -> { /* TODO */ }
-            is SudokuViewState.GameFinished -> { /* TODO */ }
-            is SudokuViewState.UpdatedBoard -> {
-                val shouldShowClearBoardConfirmationDialog by
-                    viewModel.shouldShowClearBoardConfirmationDialog.collectAsState(initial = false)
-                val isPossibilitiesModeEnabled by
-                    viewModel.isPossibilitiesModeEnabled.collectAsState(initial = false)
-
-                UpdatedBoard(
-                    updatedBoard = state as SudokuViewState.UpdatedBoard,
-                    onCellSelected = viewModel::onCellSelected,
-                    onValueSelected = viewModel::setCellValue,
-                    onUndo = viewModel::undo,
-                    shouldShowClearBoardConfirmationDialog = shouldShowClearBoardConfirmationDialog,
-                    onShowClearBoardConfirmationDialog = viewModel::showClearBoardConfirmationDialog,
-                    onHideClearBoardConfirmationDialog = viewModel::hideClearBoardConfirmationDialog,
-                    onClear = viewModel::clear,
-                    isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-                    onEnablePossibilitiesMode = viewModel::onEnablePossibilitiesMode,
-                    onDisablePossibilitiesMode = viewModel::onDisablePossibilitiesMode,
-                    onRemoveCellValue = { viewModel.setCellValue(SudokuCellValue.EMPTY) }
-                )
-            }
         }
     }
 }
@@ -130,6 +95,8 @@ private fun UpdatedBoard(
     onDisablePossibilitiesMode: () -> Unit,
     onRemoveCellValue: () -> Unit,
 ) {
+    val orientation = LocalConfiguration.current.orientation
+
     if (shouldShowClearBoardConfirmationDialog) {
         ClearBoardConfirmationDialog(
             onHideClearBoardConfirmationDialog = onHideClearBoardConfirmationDialog,
@@ -137,118 +104,30 @@ private fun UpdatedBoard(
         )
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
-    ) {
-        DifficultyLabel(
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(start = 8.dp),
-            difficulty = updatedBoard.board.difficulty
-        )
-        SudokuBoard(
-            modifier = Modifier.padding(8.dp),
-            board = updatedBoard.board,
-            selectedRow = updatedBoard.selectedRow,
-            selectedColumn = updatedBoard.selectedColumn,
+    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        PortraitUpdatedBoard(
+            updatedBoard = updatedBoard,
             onCellSelected = onCellSelected,
-        )
-        MovementsPad(
-            canUndo = updatedBoard.canUndo,
+            onValueSelected = onValueSelected,
             onUndo = onUndo,
-            onClear = onShowClearBoardConfirmationDialog,
+            onShowClearBoardConfirmationDialog = onShowClearBoardConfirmationDialog,
             isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
             onEnablePossibilitiesMode = onEnablePossibilitiesMode,
             onDisablePossibilitiesMode = onDisablePossibilitiesMode,
-            onRemoveCellValue = onRemoveCellValue
+            onRemoveCellValue = onRemoveCellValue,
         )
-        NumberPad(
-            modifier = Modifier.padding(8.dp),
-            onValueSelected = onValueSelected
+    } else {
+        LandscapeUpdatedBoard(
+            updatedBoard = updatedBoard,
+            onCellSelected = onCellSelected,
+            onValueSelected = onValueSelected,
+            onUndo = onUndo,
+            onShowClearBoardConfirmationDialog = onShowClearBoardConfirmationDialog,
+            isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+            onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+            onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+            onRemoveCellValue = onRemoveCellValue,
         )
-    }
-}
-
-@Composable
-private fun ClearBoardConfirmationDialog(
-    onHideClearBoardConfirmationDialog: () -> Unit,
-    onClear: () -> Unit,
-) {
-    Dialog(
-        title = stringResource(id = R.string.clear_board_confirmation_dialog_title),
-        subtitle = stringResource(id = R.string.clear_board_confirmation_dialog_subtitle),
-        onDismissRequest = onHideClearBoardConfirmationDialog,
-        leftButtonText = stringResource(id = R.string.clear_board_confirmation_dialog_ok_button),
-        onLeftButtonClick = onClear,
-        rightButtonText = stringResource(id = R.string.clear_board_confirmation_dialog_cancel_button),
-        onRightButtonClick = onHideClearBoardConfirmationDialog
-    )
-}
-
-@Composable
-private fun DifficultyLabel(
-    modifier: Modifier,
-    difficulty: Difficulty
-) {
-    val labelResId = when (difficulty) {
-        Difficulty.EASY -> R.string.difficulty_easy
-        Difficulty.MEDIUM -> R.string.difficulty_medium
-        Difficulty.HARD -> R.string.difficulty_hard
-    }
-
-    Text(
-        modifier = modifier,
-        text = stringResource(id = labelResId)
-    )
-}
-
-@Composable
-private fun MovementsPad(
-    canUndo: Boolean,
-    onUndo: () -> Unit,
-    onClear: () -> Unit,
-    isPossibilitiesModeEnabled: Boolean,
-    onEnablePossibilitiesMode: () -> Unit,
-    onDisablePossibilitiesMode: () -> Unit,
-    onRemoveCellValue: () -> Unit,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Button(
-            onClick = onClear,
-        ) {
-            Text(text = stringResource(id = R.string.clear_button))
-        }
-        Button(
-            onClick = onUndo,
-            enabled = canUndo
-        ) {
-            Text(text = stringResource(id = R.string.undo_button))
-        }
-        Button(
-            onClick = onRemoveCellValue
-        ) {
-            Text(text = stringResource(id = R.string.remove_button))
-        }
-        Button(
-            onClick = if (isPossibilitiesModeEnabled) {
-                onDisablePossibilitiesMode
-            } else {
-                onEnablePossibilitiesMode
-            }
-        ) {
-            Text(text = stringResource(
-                id = if (isPossibilitiesModeEnabled) {
-                    R.string.annotate_button_on
-                } else {
-                    R.string.annotate_button_off
-                }
-            ))
-        }
     }
 }
 
@@ -258,7 +137,7 @@ private fun MovementsPad(
 private fun UpdatedBoardPreview() {
     SudokuTheme {
         val state = SudokuViewState.UpdatedBoard(
-            board = Board(
+            board = com.yamal.sudoku.game.domain.Board(
                 difficulty = Difficulty.EASY,
                 cells = notFixedCells(
                     5, 3, 4, 6, 7, 8, 9, 1, 2,

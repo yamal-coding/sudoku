@@ -15,6 +15,6 @@ fun SudokuNavHost() {
         startDestination = StartDestination.route
     ) {
         startNavGraph(navController)
-        gameNavGraph(navController)
+        gameNavGraph()
     }
 }
