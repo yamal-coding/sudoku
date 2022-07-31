@@ -54,7 +54,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getRemainingCellValue())
 
@@ -66,7 +66,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
 
@@ -78,7 +78,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
 
@@ -92,7 +92,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
 
@@ -104,7 +104,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
 
@@ -117,7 +117,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
         game.undo()
@@ -131,7 +131,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
 
@@ -147,7 +147,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(SudokuCellValue.EMPTY)
 
@@ -155,11 +155,40 @@ class GameTest {
     }
 
     @Test
+    fun `should not register setting same value over an existing placed cell`() {
+        val sameValue = AlmostSolvedSudokuMother.getWrongRemainingCellValue()
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku(
+            remainingCelValue = sameValue
+        )
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(sameValue)
+
+        assertFalse(game.canUndo)
+    }
+
+    @Test
+    fun `should register remove existing placed cell`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku(
+            remainingCelValue = AlmostSolvedSudokuMother.getWrongRemainingCellValue()
+        )
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(SudokuCellValue.EMPTY)
+
+        assertTrue(game.canUndo)
+    }
+
+    @Test
     fun `should clear board resetting it to its initial state`() {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
 
@@ -173,7 +202,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
 
@@ -185,7 +214,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.undo()
@@ -198,7 +227,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
@@ -212,7 +241,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
@@ -230,7 +259,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.addOrRemovePossibleValue(SOME_OTHER_POSSIBILITY)
@@ -246,7 +275,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.addOrRemovePossibleValue(SOME_OTHER_POSSIBILITY)
@@ -260,7 +289,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
@@ -277,7 +306,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
@@ -292,7 +321,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.setSelectedCell(AlmostSolvedSudokuMother.getRemainingCellValue())
@@ -305,7 +334,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.setSelectedCell(SudokuCellValue.EMPTY)
@@ -319,7 +348,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.setSelectedCell(SudokuCellValue.EMPTY)
@@ -333,7 +362,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.addOrRemovePossibleValue(SudokuCellValue.EMPTY)
@@ -347,7 +376,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.addOrRemovePossibleValue(SudokuCellValue.EMPTY)
@@ -361,7 +390,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
@@ -374,7 +403,7 @@ class GameTest {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
 
-        val (x, y) = AlmostSolvedSudokuMother.getEmptyCellCoordinates()
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
         game.selectCell(x, y)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
         game.addOrRemovePossibleValue(SOME_POSSIBILITY)
