@@ -34,7 +34,7 @@ fun SudokuBoard(
     onCellSelected: (row: Int, column: Int) -> Unit,
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.aspectRatio(1F),
     ) {
         StrongHorizontalDivider()
         for (row in 0 until BOARD_SIDE) {
