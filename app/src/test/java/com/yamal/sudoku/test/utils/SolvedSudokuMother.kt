@@ -47,7 +47,9 @@ object SolvedSudokuMother {
 
 object AlmostSolvedSudokuMother {
 
-    fun almostSolvedSudoku(): Board =
+    fun almostSolvedSudoku(
+        remainingCelValue: SudokuCellValue = SudokuCellValue.EMPTY
+    ): Board =
         Board(
             cells = SudokuUtils.fixedCells(
                 5, 3, 4, 6, 7, 8, 9, 1, 2,
@@ -60,7 +62,7 @@ object AlmostSolvedSudokuMother {
                 2, 8, 7, 4, 1, 9, 6, 3, 5,
                 3, 4, 5, 2, 8, 6, 1, 7
             ).also {
-                it.add(SudokuCell(SudokuCellValue.EMPTY, isFixed = false))
+                it.add(SudokuCell(remainingCelValue, isFixed = false))
             },
             difficulty = Difficulty.EASY,
         )
@@ -68,7 +70,7 @@ object AlmostSolvedSudokuMother {
     const val almostSolvedSudokuAsRawLevel: String =
         "534678912672195348198342567859761423426853791713924856961537284287419635345286170"
 
-    fun getEmptyCellCoordinates(): Pair<Int, Int> = 8 to 8
+    fun getRemainingCellCoordinates(): Pair<Int, Int> = 8 to 8
 
     fun getRemainingCellValue(): SudokuCellValue = SudokuCellValue.NINE
 
