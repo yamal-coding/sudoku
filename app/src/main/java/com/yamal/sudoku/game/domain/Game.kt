@@ -6,9 +6,9 @@ import java.util.Stack
 class Game(
     private val board: Board,
 ) {
-    private val occurrencesOfEachValuePerRow = initOccurrencesOfEachValuePerLine()
-    private val occurrencesOfEachValuePerColumn = initOccurrencesOfEachValuePerLine()
-    private val occurrencesOfEachValuePerQuadrant = initOccurrencesOfEachValuePerQuadrant()
+    private lateinit var occurrencesOfEachValuePerRow: List<MutableMap<SudokuCellValue, Int>>
+    private lateinit var occurrencesOfEachValuePerColumn: List<MutableMap<SudokuCellValue, Int>>
+    private lateinit var occurrencesOfEachValuePerQuadrant: List<List<MutableMap<SudokuCellValue, Int>>>
 
     var selectedRow: Int? = null
         private set
@@ -28,6 +28,10 @@ class Game(
     }
 
     private fun init() {
+        occurrencesOfEachValuePerRow = initOccurrencesOfEachValuePerLine()
+        occurrencesOfEachValuePerColumn = initOccurrencesOfEachValuePerLine()
+        occurrencesOfEachValuePerQuadrant = initOccurrencesOfEachValuePerQuadrant()
+
         for (row in 0 until BOARD_SIDE) {
             for (col in 0 until BOARD_SIDE) {
                 val cell = board[row, col]

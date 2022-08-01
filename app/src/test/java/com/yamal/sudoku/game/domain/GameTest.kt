@@ -127,6 +127,20 @@ class GameTest {
     }
 
     @Test
+    fun `should set wrong cell value, remove it and then set correct value, and then game should be solved`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getWrongRemainingCellValue())
+        game.setSelectedCell(SudokuCellValue.EMPTY)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getRemainingCellValue())
+
+        assertTrue(game.isSolved())
+    }
+
+    @Test
     fun `should not register same movement twice`() {
         val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val game = Game(almostDoneSudoku)
@@ -195,6 +209,20 @@ class GameTest {
         game.clear()
         assertFalse(game.canUndo)
         assertEquals(game.currentBoard, AlmostSolvedSudokuMother.almostSolvedSudoku())
+    }
+
+    @Test
+    fun `should clear board and then finishing game`() {
+        val almostDoneSudoku = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        val game = Game(almostDoneSudoku)
+
+        game.clear()
+
+        val (x, y) = AlmostSolvedSudokuMother.getRemainingCellCoordinates()
+        game.selectCell(x, y)
+        game.setSelectedCell(AlmostSolvedSudokuMother.getRemainingCellValue())
+
+        assertTrue(game.isSolved())
     }
 
     @Test
