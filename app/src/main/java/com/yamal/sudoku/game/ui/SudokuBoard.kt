@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
@@ -92,7 +93,10 @@ private fun SudokuCell(
         contentAlignment = Alignment.Center
     ) {
         when {
-            cell.value != SudokuCellValue.EMPTY -> CellValueIcon(value = cell.value)
+            cell.value != SudokuCellValue.EMPTY -> CellValueIcon(
+                modifier = Modifier.fillMaxSize(fraction = 0.7F),
+                value = cell.value
+            )
             cell.possibilities?.isNotEmpty() == true -> CellPossibilities(cell.possibilities)
         }
     }
