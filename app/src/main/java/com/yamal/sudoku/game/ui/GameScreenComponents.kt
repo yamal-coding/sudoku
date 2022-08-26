@@ -1,12 +1,16 @@
 package com.yamal.sudoku.game.ui
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
@@ -77,12 +81,12 @@ fun ClearButton(
     modifier: Modifier = Modifier,
     onClear: () -> Unit
 ) {
-    Button(
+    IconButton(
         modifier = modifier,
         onClick = onClear,
-    ) {
-        Text(text = stringResource(id = R.string.clear_button))
-    }
+        iconRes = R.drawable.ic_clear,
+        textRes = R.string.clear_button
+    )
 }
 
 @Composable
@@ -91,13 +95,13 @@ fun UndoButton(
     onUndo: () -> Unit,
     canUndo: Boolean
 ) {
-    Button(
+    IconButton(
         modifier = modifier,
         onClick = onUndo,
+        iconRes = R.drawable.ic_undo,
+        textRes = R.string.undo_button,
         enabled = canUndo
-    ) {
-        Text(text = stringResource(id = R.string.undo_button))
-    }
+    )
 }
 
 @Composable
@@ -105,12 +109,12 @@ fun RemoveCellButton(
     modifier: Modifier = Modifier,
     onRemoveCellValue: () -> Unit
 ) {
-    Button(
+    IconButton(
         modifier = modifier,
-        onClick = onRemoveCellValue
-    ) {
-        Text(text = stringResource(id = R.string.remove_button))
-    }
+        onClick = onRemoveCellValue,
+        iconRes = R.drawable.ic_remove,
+        textRes = R.string.remove_button,
+    )
 }
 
 @Composable
@@ -120,22 +124,40 @@ fun PossibilitiesButton(
     onEnablePossibilitiesMode: () -> Unit,
     onDisablePossibilitiesMode: () -> Unit,
 ) {
-    Button(
+    IconButton(
         modifier = modifier,
         onClick = if (isPossibilitiesModeEnabled) {
             onDisablePossibilitiesMode
         } else {
             onEnablePossibilitiesMode
-        }
+        },
+        iconRes = R.drawable.ic_notes,
+        textRes = if (isPossibilitiesModeEnabled) {
+            R.string.annotate_button_on
+        } else {
+            R.string.annotate_button_off
+        },
+    )
+}
+
+@Composable
+private fun IconButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    @DrawableRes iconRes: Int,
+    @StringRes textRes: Int,
+    enabled: Boolean = true,
+) {
+    IconButton(
+        modifier = modifier,
+        onClick = onClick,
+        enabled = enabled
     ) {
-        Text(
-            text = stringResource(
-                id = if (isPossibilitiesModeEnabled) {
-                    R.string.annotate_button_on
-                } else {
-                    R.string.annotate_button_off
-                }
-            )
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(painter = painterResource(id = iconRes), contentDescription = null)
+            Text(text = stringResource(id = textRes))
+        }
     }
 }
