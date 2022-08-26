@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.yamal.sudoku.commons.json.animation.SlideInVerticalTransition
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
 import com.yamal.sudoku.model.SudokuCellValue
 
@@ -26,34 +27,36 @@ fun LandscapeUpdatedBoard(
     onDisablePossibilitiesMode: () -> Unit,
     onRemoveCellValue: () -> Unit,
 ) {
-    Row(
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Board(
-            modifier = Modifier.fillMaxHeight(),
-            updatedBoard = updatedBoard,
-            onCellSelected = onCellSelected
-        )
-        Column(
-            modifier = Modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
+    SlideInVerticalTransition {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            MovementsPad(
-                canUndo = updatedBoard.canUndo,
-                onUndo = onUndo,
-                onClear = onShowClearBoardConfirmationDialog,
-                isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-                onEnablePossibilitiesMode = onEnablePossibilitiesMode,
-                onDisablePossibilitiesMode = onDisablePossibilitiesMode,
-                onRemoveCellValue = onRemoveCellValue
+            Board(
+                modifier = Modifier.fillMaxHeight(),
+                updatedBoard = updatedBoard,
+                onCellSelected = onCellSelected
             )
-            GridNumberPad(
-                modifier = Modifier.wrapContentSize(),
-                onValueSelected = onValueSelected
-            )
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                MovementsPad(
+                    canUndo = updatedBoard.canUndo,
+                    onUndo = onUndo,
+                    onClear = onShowClearBoardConfirmationDialog,
+                    isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                    onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+                    onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+                    onRemoveCellValue = onRemoveCellValue
+                )
+                GridNumberPad(
+                    modifier = Modifier.wrapContentSize(),
+                    onValueSelected = onValueSelected
+                )
+            }
         }
     }
 }

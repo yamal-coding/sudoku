@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.yamal.sudoku.commons.json.animation.SlideInVerticalTransition
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
 import com.yamal.sudoku.model.SudokuCellValue
 
@@ -25,27 +26,29 @@ fun PortraitUpdatedBoard(
     onDisablePossibilitiesMode: () -> Unit,
     onRemoveCellValue: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Board(
-            updatedBoard = updatedBoard,
-            onCellSelected = onCellSelected
-        )
-        MovementsPad(
-            canUndo = updatedBoard.canUndo,
-            onUndo = onUndo,
-            onClear = onShowClearBoardConfirmationDialog,
-            isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-            onEnablePossibilitiesMode = onEnablePossibilitiesMode,
-            onDisablePossibilitiesMode = onDisablePossibilitiesMode,
-            onRemoveCellValue = onRemoveCellValue
-        )
-        RowNumberPad(
-            modifier = Modifier.padding(8.dp),
-            onValueSelected = onValueSelected
-        )
+    SlideInVerticalTransition {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Board(
+                updatedBoard = updatedBoard,
+                onCellSelected = onCellSelected
+            )
+            MovementsPad(
+                canUndo = updatedBoard.canUndo,
+                onUndo = onUndo,
+                onClear = onShowClearBoardConfirmationDialog,
+                isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+                onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+                onRemoveCellValue = onRemoveCellValue
+            )
+            RowNumberPad(
+                modifier = Modifier.padding(8.dp),
+                onValueSelected = onValueSelected
+            )
+        }
     }
 }
 
