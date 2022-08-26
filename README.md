@@ -1,5 +1,5 @@
 # sudoku
 Sudoku game
 
-https://user-images.githubusercontent.com/18336786/186897010-cf4d688b-596b-4862-a6b7-000113b033a2.mov
+https://user-images.githubusercontent.com/18336786/186918620-bf8788e2-6c4b-45df-ab8f-bcbab39825e4.mov
 
