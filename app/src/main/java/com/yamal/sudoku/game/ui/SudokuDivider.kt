@@ -53,7 +53,7 @@ private fun Modifier.orientationModifier(
         }
     }
 
-private object SudokuDivider {
+object SudokuDivider {
     enum class Orientation {
         Vertical, Horizontal
     }

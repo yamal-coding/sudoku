@@ -41,6 +41,8 @@ naming:
     active: false
   MatchingDeclarationName:
     active: false
+  VariableNaming:
+    excludes: "**/generated/source/kapt/**"
 
 exceptions:
   TooGenericExceptionThrown:

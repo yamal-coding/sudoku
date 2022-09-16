@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.yamal.sudoku.commons.json.animation.SlideInVerticalTransition
+import com.yamal.sudoku.commons.ui.animation.SlideInVerticalTransition
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
 import com.yamal.sudoku.model.SudokuCellValue
 
