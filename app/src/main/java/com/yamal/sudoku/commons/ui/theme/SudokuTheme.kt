@@ -2,6 +2,8 @@ package com.yamal.sudoku.commons.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -16,7 +18,14 @@ fun SudokuTheme(
     CompositionLocalProvider(
         LocalSudokuColors provides colors
     ) {
-        MaterialTheme(content = content)
+        MaterialTheme(
+            colors = if (isDarkThemeActive) {
+                darkColors()
+            } else {
+                lightColors()
+            },
+            content = content
+        )
     }
 }
 
