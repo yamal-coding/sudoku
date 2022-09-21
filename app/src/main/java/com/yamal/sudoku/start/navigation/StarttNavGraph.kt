@@ -27,6 +27,9 @@ fun NavGraphBuilder.startNavGraph(navController: NavController) {
             },
             onStartNewHardGame = {
                 navController.navigate(NewHardGameDestination.route)
+            },
+            onHowToPlayClicked = {
+                // TODO
             }
         )
     }

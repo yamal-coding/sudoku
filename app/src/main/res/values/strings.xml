@@ -15,4 +15,5 @@
     <string name="annotate_button_on">Notes (On)</string>
     <string name="game_finished_dialog_title">You won!</string>
     <string name="game_finished_dialog_go_to_menu_button">Go back to menu</string>
+    <string name="how_to_play_button">How to play?</string>
 </resources>
