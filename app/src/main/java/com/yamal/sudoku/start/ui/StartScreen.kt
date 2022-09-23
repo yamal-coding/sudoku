@@ -2,7 +2,6 @@ package com.yamal.sudoku.start.ui
 
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -80,7 +78,7 @@ private fun StartScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Header(
+            AnimatedHeader(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.7F)
                     .weight(0.4F)
@@ -104,18 +102,14 @@ private fun StartScreen(
 }
 
 @Composable
-private fun Header(
+private fun AnimatedHeader(
     modifier: Modifier = Modifier
 ) {
     AutomaticAnimatedVisibility(
         modifier = modifier,
         enter = fadeIn(animationSpec = tween(durationMillis = 700)),
     ) {
-        Image(
-            modifier = modifier,
-            painter = painterResource(id = R.drawable.header),
-            contentDescription = null
-        )
+        Header(modifier = modifier)
     }
 }
 
