@@ -7,8 +7,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner = "com.yamal.sudoku.test.di.HiltTestRunner"
-
-        buildConfigField 'boolean', 'IS_DARK_MODE_ALLOWEDD', 'false'
     }
 
     buildTypes {
