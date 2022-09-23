@@ -1,8 +1,8 @@
 buildscript {
     ext {
-        sdk_version = 32
+        sdk_version = 33
         min_api_level = 23
-        gradle_version = '7.2.1'
+        gradle_version = '7.3.0'
         kotlin_version = '1.7.0'
         coroutines_version = '1.6.4'
         junit_version = '4.13.2'
