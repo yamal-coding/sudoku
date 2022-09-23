@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.yamal.sudoku.game.navigation.gameNavGraph
+import com.yamal.sudoku.help.navigation.helpNavGraph
 import com.yamal.sudoku.start.navigation.StartDestination
 import com.yamal.sudoku.start.navigation.startNavGraph
 
@@ -16,5 +17,6 @@ fun SudokuNavHost() {
     ) {
         startNavGraph(navController)
         gameNavGraph(navController)
+        helpNavGraph()
     }
 }

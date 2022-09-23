@@ -8,6 +8,7 @@ import com.yamal.sudoku.game.navigation.ContinueGameDestination
 import com.yamal.sudoku.game.navigation.NewEasyGameDestination
 import com.yamal.sudoku.game.navigation.NewHardGameDestination
 import com.yamal.sudoku.game.navigation.NewMediumGameDestination
+import com.yamal.sudoku.help.navigation.HelpDestination
 import com.yamal.sudoku.start.ui.StartScreen
 
 fun NavGraphBuilder.startNavGraph(navController: NavController) {
@@ -29,7 +30,7 @@ fun NavGraphBuilder.startNavGraph(navController: NavController) {
                 navController.navigate(NewHardGameDestination.route)
             },
             onHowToPlayClicked = {
-                // TODO
+                navController.navigate(HelpDestination.route)
             }
         )
     }
