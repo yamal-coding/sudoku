@@ -23,7 +23,11 @@ fun SudokuTheme(
                 darkColors()
             } else {
                 lightColors()
-            },
+            }.copy(
+                background = SudokuTheme.colors.background,
+                onBackground = SudokuTheme.colors.textPrimary,
+                primary = SudokuTheme.colors.textPrimary,
+            ),
             content = content
         )
     }

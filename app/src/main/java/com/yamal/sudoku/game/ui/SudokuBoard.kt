@@ -111,7 +111,8 @@ private fun CellValueIcon(
         Icon(
             modifier = modifier,
             painter = painterResource(id = it),
-            contentDescription = null
+            contentDescription = null,
+            tint = SudokuTheme.colors.cellText
         )
     }
 }

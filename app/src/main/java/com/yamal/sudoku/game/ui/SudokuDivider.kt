@@ -36,7 +36,7 @@ private fun SudokuDivider(
                     SudokuDivider.STRONG_THICKNESS.dp
                 )
             }
-        }.background(SudokuTheme.colors.divider)
+        }.background(SudokuTheme.colors.boardDivider)
     )
 }
 
@@ -62,7 +62,7 @@ object SudokuDivider {
         Light, Strong
     }
 
-    const val LIGHT_THICKNESS = 0.5
+    const val LIGHT_THICKNESS = 1
     const val STRONG_THICKNESS = 2
 }
 
