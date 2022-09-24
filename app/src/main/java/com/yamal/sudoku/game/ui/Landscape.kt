@@ -3,10 +3,12 @@ package com.yamal.sudoku.game.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,13 +43,11 @@ fun LandscapeUpdatedBoard(
             )
             AnimatedVisibility(visible = !updatedBoard.gameHasFinished) {
                 Column(
-                    modifier = Modifier.fillMaxHeight(),
+                    modifier = Modifier.fillMaxHeight().padding(start = 8.dp),
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     DifficultyLabel(
-                        modifier = Modifier
-                            .padding(start = 8.dp),
                         difficulty = updatedBoard.board.difficulty
                     )
                     MovementsPad(
@@ -79,7 +79,10 @@ private fun MovementsPad(
     onDisablePossibilitiesMode: () -> Unit,
     onRemoveCellValue: () -> Unit,
 ) {
-    Column {
+    Column(
+        modifier = Modifier.width(IntrinsicSize.Max),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Row {
             ClearButton(
                 onClear = onClear,

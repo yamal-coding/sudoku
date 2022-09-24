@@ -55,7 +55,7 @@ fun ClearBoardConfirmationDialog(
 
 @Composable
 fun DifficultyLabel(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     difficulty: Difficulty
 ) {
     val labelResId = when (difficulty) {
