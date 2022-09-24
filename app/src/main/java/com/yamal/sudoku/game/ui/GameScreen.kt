@@ -18,7 +18,6 @@ import com.yamal.sudoku.model.SudokuCellValue
 @Composable
 fun ExistingGameScreen(
     viewModel: SudokuViewModel,
-    onGoBackToMenu: () -> Unit,
 ) {
     GameScreen(
         viewModel = viewModel,
@@ -32,7 +31,6 @@ fun ExistingGameScreen(
 fun NewGameScreen(
     difficulty: Difficulty,
     viewModel: SudokuViewModel,
-    onGoBackToMenu: () -> Unit,
 ) {
     GameScreen(
         viewModel = viewModel,

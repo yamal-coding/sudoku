@@ -33,6 +33,7 @@ fun Board(
             selectedRow = updatedBoard.selectedRow,
             selectedColumn = updatedBoard.selectedColumn,
             onCellSelected = onCellSelected,
+            gameHasFinished = updatedBoard.gameHasFinished,
         )
     }
 }
