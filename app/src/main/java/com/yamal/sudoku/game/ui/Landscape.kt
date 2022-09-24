@@ -1,5 +1,6 @@
 package com.yamal.sudoku.game.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,7 @@ fun LandscapeUpdatedBoard(
     SlideInVerticalTransition {
         Row(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Board(
@@ -38,24 +39,31 @@ fun LandscapeUpdatedBoard(
                 updatedBoard = updatedBoard,
                 onCellSelected = onCellSelected
             )
-            Column(
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MovementsPad(
-                    canUndo = updatedBoard.canUndo,
-                    onUndo = onUndo,
-                    onClear = onShowClearBoardConfirmationDialog,
-                    isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-                    onEnablePossibilitiesMode = onEnablePossibilitiesMode,
-                    onDisablePossibilitiesMode = onDisablePossibilitiesMode,
-                    onRemoveCellValue = onRemoveCellValue
-                )
-                GridNumberPad(
-                    modifier = Modifier.wrapContentSize(),
-                    onValueSelected = onValueSelected
-                )
+            AnimatedVisibility(visible = !updatedBoard.gameHasFinished) {
+                Column(
+                    modifier = Modifier.fillMaxHeight(),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    DifficultyLabel(
+                        modifier = Modifier
+                            .padding(start = 8.dp),
+                        difficulty = updatedBoard.board.difficulty
+                    )
+                    MovementsPad(
+                        canUndo = updatedBoard.canUndo,
+                        onUndo = onUndo,
+                        onClear = onShowClearBoardConfirmationDialog,
+                        isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                        onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+                        onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+                        onRemoveCellValue = onRemoveCellValue
+                    )
+                    GridNumberPad(
+                        modifier = Modifier.wrapContentSize(),
+                        onValueSelected = onValueSelected
+                    )
+                }
             }
         }
     }

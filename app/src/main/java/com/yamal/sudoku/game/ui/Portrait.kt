@@ -1,5 +1,6 @@
 package com.yamal.sudoku.game.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,23 +32,35 @@ fun PortraitUpdatedBoard(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
+            AnimatedVisibility(visible = !updatedBoard.gameHasFinished) {
+                DifficultyLabel(
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(start = 8.dp),
+                    difficulty = updatedBoard.board.difficulty
+                )
+            }
             Board(
                 updatedBoard = updatedBoard,
                 onCellSelected = onCellSelected
             )
-            MovementsPad(
-                canUndo = updatedBoard.canUndo,
-                onUndo = onUndo,
-                onClear = onShowClearBoardConfirmationDialog,
-                isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-                onEnablePossibilitiesMode = onEnablePossibilitiesMode,
-                onDisablePossibilitiesMode = onDisablePossibilitiesMode,
-                onRemoveCellValue = onRemoveCellValue
-            )
-            RowNumberPad(
-                modifier = Modifier.padding(8.dp),
-                onValueSelected = onValueSelected
-            )
+            AnimatedVisibility(visible = !updatedBoard.gameHasFinished) {
+                Column {
+                    MovementsPad(
+                        canUndo = updatedBoard.canUndo,
+                        onUndo = onUndo,
+                        onClear = onShowClearBoardConfirmationDialog,
+                        isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                        onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+                        onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+                        onRemoveCellValue = onRemoveCellValue
+                    )
+                    RowNumberPad(
+                        modifier = Modifier.padding(8.dp),
+                        onValueSelected = onValueSelected
+                    )
+                }
+            }
         }
     }
 }

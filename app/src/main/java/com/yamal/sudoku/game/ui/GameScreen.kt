@@ -25,7 +25,6 @@ fun ExistingGameScreen(
         onInit = {
             viewModel.initExistingGame()
         },
-        onGoBackToMenu = onGoBackToMenu,
     )
 }
 
@@ -40,7 +39,6 @@ fun NewGameScreen(
         onInit = {
             viewModel.initNewGame(difficulty)
         },
-        onGoBackToMenu = onGoBackToMenu,
     )
 }
 
@@ -48,7 +46,6 @@ fun NewGameScreen(
 private fun GameScreen(
     viewModel: SudokuViewModel,
     onInit: () -> Unit,
-    onGoBackToMenu: () -> Unit,
 ) {
     LaunchedEffect(viewModel) {
         onInit()
@@ -60,9 +57,6 @@ private fun GameScreen(
         is SudokuViewState.Loading -> {}
         is SudokuViewState.NewBoardNotFound -> { /* TODO */ }
         is SudokuViewState.SavedGameNotFound -> { /* TODO */ }
-        is SudokuViewState.GameFinished -> {
-            GameFinished(onGoBackToMenu = onGoBackToMenu)
-        }
         is SudokuViewState.UpdatedBoard -> {
             val shouldShowClearBoardConfirmationDialog by
             viewModel.shouldShowClearBoardConfirmationDialog.collectAsState(initial = false)
@@ -182,6 +176,7 @@ private fun UpdatedBoardPreview() {
             selectedRow = null,
             selectedColumn = null,
             canUndo = true,
+            gameHasFinished = false,
         )
 
         UpdatedBoard(

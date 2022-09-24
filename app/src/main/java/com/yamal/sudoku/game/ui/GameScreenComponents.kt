@@ -27,12 +27,6 @@ fun Board(
     Column(
         modifier = modifier
     ) {
-        DifficultyLabel(
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(start = 8.dp),
-            difficulty = updatedBoard.board.difficulty
-        )
         SudokuBoard(
             modifier = Modifier.padding(8.dp),
             board = updatedBoard.board,
@@ -60,7 +54,7 @@ fun ClearBoardConfirmationDialog(
 }
 
 @Composable
-private fun DifficultyLabel(
+fun DifficultyLabel(
     modifier: Modifier,
     difficulty: Difficulty
 ) {
