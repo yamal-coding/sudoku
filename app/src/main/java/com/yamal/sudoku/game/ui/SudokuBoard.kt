@@ -1,9 +1,7 @@
 package com.yamal.sudoku.game.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,8 +30,7 @@ import com.yamal.sudoku.game.domain.QUADRANTS_PER_SIDE
 import com.yamal.sudoku.model.SudokuCellValue
 
 object SudokuBoardAnimation {
-    const val COLOR_TRANSITION_DURATION = 500
-    const val FADE_OUT_TRANSITION_DURATION = 700
+    const val FADE_OUT_TRANSITION_DURATION = 2000
 }
 
 @Composable
@@ -119,32 +115,17 @@ private fun SudokuCell(
     isSelected: Boolean,
     gameHasFinished: Boolean,
 ) {
-    val cellColorTransition = updateTransition(
-        targetState = gameHasFinished,
-        label = "game finished cell transition"
-    )
-
-    val cellColor by cellColorTransition.animateColor(
-        label = "game finished cell animation",
-        transitionSpec = {
-            tween(durationMillis = SudokuBoardAnimation.COLOR_TRANSITION_DURATION)
-        }
-    ) { gameHasFinishedAnimatedValue ->
-        if (!gameHasFinishedAnimatedValue) {
-            when {
-                cell.isFixed -> SudokuTheme.colors.fixedCellBackground
-                isSelected -> SudokuTheme.colors.selectedCellBackground
-                else -> SudokuTheme.colors.cellBackground
-            }
-        } else {
-            SudokuTheme.colors.gameFinishedCellBackground
-        }
-    }
-
     Box(
         modifier = modifier
             .aspectRatio(1F)
-            .background(cellColor)
+            .background(
+                when {
+                    gameHasFinished -> SudokuTheme.colors.gameFinishedCellBackground
+                    cell.isFixed -> SudokuTheme.colors.fixedCellBackground
+                    isSelected -> SudokuTheme.colors.selectedCellBackground
+                    else -> SudokuTheme.colors.cellBackground
+                }
+            )
             .`if`(!cell.isFixed) {
                 clickable { onSelected() }
             }
