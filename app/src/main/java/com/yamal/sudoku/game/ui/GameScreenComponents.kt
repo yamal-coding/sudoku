@@ -27,18 +27,13 @@ fun Board(
     Column(
         modifier = modifier
     ) {
-        DifficultyLabel(
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(start = 8.dp),
-            difficulty = updatedBoard.board.difficulty
-        )
         SudokuBoard(
             modifier = Modifier.padding(8.dp),
             board = updatedBoard.board,
             selectedRow = updatedBoard.selectedRow,
             selectedColumn = updatedBoard.selectedColumn,
             onCellSelected = onCellSelected,
+            gameHasFinished = updatedBoard.gameHasFinished,
         )
     }
 }
@@ -60,8 +55,8 @@ fun ClearBoardConfirmationDialog(
 }
 
 @Composable
-private fun DifficultyLabel(
-    modifier: Modifier,
+fun DifficultyLabel(
+    modifier: Modifier = Modifier,
     difficulty: Difficulty
 ) {
     val labelResId = when (difficulty) {

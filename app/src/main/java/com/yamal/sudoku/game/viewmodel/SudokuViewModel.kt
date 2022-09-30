@@ -157,7 +157,13 @@ class SudokuViewModel @Inject constructor(
     private fun checkGame() {
         if (game.isSolved()) {
             gameFinished = true
-            _state.value = SudokuViewState.GameFinished(game.currentBoard)
+            _state.value = SudokuViewState.UpdatedBoard(
+                board = game.currentBoard,
+                selectedColumn = null,
+                selectedRow = null,
+                canUndo = false,
+                gameHasFinished = true,
+            )
             removeSavedBoard()
         } else {
             saveBoard()
@@ -170,10 +176,11 @@ class SudokuViewModel @Inject constructor(
 
     private fun updateBoard(x: Int?, y: Int?) {
         _state.value = SudokuViewState.UpdatedBoard(
-            game.currentBoard,
+            board = game.currentBoard,
             selectedRow = x,
             selectedColumn = y,
-            canUndo = game.canUndo
+            canUndo = game.canUndo,
+            gameHasFinished = false,
         )
     }
 }

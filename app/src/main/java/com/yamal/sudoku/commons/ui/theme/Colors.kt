@@ -8,6 +8,7 @@ data class SudokuColors(
     val cellText: Color,
     val cellBackground: Color,
     val fixedCellBackground: Color,
+    val gameFinishedCellBackground: Color,
     val boardDivider: Color,
     val divider: Color,
     val selectedCellBackground: Color,
@@ -37,6 +38,7 @@ val LightColors = SudokuColors(
     divider = SudokuColors.Grey2Alpha8,
     selectedCellBackground = SudokuColors.Yellow,
     background = SudokuColors.White,
+    gameFinishedCellBackground = SudokuColors.White,
 )
 
 val DarkColors = LightColors.copy(
@@ -46,7 +48,8 @@ val DarkColors = LightColors.copy(
     fixedCellBackground = SudokuColors.Grey4Alpha20,
     divider = SudokuColors.Grey1,
     selectedCellBackground = SudokuColors.YellowAlpha20,
-    background = SudokuColors.Grey6
+    background = SudokuColors.Grey6,
+    gameFinishedCellBackground = SudokuColors.Grey5,
 )
 
 val LocalSudokuColors = compositionLocalOf {

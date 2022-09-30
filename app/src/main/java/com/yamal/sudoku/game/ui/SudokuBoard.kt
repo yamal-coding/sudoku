@@ -1,5 +1,8 @@
 package com.yamal.sudoku.game.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,12 +29,46 @@ import com.yamal.sudoku.game.domain.BOARD_SIDE
 import com.yamal.sudoku.game.domain.QUADRANTS_PER_SIDE
 import com.yamal.sudoku.model.SudokuCellValue
 
+object SudokuBoardAnimation {
+    const val FADE_OUT_TRANSITION_DURATION = 2000
+}
+
 @Composable
 fun SudokuBoard(
     modifier: Modifier,
     board: ReadOnlyBoard,
     selectedRow: Int?,
     selectedColumn: Int?,
+    gameHasFinished: Boolean,
+    onCellSelected: (row: Int, column: Int) -> Unit,
+) {
+    AnimatedVisibility(
+        visible = !gameHasFinished,
+        exit = fadeOut(
+            animationSpec = tween(
+                durationMillis = SudokuBoardAnimation.FADE_OUT_TRANSITION_DURATION,
+            )
+        )
+    ) {
+        SudokuBoardImpl(
+            modifier = modifier,
+            board = board,
+            selectedRow = selectedRow,
+            selectedColumn = selectedColumn,
+            gameHasFinished = gameHasFinished,
+            onCellSelected = onCellSelected
+        )
+    }
+}
+
+
+@Composable
+private fun SudokuBoardImpl(
+    modifier: Modifier,
+    board: ReadOnlyBoard,
+    selectedRow: Int?,
+    selectedColumn: Int?,
+    gameHasFinished: Boolean,
     onCellSelected: (row: Int, column: Int) -> Unit,
 ) {
     Column(
@@ -52,6 +89,7 @@ fun SudokuBoard(
                             onCellSelected(row, column)
                         },
                         isSelected = row == selectedRow && column == selectedColumn,
+                        gameHasFinished = gameHasFinished
                     )
                     if ((column + 1) % QUADRANTS_PER_SIDE == 0) {
                         StrongVerticalDivider()
@@ -75,12 +113,14 @@ private fun SudokuCell(
     cell: Cell,
     onSelected: () -> Unit,
     isSelected: Boolean,
+    gameHasFinished: Boolean,
 ) {
     Box(
         modifier = modifier
             .aspectRatio(1F)
             .background(
                 when {
+                    gameHasFinished -> SudokuTheme.colors.gameFinishedCellBackground
                     cell.isFixed -> SudokuTheme.colors.fixedCellBackground
                     isSelected -> SudokuTheme.colors.selectedCellBackground
                     else -> SudokuTheme.colors.cellBackground

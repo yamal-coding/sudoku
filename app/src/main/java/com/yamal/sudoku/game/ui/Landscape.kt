@@ -1,11 +1,14 @@
 package com.yamal.sudoku.game.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,7 +33,7 @@ fun LandscapeUpdatedBoard(
     SlideInVerticalTransition {
         Row(
             modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Board(
@@ -38,24 +41,29 @@ fun LandscapeUpdatedBoard(
                 updatedBoard = updatedBoard,
                 onCellSelected = onCellSelected
             )
-            Column(
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                MovementsPad(
-                    canUndo = updatedBoard.canUndo,
-                    onUndo = onUndo,
-                    onClear = onShowClearBoardConfirmationDialog,
-                    isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-                    onEnablePossibilitiesMode = onEnablePossibilitiesMode,
-                    onDisablePossibilitiesMode = onDisablePossibilitiesMode,
-                    onRemoveCellValue = onRemoveCellValue
-                )
-                GridNumberPad(
-                    modifier = Modifier.wrapContentSize(),
-                    onValueSelected = onValueSelected
-                )
+            AnimatedVisibility(visible = !updatedBoard.gameHasFinished) {
+                Column(
+                    modifier = Modifier.fillMaxHeight().padding(start = 8.dp),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    DifficultyLabel(
+                        difficulty = updatedBoard.board.difficulty
+                    )
+                    MovementsPad(
+                        canUndo = updatedBoard.canUndo,
+                        onUndo = onUndo,
+                        onClear = onShowClearBoardConfirmationDialog,
+                        isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                        onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+                        onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+                        onRemoveCellValue = onRemoveCellValue
+                    )
+                    GridNumberPad(
+                        modifier = Modifier.wrapContentSize(),
+                        onValueSelected = onValueSelected
+                    )
+                }
             }
         }
     }
@@ -71,7 +79,10 @@ private fun MovementsPad(
     onDisablePossibilitiesMode: () -> Unit,
     onRemoveCellValue: () -> Unit,
 ) {
-    Column {
+    Column(
+        modifier = Modifier.width(IntrinsicSize.Max),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Row {
             ClearButton(
                 onClear = onClear,
