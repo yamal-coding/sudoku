@@ -56,25 +56,29 @@ private fun GameScreen(
         is SudokuViewState.NewBoardNotFound -> { /* TODO */ }
         is SudokuViewState.SavedGameNotFound -> { /* TODO */ }
         is SudokuViewState.UpdatedBoard -> {
-            val shouldShowClearBoardConfirmationDialog by
-            viewModel.shouldShowClearBoardConfirmationDialog.collectAsState(initial = false)
-            val isPossibilitiesModeEnabled by
-            viewModel.isPossibilitiesModeEnabled.collectAsState(initial = false)
-
-            UpdatedBoard(
-                updatedBoard = state as SudokuViewState.UpdatedBoard,
-                onCellSelected = viewModel::onCellSelected,
-                onValueSelected = viewModel::setCellValue,
-                onUndo = viewModel::undo,
-                shouldShowClearBoardConfirmationDialog = shouldShowClearBoardConfirmationDialog,
-                onShowClearBoardConfirmationDialog = viewModel::showClearBoardConfirmationDialog,
-                onHideClearBoardConfirmationDialog = viewModel::hideClearBoardConfirmationDialog,
-                onClear = viewModel::clear,
-                isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-                onEnablePossibilitiesMode = viewModel::onEnablePossibilitiesMode,
-                onDisablePossibilitiesMode = viewModel::onDisablePossibilitiesMode,
-                onRemoveCellValue = { viewModel.setCellValue(SudokuCellValue.EMPTY) }
-            )
+            val updatedBoard = state as SudokuViewState.UpdatedBoard
+            if (updatedBoard.gameHasFinished) {
+               GameFinishedScreen()
+            } else {
+                val shouldShowClearBoardConfirmationDialog by
+                    viewModel.shouldShowClearBoardConfirmationDialog.collectAsState(initial = false)
+                val isPossibilitiesModeEnabled by
+                    viewModel.isPossibilitiesModeEnabled.collectAsState(initial = false)
+                UpdatedBoard(
+                    updatedBoard = updatedBoard,
+                    onCellSelected = viewModel::onCellSelected,
+                    onValueSelected = viewModel::setCellValue,
+                    onUndo = viewModel::undo,
+                    shouldShowClearBoardConfirmationDialog = shouldShowClearBoardConfirmationDialog,
+                    onShowClearBoardConfirmationDialog = viewModel::showClearBoardConfirmationDialog,
+                    onHideClearBoardConfirmationDialog = viewModel::hideClearBoardConfirmationDialog,
+                    onClear = viewModel::clear,
+                    isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                    onEnablePossibilitiesMode = viewModel::onEnablePossibilitiesMode,
+                    onDisablePossibilitiesMode = viewModel::onDisablePossibilitiesMode,
+                    onRemoveCellValue = { viewModel.setCellValue(SudokuCellValue.EMPTY) }
+                )
+            }
         }
     }
 }
