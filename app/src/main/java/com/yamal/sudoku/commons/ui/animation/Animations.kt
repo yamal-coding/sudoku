@@ -10,6 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 
+object SudokuDefaultAnimationConstants {
+    const val DefaultSlideInVerticalDuration = 1000
+}
+
 @Composable
 fun SlideInVerticalTransition(
     modifier: Modifier = Modifier,
@@ -17,7 +21,12 @@ fun SlideInVerticalTransition(
 ) {
     AutomaticAnimatedVisibility(
         modifier = modifier,
-        enter = slideInVertically(initialOffsetY = { it * 2 }) + fadeIn(animationSpec = tween(durationMillis = 1000)),
+        enter =
+            slideInVertically(initialOffsetY = { it * 2 }) +
+                fadeIn(
+                    animationSpec = tween(
+                    durationMillis = SudokuDefaultAnimationConstants.DefaultSlideInVerticalDuration
+                )),
         content = content
     )
 }

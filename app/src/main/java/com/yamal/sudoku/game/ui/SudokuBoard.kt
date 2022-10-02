@@ -29,10 +29,6 @@ import com.yamal.sudoku.game.domain.BOARD_SIDE
 import com.yamal.sudoku.game.domain.QUADRANTS_PER_SIDE
 import com.yamal.sudoku.model.SudokuCellValue
 
-object SudokuBoardAnimation {
-    const val FADE_OUT_TRANSITION_DURATION = 2000
-}
-
 @Composable
 fun SudokuBoard(
     modifier: Modifier,
@@ -46,7 +42,7 @@ fun SudokuBoard(
         visible = !gameHasFinished,
         exit = fadeOut(
             animationSpec = tween(
-                durationMillis = SudokuBoardAnimation.FADE_OUT_TRANSITION_DURATION,
+                durationMillis = GameAnimationConstants.FadeOutTransitionDuration,
             )
         )
     ) {
