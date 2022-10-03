@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.animation.AutomaticAnimatedVisibility
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
+import com.yamal.sudoku.game.ui.DifficultyViewData
 import com.yamal.sudoku.start.ui.viewmodel.StartScreenState
 import com.yamal.sudoku.start.ui.viewmodel.StartViewModel
 
@@ -30,9 +31,7 @@ import com.yamal.sudoku.start.ui.viewmodel.StartViewModel
 fun StartScreen(
     viewModel: StartViewModel,
     onContinueGame: () -> Unit,
-    onStartNewEasyGame: () -> Unit,
-    onStartNewMediumGame: () -> Unit,
-    onStartNewHardGame: () -> Unit,
+    onNewGame: (DifficultyViewData) -> Unit,
     onHowToPlayClicked: () -> Unit,
 ) {
     val startScreenState by remember {
@@ -45,9 +44,7 @@ fun StartScreen(
             StartScreen(
                 shouldShowContinueButton = (startScreenState as StartScreenState.Ready).shouldShowContinueButton,
                 onContinueGame = onContinueGame,
-                onStartNewEasyGame = onStartNewEasyGame,
-                onStartNewMediumGame = onStartNewMediumGame,
-                onStartNewHardGame = onStartNewHardGame,
+                onNewGame = onNewGame,
                 onHowToPlayClicked = onHowToPlayClicked,
             )
         }
@@ -59,9 +56,7 @@ fun StartScreen(
 private fun StartScreen(
     shouldShowContinueButton: Boolean,
     onContinueGame: () -> Unit,
-    onStartNewEasyGame: () -> Unit,
-    onStartNewMediumGame: () -> Unit,
-    onStartNewHardGame: () -> Unit,
+    onNewGame: (DifficultyViewData) -> Unit,
     onHowToPlayClicked: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
@@ -89,9 +84,7 @@ private fun StartScreen(
                     .weight(0.6F),
                 shouldShowContinueButton = shouldShowContinueButton,
                 onContinueGame = onContinueGame,
-                onStartNewEasyGame = onStartNewEasyGame,
-                onStartNewMediumGame = onStartNewMediumGame,
-                onStartNewHardGame = onStartNewHardGame,
+                onNewGame = onNewGame,
             )
         }
         HowToPlayLink(
@@ -133,9 +126,7 @@ private fun StartScreenPreview() {
         StartScreen(
             shouldShowContinueButton = true,
             onContinueGame = { },
-            onStartNewEasyGame = { },
-            onStartNewMediumGame = { },
-            onStartNewHardGame = { },
+            onNewGame = { },
             onHowToPlayClicked = { },
         )
     }

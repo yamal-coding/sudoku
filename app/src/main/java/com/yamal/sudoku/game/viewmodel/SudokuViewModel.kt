@@ -37,6 +37,9 @@ class SudokuViewModel @Inject constructor(
     private val _isPossibilitiesModeEnabled = MutableStateFlow(false)
     val isPossibilitiesModeEnabled: Flow<Boolean> = _isPossibilitiesModeEnabled
 
+    private val _shouldShowNewGameButtons = MutableStateFlow(false)
+    val shouldShowNewGameButtons: Flow<Boolean> = _shouldShowNewGameButtons
+
     fun initNewGame(difficulty: Difficulty) {
         onGameNotInitialized {
             startNewGame(difficulty)
@@ -182,5 +185,9 @@ class SudokuViewModel @Inject constructor(
             canUndo = game.canUndo,
             gameHasFinished = false,
         )
+    }
+
+    fun onPLayAgain() {
+        _shouldShowNewGameButtons.value = true
     }
 }

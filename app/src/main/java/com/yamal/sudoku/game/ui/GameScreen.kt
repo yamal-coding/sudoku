@@ -18,12 +18,16 @@ import com.yamal.sudoku.model.SudokuCellValue
 @Composable
 fun ExistingGameScreen(
     viewModel: SudokuViewModel,
+    onBackToMenu: () -> Unit,
+    onNewGame: (DifficultyViewData) -> Unit,
 ) {
     GameScreen(
         viewModel = viewModel,
         onInit = {
             viewModel.initExistingGame()
         },
+        onBackToMenu = onBackToMenu,
+        onNewGame = onNewGame,
     )
 }
 
@@ -31,12 +35,16 @@ fun ExistingGameScreen(
 fun NewGameScreen(
     difficulty: Difficulty,
     viewModel: SudokuViewModel,
+    onBackToMenu: () -> Unit,
+    onNewGame: (DifficultyViewData) -> Unit,
 ) {
     GameScreen(
         viewModel = viewModel,
         onInit = {
             viewModel.initNewGame(difficulty)
         },
+        onBackToMenu = onBackToMenu,
+        onNewGame = onNewGame,
     )
 }
 
@@ -44,6 +52,8 @@ fun NewGameScreen(
 private fun GameScreen(
     viewModel: SudokuViewModel,
     onInit: () -> Unit,
+    onBackToMenu: () -> Unit,
+    onNewGame: (DifficultyViewData) -> Unit,
 ) {
     LaunchedEffect(viewModel) {
         onInit()
@@ -58,7 +68,14 @@ private fun GameScreen(
         is SudokuViewState.UpdatedBoard -> {
             val updatedBoard = state as SudokuViewState.UpdatedBoard
             if (updatedBoard.gameHasFinished) {
-               GameFinishedScreen()
+                val shouldShowNewGameButtons by
+                    viewModel.shouldShowNewGameButtons.collectAsState(initial = false)
+                GameFinishedScreen(
+                    shouldShowNewGameButtons = shouldShowNewGameButtons,
+                    onPlayAgain = viewModel::onPLayAgain,
+                    onBackToMenu = onBackToMenu,
+                    onNewGame = onNewGame,
+                )
             }
 
             val shouldShowClearBoardConfirmationDialog by

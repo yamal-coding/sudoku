@@ -16,4 +16,6 @@
     <string name="how_to_play_button">How to play?</string>
     <string name="game_finished_header_title">Congratulations!</string>
     <string name="game_finished_header_subtitle">Sudoku completed</string>
+    <string name="play_again_button">Play again</string>
+    <string name="back_to_menu_button">Back to menu</string>
 </resources>
