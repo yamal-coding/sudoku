@@ -77,3 +77,4 @@ lint/tmp/
 
 # Release files
 app/src/release/google-services.json
+app/src/debug/google-services.json
