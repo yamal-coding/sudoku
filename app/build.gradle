@@ -14,9 +14,6 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            applicationIdSuffix ".debug"
-        }
     }
 
     buildFeatures {
@@ -54,8 +51,8 @@ dependencies {
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
-    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
-    implementation 'com.google.firebase:firebase-crashlytics'
+    releaseImplementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    releaseImplementation 'com.google.firebase:firebase-crashlytics'
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"

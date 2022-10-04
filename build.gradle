@@ -62,8 +62,11 @@ subprojects {
 
     if (currentModule == appModule) {
         apply plugin: 'com.android.application'
-        apply plugin: 'com.google.gms.google-services'
-        apply plugin: 'com.google.firebase.crashlytics'
+        def isReleaseBuildType = gradle.startParameter.taskRequests.toString().contains("Release")
+        if (isReleaseBuildType) {
+            apply plugin: 'com.google.gms.google-services'
+            apply plugin: 'com.google.firebase.crashlytics'
+        }
     } else {
         apply plugin: 'com.android.library'
     }
