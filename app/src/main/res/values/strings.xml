@@ -18,4 +18,6 @@
     <string name="game_finished_header_subtitle">Sudoku completed</string>
     <string name="play_again_button">Play again</string>
     <string name="back_to_menu_button">Back to menu</string>
+    <string name="saved_game_not_found_error_title">Something went wrong!</string>
+    <string name="saved_game_not_found_error_subtitle">No existing game could be found. Please return to main menu and start a new one</string>
 </resources>

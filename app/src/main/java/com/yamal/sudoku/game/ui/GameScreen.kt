@@ -64,7 +64,11 @@ private fun GameScreen(
         is SudokuViewState.Idle -> {}
         is SudokuViewState.Loading -> {}
         is SudokuViewState.NewBoardNotFound -> { /* TODO */ }
-        is SudokuViewState.SavedGameNotFound -> { /* TODO */ }
+        is SudokuViewState.SavedGameNotFound -> {
+            GameSavedNotFoundErrorScreen(
+                onBackToMenu = onBackToMenu,
+            )
+        }
         is SudokuViewState.UpdatedBoard -> {
             val updatedBoard = state as SudokuViewState.UpdatedBoard
             if (updatedBoard.gameHasFinished) {
