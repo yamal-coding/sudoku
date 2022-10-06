@@ -12,6 +12,8 @@ import javax.inject.Singleton
 
 interface LevelsDataSource {
     suspend fun getNewLevel(difficulty: Difficulty): LevelDO?
+
+    suspend fun markLevelAsReturned(levelId: String)
 }
 
 @Singleton
@@ -25,6 +27,11 @@ class LevelsDataSourceImpl @Inject constructor(
 
     override suspend fun getNewLevel(difficulty: Difficulty): LevelDO? =
         getNewBoard(difficulty, levelFilesInfoStorage.getCurrentFileNumber(difficulty))
+
+    override suspend fun markLevelAsReturned(levelId: String) {
+        val (fileName, index) = levelIdGenerator.getFileNameAndIndexFromId(levelId) ?: return
+        levelFilesInfoStorage.markLevelAsAlreadyReturned(fileName = fileName, levelIndex = index)
+    }
 
     private suspend fun getNewBoard(difficulty: Difficulty, currentFileNumber: Int): LevelDO? {
         val candidateFileName = getFileName(difficulty, currentFileNumber)
@@ -40,8 +47,6 @@ class LevelsDataSourceImpl @Inject constructor(
             } else {
                 getRawLevel(candidateLevelsFile, alreadyReturnedLevelsIndexes)?.let {
                     val (levelIndex, rawBoard) = it
-                    levelFilesInfoStorage.markLevelAsAlreadyReturned(candidateFileName, levelIndex)
-
                     LevelDO(
                         id = levelIdGenerator.newId(candidateFileName, levelIndex),
                         difficulty = difficulty,

@@ -8,5 +8,7 @@ class LoadNewBoard @Inject constructor(
     private val levelsRepository: LevelsRepository
 ) {
     suspend operator fun invoke(difficulty: Difficulty): Level? =
-        levelsRepository.getNewLevel(difficulty)
+        levelsRepository.getNewLevel(difficulty)?.also {
+            levelsRepository.markLevelAsAlreadyReturned(it.id)
+        }
 }

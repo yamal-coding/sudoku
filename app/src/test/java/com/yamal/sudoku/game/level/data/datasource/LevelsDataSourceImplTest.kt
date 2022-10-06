@@ -10,7 +10,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -42,7 +44,6 @@ class LevelsDataSourceImplTest {
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
         assertEquals(SOME_FILE_LEVEL, level)
-        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(ANY_FILE_NAME, ANY_LEVEL_INDEX)
     }
 
     @Test
@@ -60,7 +61,6 @@ class LevelsDataSourceImplTest {
 
         assertEquals(SOME_NEXT_FILE_LEVEL, level)
         verify(levelFilesInfoStorage).setCurrentFileNumber(ANY_DIFFICULTY, currentFileNumber + 1)
-        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(ANY_NEXT_FILE_NAME, ANY_LEVEL_INDEX)
     }
 
     @Test
@@ -74,7 +74,6 @@ class LevelsDataSourceImplTest {
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
         assertEquals(SOME_FILE_HIGHER_LEVEL, level)
-        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(ANY_FILE_NAME, ANY_HIGHER_LEVEL_INDEX)
     }
 
     @Test
@@ -88,7 +87,6 @@ class LevelsDataSourceImplTest {
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
         assertEquals(SOME_FILE_LOWER_LEVEL, level)
-        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(ANY_FILE_NAME, ANY_LOWER_LEVEL_INDEX)
     }
 
     @Test
@@ -101,6 +99,24 @@ class LevelsDataSourceImplTest {
         val level = dataSource.getNewLevel(ANY_DIFFICULTY)
 
         assertEquals(null, level)
+    }
+
+    @Test
+    fun `should mark level as already returned given a valid id`() = runTest {
+        val id = "$ANY_FILE_NAME-$ANY_LEVEL_INDEX"
+
+        dataSource.markLevelAsReturned(levelId = id)
+
+        verify(levelFilesInfoStorage).markLevelAsAlreadyReturned(fileName = ANY_FILE_NAME, levelIndex = ANY_LEVEL_INDEX)
+    }
+
+    @Test
+    fun `should not mark level as already returned given an invalid id`() = runTest {
+        val id = "$ANY_FILE_NAME-$ANY_LEVEL_INDEX-"
+
+        dataSource.markLevelAsReturned(levelId = id)
+
+        verify(levelFilesInfoStorage, never()).markLevelAsAlreadyReturned(fileName = any(), levelIndex = any())
     }
 
     private suspend fun givenCurrentFileNumber(forGivenDifficulty: Difficulty): Int = ANY_CURRENT_FILE_NUMBER.also {

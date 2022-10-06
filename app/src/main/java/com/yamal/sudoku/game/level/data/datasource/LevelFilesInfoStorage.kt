@@ -40,6 +40,16 @@ open class LevelFilesInfoStorage @Inject constructor(
         dao.markLevelAsAlreadyReturned(Level(levelsFile = fileName, index = levelIndex))
     }
 
+    open suspend fun clearCurrentFileNumber(difficulty: Difficulty) {
+        globalDataStorage.edit { preferences ->
+            preferences.remove(getCurrentFileNumberKey(difficulty))
+        }
+    }
+
+    open fun clearAlreadyReturnedLevelsForFilesWithGivenPrefix(filePrefix: String) {
+        dao.deleteAlreadyReturnedLevelsForGivenFileNamePattern("${filePrefix}%")
+    }
+
     private companion object {
         val EASY_CURRENT_FILE_NUMBER_KEY = intPreferencesKey("easy_current_file_number")
         val MEDIUM_CURRENT_FILE_NUMBER_KEY = intPreferencesKey("medium_current_file_number")
