@@ -7,28 +7,34 @@ import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.game.status.data.storage.GameStatusStorage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GameStatusRepository @Inject constructor(
+open class GameStatusRepository @Inject constructor(
     private val gameStatusStorage: GameStatusStorage,
     private val scope: ApplicationScope,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
-    fun getSavedBoard(): Flow<Board?> =
+    open fun getSavedBoard(): Flow<Board?> =
         gameStatusStorage.observeBoard().map { it?.toDomain() }
 
-    fun saveBoard(readOnlyBoard: ReadOnlyBoard) {
+    open suspend fun getSavedBoardSync(): Board? = withContext(ioDispatcher) {
+        getSavedBoard().firstOrNull()
+    }
+
+    open fun saveBoard(readOnlyBoard: ReadOnlyBoard) {
         scope.launch(ioDispatcher) {
             gameStatusStorage.updateBoard(readOnlyBoard.toDO())
         }
     }
 
-    fun removeSavedBoard() {
+    open fun removeSavedBoard() {
         scope.launch(ioDispatcher) {
             gameStatusStorage.updateBoard(null)
         }
