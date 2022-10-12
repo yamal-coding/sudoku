@@ -20,4 +20,6 @@
     <string name="back_to_menu_button">Back to menu</string>
     <string name="saved_game_not_found_error_title">Something went wrong!</string>
     <string name="saved_game_not_found_error_subtitle">No existing game could be found. Please return to main menu and start a new one</string>
+    <string name="new_board_not_found_error_title">Something went wrong!</string>
+    <string name="new_board_not_found_error_subtitle">No more levels available. Try a different difficulty or updating the app</string>
 </resources>

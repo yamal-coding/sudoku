@@ -63,7 +63,11 @@ private fun GameScreen(
     when (state) {
         is SudokuViewState.Idle -> {}
         is SudokuViewState.Loading -> {}
-        is SudokuViewState.NewBoardNotFound -> { /* TODO */ }
+        is SudokuViewState.NewBoardNotFound -> {
+            NewBoardNotFoundScreen(
+                onBackToMenu = onBackToMenu,
+            )
+        }
         is SudokuViewState.SavedGameNotFound -> {
             GameSavedNotFoundErrorScreen(
                 onBackToMenu = onBackToMenu,
