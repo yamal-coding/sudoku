@@ -14,6 +14,8 @@ interface LevelsDataSource {
     suspend fun getNewLevel(difficulty: Difficulty): LevelDO?
 
     suspend fun markLevelAsReturned(levelId: String)
+
+    suspend fun resetAlreadyReturnedLevels(difficulty: Difficulty)
 }
 
 @Singleton
@@ -31,6 +33,13 @@ class LevelsDataSourceImpl @Inject constructor(
     override suspend fun markLevelAsReturned(levelId: String) {
         val (fileName, index) = levelIdGenerator.getFileNameAndIndexFromId(levelId) ?: return
         levelFilesInfoStorage.markLevelAsAlreadyReturned(fileName = fileName, levelIndex = index)
+    }
+
+    override suspend fun resetAlreadyReturnedLevels(difficulty: Difficulty) {
+        levelFilesInfoStorage.clearCurrentFileNumber(difficulty)
+        levelFilesInfoStorage.clearAlreadyReturnedLevelsForFilesWithGivenPrefix(
+            filePrefix = getFilePrefix(difficulty)
+        )
     }
 
     private suspend fun getNewBoard(difficulty: Difficulty, currentFileNumber: Int): LevelDO? {
@@ -98,15 +107,15 @@ class LevelsDataSourceImpl @Inject constructor(
     private fun buildLevel(index: Int, rawLevel: String?): Pair<Int, String>? =
         rawLevel?.let { index to it }
 
-    private fun getFileName(difficulty: Difficulty, fileNumber: Int): String {
-        val filePrefix = when (difficulty) {
+    private fun getFileName(difficulty: Difficulty, fileNumber: Int): String =
+        "${getFilePrefix(difficulty)}_$fileNumber"
+
+    private fun getFilePrefix(difficulty: Difficulty): String =
+        when (difficulty) {
             Difficulty.EASY -> "easy"
             Difficulty.MEDIUM -> "medium"
             Difficulty.HARD -> "hard"
         }
-
-        return "${filePrefix}_$fileNumber"
-    }
 
     private suspend fun setCurrentFileNumberIfNeeded(difficulty: Difficulty, fileNumber: Int) {
         if (levelFilesInfoStorage.getCurrentFileNumber(difficulty) < fileNumber) {

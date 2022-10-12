@@ -24,7 +24,15 @@ open class LevelsRepository @Inject constructor(
         }
     }
 
-    open suspend fun markLevelAsAlreadyReturned(levelId: String) = withContext(ioDispatcher) {
-        dataSource.markLevelAsReturned(levelId)
+    open suspend fun markLevelAsAlreadyReturned(levelId: String) {
+        withContext(ioDispatcher) {
+            dataSource.markLevelAsReturned(levelId)
+        }
+    }
+
+    open suspend fun resetAlreadyReturnedLevels(difficulty: Difficulty) {
+        withContext(ioDispatcher) {
+            dataSource.resetAlreadyReturnedLevels(difficulty)
+        }
     }
 }

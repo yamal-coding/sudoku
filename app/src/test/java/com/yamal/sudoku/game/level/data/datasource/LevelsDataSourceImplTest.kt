@@ -119,6 +119,30 @@ class LevelsDataSourceImplTest {
         verify(levelFilesInfoStorage, never()).markLevelAsAlreadyReturned(fileName = any(), levelIndex = any())
     }
 
+    @Test
+    fun `should reset already returned levels for easy difficulty`() = runTest {
+        dataSource.resetAlreadyReturnedLevels(Difficulty.EASY)
+
+        verify(levelFilesInfoStorage).clearCurrentFileNumber(Difficulty.EASY)
+        verify(levelFilesInfoStorage).clearAlreadyReturnedLevelsForFilesWithGivenPrefix("easy")
+    }
+
+    @Test
+    fun `should reset already returned levels for medium difficulty`() = runTest {
+        dataSource.resetAlreadyReturnedLevels(Difficulty.MEDIUM)
+
+        verify(levelFilesInfoStorage).clearCurrentFileNumber(Difficulty.MEDIUM)
+        verify(levelFilesInfoStorage).clearAlreadyReturnedLevelsForFilesWithGivenPrefix("medium")
+    }
+
+    @Test
+    fun `should reset already returned levels for hard difficulty`() = runTest {
+        dataSource.resetAlreadyReturnedLevels(Difficulty.HARD)
+
+        verify(levelFilesInfoStorage).clearCurrentFileNumber(Difficulty.HARD)
+        verify(levelFilesInfoStorage).clearAlreadyReturnedLevelsForFilesWithGivenPrefix("hard")
+    }
+
     private suspend fun givenCurrentFileNumber(forGivenDifficulty: Difficulty): Int = ANY_CURRENT_FILE_NUMBER.also {
         whenever(levelFilesInfoStorage.getCurrentFileNumber(forGivenDifficulty))
             .thenReturn(it)

@@ -14,6 +14,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -43,17 +44,32 @@ class LoadNewBoardTest : UnitTest() {
 
         loadNewBoard(ANY_DIFFICULTY)
 
+        verify(levelsRepository, never()).resetAlreadyReturnedLevels(ANY_DIFFICULTY)
         verify(levelsRepository).markLevelAsAlreadyReturned(ANY_LEVEL_ID)
         verify(currentGame).onGameReady(ANY_GAME)
         verify(gameStatusRepository).saveBoard(ANY_BOARD)
     }
 
     @Test
-    fun `should not load any new level`() = runTest {
+    fun `should return new level after resetting already returned levels`() = runTest {
+        givenThatThereWillBeALevelAfterResettingThem()
+        givenAGame()
+
+        loadNewBoard(ANY_DIFFICULTY)
+
+        verify(levelsRepository).resetAlreadyReturnedLevels(ANY_DIFFICULTY)
+        verify(levelsRepository).markLevelAsAlreadyReturned(ANY_LEVEL_ID)
+        verify(currentGame).onGameReady(ANY_GAME)
+        verify(gameStatusRepository).saveBoard(ANY_BOARD)
+    }
+
+    @Test
+    fun `should not load any new level even after resetting already returned levels`() = runTest {
         givenThereIsNoNewLevel()
 
         loadNewBoard(ANY_DIFFICULTY)
 
+        verify(levelsRepository).resetAlreadyReturnedLevels(ANY_DIFFICULTY)
         verify(currentGame).onNewBoardNotFound()
     }
 
@@ -80,6 +96,18 @@ class LoadNewBoardTest : UnitTest() {
 
     private suspend fun givenThereIsNoNewLevel() {
         whenever(levelsRepository.getNewLevel(ANY_DIFFICULTY)).thenReturn(null)
+    }
+
+    private suspend fun givenThatThereWillBeALevelAfterResettingThem() {
+        whenever(levelsRepository.getNewLevel(ANY_DIFFICULTY))
+            .thenReturn(null)
+            .thenReturn(
+                Level(
+                    id = ANY_LEVEL_ID,
+                    difficulty = ANY_DIFFICULTY,
+                    board = ANY_BOARD,
+                )
+            )
     }
 
     private fun givenAGame() {
