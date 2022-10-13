@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.Header
-import com.yamal.sudoku.start.ui.MenuButton
 import com.yamal.sudoku.start.ui.MenuDivider
 
 @Composable
@@ -38,9 +37,8 @@ fun GameErrorScreen(
                 .fillMaxWidth(fraction = 0.7F)
         ) {
             MenuDivider()
-            MenuButton(
+            BackToMenuButton(
                 onClick = onBackToMenu,
-                textRes = R.string.back_to_menu_button
             )
             MenuDivider()
         }

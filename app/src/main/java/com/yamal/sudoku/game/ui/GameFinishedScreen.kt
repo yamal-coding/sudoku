@@ -100,10 +100,8 @@ private fun Menu(
             }
         }
 
-        MenuButton(
-            onClick = onBackToMenu,
-            textRes = R.string.back_to_menu_button,
-            icon = R.drawable.ic_home,
+        BackToMenuButton(
+            onClick = onBackToMenu
         )
         MenuDivider()
     }
