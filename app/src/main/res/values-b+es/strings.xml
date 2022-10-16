@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="load_game_button">Continuar partida</string>
+    <string name="difficulty_easy">Fácil</string>
+    <string name="difficulty_medium">Normal</string>
+    <string name="difficulty_hard">Difícil</string>
+    <string name="undo_button">Deshacer</string>
+    <string name="clear_button">Reiniciar</string>
+    <string name="remove_button">Borrar</string>
+    <string name="clear_board_confirmation_dialog_title">¿Seguro que quieres reiniciar la partida?</string>
+    <string name="clear_board_confirmation_dialog_subtitle">Todo el progreso actual se perderá</string>
+    <string name="clear_board_confirmation_dialog_ok_button">Reiniciar</string>
+    <string name="clear_board_confirmation_dialog_cancel_button">Cancelar</string>
+    <string name="annotate_button_off">Notas (Off)</string>
+    <string name="annotate_button_on">Notas (On)</string>
+    <string name="how_to_play_button">¿Cómo jugar?</string>
+    <string name="game_finished_header_title">¡Enhorabuena!</string>
+    <string name="game_finished_header_subtitle">Sudoku completado</string>
+    <string name="play_again_button">Jugar de nuevo</string>
+    <string name="back_to_menu_button">Volver al menú</string>
+    <string name="saved_game_not_found_error_title">¡Algo ha ido mal!</string>
+    <string name="saved_game_not_found_error_subtitle">No se pudo encontrar una partida en curso. Por favor, vuelve al menú prrincipal e inicia una nueva partida.</string>
+    <string name="new_board_not_found_error_title">¡Algo ha ido mal!</string>
+    <string name="new_board_not_found_error_subtitle">No hay más niveles disponibles. Prueba con otro nivel de dificultad o actualizando la app.</string>
+</resources>
