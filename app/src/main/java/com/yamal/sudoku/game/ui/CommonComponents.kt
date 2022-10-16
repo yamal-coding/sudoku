@@ -3,7 +3,7 @@ package com.yamal.sudoku.game.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.yamal.sudoku.R
-import com.yamal.sudoku.start.ui.MenuButton
+import com.yamal.sudoku.commons.ui.MenuButton
 
 @Composable
 fun BackToMenuButton(

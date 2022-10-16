@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.Header
-import com.yamal.sudoku.start.ui.MenuDivider
+import com.yamal.sudoku.commons.ui.MenuDivider
 
 @Composable
 fun GameErrorScreen(

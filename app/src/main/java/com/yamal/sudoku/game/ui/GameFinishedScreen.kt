@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.Header
 import com.yamal.sudoku.commons.ui.animation.AutomaticAnimatedVisibility
-import com.yamal.sudoku.start.ui.MenuButton
-import com.yamal.sudoku.start.ui.MenuDivider
+import com.yamal.sudoku.commons.ui.MenuButton
+import com.yamal.sudoku.commons.ui.MenuDivider
 import com.yamal.sudoku.start.ui.NewEasyGameButton
 import com.yamal.sudoku.start.ui.NewHardGameButton
 import com.yamal.sudoku.start.ui.NewMediumGameButton

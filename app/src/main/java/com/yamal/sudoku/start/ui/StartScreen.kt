@@ -115,7 +115,7 @@ private fun HowToPlayLink(
         modifier = modifier,
         onClick = onHowToPlayClicked
     ) {
-        Text(text = stringResource(id = R.string.how_to_play_button))
+        Text(text = stringResource(id = R.string.how_to_play_button).uppercase())
     }
 }
 
