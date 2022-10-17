@@ -22,4 +22,10 @@
     <string name="saved_game_not_found_error_subtitle">No se pudo encontrar una partida en curso. Por favor, vuelve al menú prrincipal e inicia una nueva partida.</string>
     <string name="new_board_not_found_error_title">¡Algo ha ido mal!</string>
     <string name="new_board_not_found_error_subtitle">No hay más niveles disponibles. Prueba con otro nivel de dificultad o actualizando la app.</string>
+    <string name="how_to_play_title">¿Cómo jugar?</string>
+    <string name="how_to_play_paragraph_1">Sudoku es un juego que consiste en asignar un número del 1 al 9 a cada una de las 81 celdas de un tablero dado. Dichas celdas están dispuestas en una cuadrícula de 9 filas y 9 columnas.\n\nEl juego habrá terminado cuando se haya asignado un número a todas las celdas cumpliéndose las siguientes condiciones:</string>
+    <string name="how_to_play_condition_1">El número en cuestión no debe repetirse en la fila correspondiente a su celda asignada</string>
+    <string name="how_to_play_condition_2">El número en cuestión no debe repetirse en la columna correspondiente a su celda asignada</string>
+    <string name="how_to_play_condition_3">El tablero de 81 celdas está divido en pequeños cuadrantes de 9 celdas (3 filas y 3 columnas). El número en cuestión no debe repetirse en el cuadrante correspondiente a su celda asignada</string>
+    <string name="how_to_play_paragraph_2">Inicialmente algunas celdas del tablero ya están preasignadas. Cuantas más celdas preasignadas haya, más fácil será completar todo el tablero.</string>
 </resources>
