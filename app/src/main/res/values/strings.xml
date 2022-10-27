@@ -16,15 +16,15 @@
     <string name="game_finished_header_title">Congratulations!</string>
     <string name="game_finished_header_subtitle">Sudoku completed</string>
     <string name="play_again_button">Play again</string>
-    <string name="back_to_menu_button">Back to menu</string>
+    <string name="back_to_menu_button">Back to main menu</string>
     <string name="saved_game_not_found_error_title">Something went wrong!</string>
-    <string name="saved_game_not_found_error_subtitle">No existing game could be found. Please return to main menu and start a new one</string>
+    <string name="saved_game_not_found_error_subtitle">No game in progress could be found. Please return to main menu and start a new one</string>
     <string name="new_board_not_found_error_title">Something went wrong!</string>
-    <string name="new_board_not_found_error_subtitle">No more levels available. Try a different difficulty or updating the app</string>
+    <string name="new_board_not_found_error_subtitle">No more levels available. Try a different difficulty or update the app</string>
     <string name="how_to_play_title">How to play?</string>
     <string name="how_to_play_paragraph_1">Sudoku is a game whose goal is to assign a number between 1 and 9 to each one of the 81 cells of a given board. Said cells are distributed in a grid of 9 rows and 9 columns.\n\nThe game finishes when a number has been assigned to every cell but satisfying the following conditions:</string>
-    <string name="how_to_play_condition_1">Each number must not be repeated in the corresponding row of the assigned cell</string>
-    <string name="how_to_play_condition_2">Each number must not be repeated in the corresponding column of the assigned cell</string>
-    <string name="how_to_play_condition_3">The board of 81 cells is dived into 9 quadrants of 9 cells (3 rows and 3 columns each one). The number must not be repeated in the corresponding quadrant of the assigned cell</string>
+    <string name="how_to_play_condition_1">Each number must not be repeated in the row in which it is located</string>
+    <string name="how_to_play_condition_2">Each number must not be repeated in the column in which it is located</string>
+    <string name="how_to_play_condition_3">The board of 81 cells is divided into 9 quadrants of 9 cells (3 rows and 3 columns each one). Each number must not be repeated in the quadrant in which it is located</string>
     <string name="how_to_play_paragraph_2">Initially there are some preassigned cells. The most preassigned cells, the easier it will be.</string>
 </resources>
