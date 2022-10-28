@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.animation.AutomaticAnimatedVisibility
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.ui.DifficultyViewData
+import com.yamal.sudoku.start.StartScreenTestTags
 import com.yamal.sudoku.start.ui.viewmodel.StartScreenState
 import com.yamal.sudoku.start.ui.viewmodel.StartViewModel
 
@@ -63,7 +65,8 @@ private fun StartScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState),
+            .verticalScroll(scrollState)
+            .testTag(StartScreenTestTags.SCREEN),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(

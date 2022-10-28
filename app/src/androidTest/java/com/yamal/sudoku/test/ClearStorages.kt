@@ -1,14 +1,19 @@
 package com.yamal.sudoku.test
 
 import android.content.SharedPreferences
+import androidx.datastore.preferences.core.edit
+import com.yamal.sudoku.commons.storage.GlobalDataStorage
 import javax.inject.Inject
+import kotlinx.coroutines.runBlocking
 
 class ClearStorages @Inject constructor(
-    private val sharedPreferences: SharedPreferences
+    private val globalDataStorage: GlobalDataStorage,
 ) {
     operator fun invoke() {
-        sharedPreferences.edit()
-            .clear()
-            .commit()
+        runBlocking {
+            globalDataStorage.edit {
+                it.clear()
+            }
+        }
     }
 }

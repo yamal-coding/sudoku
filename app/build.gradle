@@ -6,7 +6,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner = "com.yamal.sudoku.test.di.HiltTestRunner"
+        testInstrumentationRunner "com.yamal.sudoku.test.di.HiltTestRunner"
     }
 
     buildTypes {
@@ -58,9 +58,10 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
-    androidTestImplementation "androidx.test:core:1.4.0"
-    androidTestImplementation "androidx.test:runner:1.4.0"
-    androidTestImplementation "androidx.test:rules:1.4.0"
+    androidTestImplementation "androidx.test:core:$androidX_test_version"
+    androidTestImplementation "androidx.test:runner:$androidX_test_version"
+    androidTestImplementation "androidx.test:rules:$androidX_test_version"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 }
