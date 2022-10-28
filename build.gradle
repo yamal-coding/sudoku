@@ -13,7 +13,7 @@ buildscript {
         moshi_version = '1.13.0'
         google_services_version = '4.3.14'
         crashlytics_version = '2.9.2'
-        firebase_bom_version = '30.4.1'
+        firebase_bom_version = '31.0.1'
     }
     repositories {
         mavenCentral()
