@@ -1,6 +1,5 @@
 name: Assemble, Detekt, Lint and Unit tests
-on:
-    workflow_dispatch
+on: [push]
 jobs:
   build:
     runs-on: macos-11 # Switch back to macos-latest when https://github.com/actions/runner-images/issues/6384 is closed
