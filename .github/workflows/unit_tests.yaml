@@ -1,4 +1,4 @@
-name: Build
+name: Assemble, Detekt, Lint and Unit tests
 on: [push]
 jobs:
   build:
@@ -19,11 +19,3 @@ jobs:
         run: ./gradlew lint
       - name: Unit Tests
         run: ./gradlew test
-      # - name: Intrumentation Tests
-      #  uses: reactivecircus/android-emulator-runner@v2
-      #  with:
-      #    api-level: 29
-      #    target: default
-      #    arch: x86
-      #    profile: Nexus 6
-      #    script: ./gradlew connectedCheck
