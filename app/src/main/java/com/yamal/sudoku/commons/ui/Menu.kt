@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -21,9 +22,15 @@ fun MenuButton(
     @StringRes textRes: Int,
     enabled: Boolean = true,
     @DrawableRes icon: Int? = null,
+    testTag: String? = null,
 ) {
+    val buttonModifier = modifier.fillMaxWidth()
+    val withTextTagModifier = testTag?.let {
+        buttonModifier.then(Modifier.testTag(it))
+    } ?: buttonModifier
+
     TextButton(
-        modifier = modifier.fillMaxWidth(),
+        modifier = withTextTagModifier,
         onClick = onClick,
         enabled = enabled,
     ) {

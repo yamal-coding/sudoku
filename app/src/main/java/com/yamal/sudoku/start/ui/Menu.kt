@@ -8,6 +8,7 @@ import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.MenuButton
 import com.yamal.sudoku.commons.ui.MenuDivider
 import com.yamal.sudoku.game.ui.DifficultyViewData
+import com.yamal.sudoku.start.StartScreenTestTags
 
 @Composable
 fun Menu(
@@ -24,7 +25,8 @@ fun Menu(
             MenuDivider()
             MenuButton(
                 onClick = onContinueGame,
-                textRes = R.string.load_game_button
+                textRes = R.string.load_game_button,
+                testTag = StartScreenTestTags.CONTINUE_GAME_BUTTON,
             )
         }
         MenuDivider()

@@ -11,6 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -18,6 +19,7 @@ object LevelsDataSourceModule {
     @Provides
     fun provideLevelsDataSource(impl: LevelsDataSourceImpl): LevelsDataSource = impl
 
+    @Singleton
     @Provides
     fun provideLevelsDatabase(@ApplicationContext context: Context): LevelsDatabase =
         Room.databaseBuilder(
@@ -28,5 +30,4 @@ object LevelsDataSourceModule {
     @Provides
     fun provideLevelsDao(database: LevelsDatabase): LevelsDao =
         database.levelsDao()
-
 }
