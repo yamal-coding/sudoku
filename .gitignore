@@ -81,4 +81,6 @@ app/src/debug/google-services.json
 app/src/google-services.json
 
 # Other
+.DS_Store
 app/.DS_Store
+app/src/.DS_Store
