@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.yamal.sudoku.BuildConfig
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCell as Cell
@@ -86,7 +87,11 @@ private fun SudokuBoardImpl(
                         },
                         isSelected = row == selectedRow && column == selectedColumn,
                         gameHasFinished = gameHasFinished,
-                        testTag = GameTestTags.cell(row = row, column = column),
+                        testTag = if (BuildConfig.DEBUG) {
+                            GameTestTags.cell(row = row, column = column)
+                        } else {
+                            null
+                        },
                     )
                     if ((column + 1) % QUADRANTS_PER_SIDE == 0) {
                         StrongVerticalDivider()
@@ -111,25 +116,29 @@ private fun SudokuCell(
     onSelected: () -> Unit,
     isSelected: Boolean,
     gameHasFinished: Boolean,
-    testTag: String,
+    testTag: String?,
 ) {
-    Box(
-        modifier = modifier
-            .aspectRatio(1F)
-            .background(
-                when {
-                    gameHasFinished -> SudokuTheme.colors.gameFinishedCellBackground
-                    cell.isFixed -> SudokuTheme.colors.fixedCellBackground
-                    isSelected -> SudokuTheme.colors.selectedCellBackground
-                    else -> SudokuTheme.colors.cellBackground
-                }
-            )
-            .`if`(!cell.isFixed) {
-                clickable { onSelected() }
+    val baseCellModifier = modifier
+        .aspectRatio(1F)
+        .background(
+            when {
+                gameHasFinished -> SudokuTheme.colors.gameFinishedCellBackground
+                cell.isFixed -> SudokuTheme.colors.fixedCellBackground
+                isSelected -> SudokuTheme.colors.selectedCellBackground
+                else -> SudokuTheme.colors.cellBackground
             }
-            .padding(1.dp)
-            .testTag(testTag)
-        ,
+        )
+        .`if`(!cell.isFixed) {
+            clickable { onSelected() }
+        }
+        .padding(1.dp)
+
+    val cellModifier = testTag?.let {
+        baseCellModifier.then(Modifier.testTag(it))
+    } ?: baseCellModifier
+
+    Box(
+        modifier = cellModifier,
         contentAlignment = Alignment.Center
     ) {
         when {
