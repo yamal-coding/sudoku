@@ -6,12 +6,16 @@ import androidx.test.platform.app.InstrumentationRegistry
 
 @Suppress("UnnecessaryAbstractClass")
 abstract class BaseScreen(
-    composeTestRule: ComposeTestRule,
-    screenTestTag: String,
+    private val composeTestRule: ComposeTestRule,
+    private val screenTestTag: String,
 ) {
     val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
 
     init {
+        composeTestRule.waitForNodeWithTagDisplayed(screenTestTag)
+    }
+
+    fun onCurrentScreen() {
         composeTestRule.waitForNodeWithTagDisplayed(screenTestTag)
     }
 }

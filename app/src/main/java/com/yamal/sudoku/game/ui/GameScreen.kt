@@ -1,11 +1,14 @@
 package com.yamal.sudoku.game.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.status.data.toSudokuCell
@@ -132,30 +135,34 @@ private fun UpdatedBoard(
         )
     }
 
-    if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-        PortraitUpdatedBoard(
-            updatedBoard = updatedBoard,
-            onCellSelected = onCellSelected,
-            onValueSelected = onValueSelected,
-            onUndo = onUndo,
-            onShowClearBoardConfirmationDialog = onShowClearBoardConfirmationDialog,
-            isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-            onEnablePossibilitiesMode = onEnablePossibilitiesMode,
-            onDisablePossibilitiesMode = onDisablePossibilitiesMode,
-            onRemoveCellValue = onRemoveCellValue,
-        )
-    } else {
-        LandscapeUpdatedBoard(
-            updatedBoard = updatedBoard,
-            onCellSelected = onCellSelected,
-            onValueSelected = onValueSelected,
-            onUndo = onUndo,
-            onShowClearBoardConfirmationDialog = onShowClearBoardConfirmationDialog,
-            isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
-            onEnablePossibilitiesMode = onEnablePossibilitiesMode,
-            onDisablePossibilitiesMode = onDisablePossibilitiesMode,
-            onRemoveCellValue = onRemoveCellValue,
-        )
+    Box(
+        modifier = Modifier.testTag(GameTestTags.SCREEN)
+    ) {
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            PortraitUpdatedBoard(
+                updatedBoard = updatedBoard,
+                onCellSelected = onCellSelected,
+                onValueSelected = onValueSelected,
+                onUndo = onUndo,
+                onShowClearBoardConfirmationDialog = onShowClearBoardConfirmationDialog,
+                isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+                onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+                onRemoveCellValue = onRemoveCellValue,
+            )
+        } else {
+            LandscapeUpdatedBoard(
+                updatedBoard = updatedBoard,
+                onCellSelected = onCellSelected,
+                onValueSelected = onValueSelected,
+                onUndo = onUndo,
+                onShowClearBoardConfirmationDialog = onShowClearBoardConfirmationDialog,
+                isPossibilitiesModeEnabled = isPossibilitiesModeEnabled,
+                onEnablePossibilitiesMode = onEnablePossibilitiesMode,
+                onDisablePossibilitiesMode = onDisablePossibilitiesMode,
+                onRemoveCellValue = onRemoveCellValue,
+            )
+        }
     }
 }
 

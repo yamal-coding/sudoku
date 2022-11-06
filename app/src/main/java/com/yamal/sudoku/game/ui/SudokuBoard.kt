@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
@@ -57,7 +58,6 @@ fun SudokuBoard(
     }
 }
 
-
 @Composable
 private fun SudokuBoardImpl(
     modifier: Modifier,
@@ -85,7 +85,8 @@ private fun SudokuBoardImpl(
                             onCellSelected(row, column)
                         },
                         isSelected = row == selectedRow && column == selectedColumn,
-                        gameHasFinished = gameHasFinished
+                        gameHasFinished = gameHasFinished,
+                        testTag = GameTestTags.cell(row = row, column = column),
                     )
                     if ((column + 1) % QUADRANTS_PER_SIDE == 0) {
                         StrongVerticalDivider()
@@ -110,6 +111,7 @@ private fun SudokuCell(
     onSelected: () -> Unit,
     isSelected: Boolean,
     gameHasFinished: Boolean,
+    testTag: String,
 ) {
     Box(
         modifier = modifier
@@ -125,7 +127,9 @@ private fun SudokuCell(
             .`if`(!cell.isFixed) {
                 clickable { onSelected() }
             }
-            .padding(1.dp),
+            .padding(1.dp)
+            .testTag(testTag)
+        ,
         contentAlignment = Alignment.Center
     ) {
         when {

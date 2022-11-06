@@ -1,5 +1,6 @@
 package com.yamal.sudoku.start
 
+import com.yamal.sudoku.game.scenario.AlmostSolvedSudokuMother
 import com.yamal.sudoku.game.scenario.GameScenario
 import com.yamal.sudoku.test.BaseTest
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -20,7 +21,7 @@ class StartScreenTest : BaseTest() {
 
     @Test
     fun startScreenShouldWithGameInProgress() {
-        gameScenario.givenThereIsAnExistingGameInProgress()
+        gameScenario.givenThereIsAnExistingGame(AlmostSolvedSudokuMother.someAlmostSolvedBoardDO())
 
         onStartScreen()
             .continueButtonIsDisplayed()

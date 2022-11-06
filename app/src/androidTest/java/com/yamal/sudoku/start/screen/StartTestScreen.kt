@@ -6,7 +6,9 @@ import androidx.compose.ui.test.hasAnyChild
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.performClick
 import com.yamal.sudoku.R
+import com.yamal.sudoku.game.screen.GameTestScreen
 import com.yamal.sudoku.start.StartScreenTestTags
 import com.yamal.sudoku.test.BaseScreen
 import com.yamal.sudoku.test.waitForNodeAssertion
@@ -34,5 +36,13 @@ class StartTestScreen(
                 it.assertIsDisplayed()
             }
         )
+    }
+
+    fun clickOnContinueGame(): GameTestScreen {
+        composeTestRule
+            .onNodeWithTag(StartScreenTestTags.CONTINUE_GAME_BUTTON)
+            .performClick()
+
+        return GameTestScreen(composeTestRule)
     }
 }

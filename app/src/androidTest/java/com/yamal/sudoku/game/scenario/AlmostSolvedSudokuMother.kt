@@ -3,11 +3,14 @@ package com.yamal.sudoku.game.scenario
 import com.yamal.sudoku.game.status.data.storage.model.BoardDO
 import com.yamal.sudoku.game.status.data.storage.model.DifficultyDO
 import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
+import com.yamal.sudoku.model.SudokuCellValue
 
-object SudokuMother {
-    fun someBoardDO(): BoardDO =
+object AlmostSolvedSudokuMother {
+    fun someAlmostSolvedBoardDO(
+        difficulty: String = DifficultyDO.EASY,
+    ): BoardDO =
         BoardDO(
-            cells = notFixedDOCells(
+            cells = fixedDOCells(
                 5, 3, 4, 6, 7, 8, 9, 1, 2,
                 6, 7, 2, 1, 9, 5, 3, 4, 8,
                 1, 9, 8, 3, 4, 2, 5, 6, 7,
@@ -18,11 +21,17 @@ object SudokuMother {
                 2, 8, 7, 4, 1, 9, 6, 3, 5,
                 3, 4, 5, 2, 8, 6, 1, 7
             ).also {
-                it.add(SudokuCellDO(0, isFixed = true))
+                it.add(SudokuCellDO(0, isFixed = false))
             },
-            difficulty = DifficultyDO.EASY,
+            difficulty = difficulty,
         )
 
-    private fun notFixedDOCells(vararg cellValues: Int): MutableList<SudokuCellDO> =
-        cellValues.map { SudokuCellDO(value = it, isFixed = false) }.toMutableList()
+    fun getRemainingCellCoordinates(): Pair<Int, Int> = 8 to 8
+
+    fun getRemainingCellValue(): SudokuCellValue = SudokuCellValue.NINE
+
+    fun getWrongRemainingCellValue(): SudokuCellValue = SudokuCellValue.SEVEN
+
+    private fun fixedDOCells(vararg cellValues: Int): MutableList<SudokuCellDO> =
+        cellValues.map { SudokuCellDO(value = it, isFixed = true) }.toMutableList()
 }

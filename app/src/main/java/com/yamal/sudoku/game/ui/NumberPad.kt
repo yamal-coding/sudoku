@@ -9,21 +9,27 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.model.SudokuCellValue
 
+data class NumberViewData(
+    val value: SudokuCellValue,
+    val testTag: String
+)
+
 private val NUMBERS = listOf(
-    SudokuCellValue.ONE,
-    SudokuCellValue.TWO,
-    SudokuCellValue.THREE,
-    SudokuCellValue.FOUR,
-    SudokuCellValue.FIVE,
-    SudokuCellValue.SIX,
-    SudokuCellValue.SEVEN,
-    SudokuCellValue.EIGHT,
-    SudokuCellValue.NINE,
+    NumberViewData(SudokuCellValue.ONE, GameTestTags.ONE_BUTTON),
+    NumberViewData(SudokuCellValue.TWO, GameTestTags.TWO_BUTTON),
+    NumberViewData(SudokuCellValue.THREE, GameTestTags.THREE_BUTTON),
+    NumberViewData(SudokuCellValue.FOUR, GameTestTags.FOUR_BUTTON),
+    NumberViewData(SudokuCellValue.FIVE, GameTestTags.FIVE_BUTTON),
+    NumberViewData(SudokuCellValue.SIX, GameTestTags.SIX_BUTTON),
+    NumberViewData(SudokuCellValue.SEVEN, GameTestTags.SEVEN_BUTTON),
+    NumberViewData(SudokuCellValue.EIGHT, GameTestTags.EIGHT_BUTTON),
+    NumberViewData(SudokuCellValue.NINE, GameTestTags.NINE_BUTTON),
 )
 
 @Composable
@@ -38,27 +44,30 @@ fun RowNumberPad(
         NUMBERS.forEach { number ->
             NumberButton(
                 modifier = Modifier.weight(1F),
-                cellValue = number,
+                cellValue = number.value,
+                testTag = number.testTag,
                 onClick = onValueSelected
             )
         }
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 fun GridNumberPad(
     modifier: Modifier = Modifier,
     onValueSelected: (SudokuCellValue) -> Unit,
 ) {
     @Composable
-    fun NumberRow(vararg numbers: SudokuCellValue) {
+    fun NumberRow(vararg numbers: NumberViewData) {
         Row(
             modifier = Modifier.wrapContentWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
             numbers.forEach { number ->
                 NumberButton(
-                    cellValue = number,
+                    cellValue = number.value,
+                    testTag = number.testTag,
                     onClick = onValueSelected
                 )
             }
@@ -68,9 +77,9 @@ fun GridNumberPad(
     Column(
         modifier = modifier,
     ) {
-        NumberRow(SudokuCellValue.ONE, SudokuCellValue.TWO, SudokuCellValue.THREE)
-        NumberRow(SudokuCellValue.FOUR, SudokuCellValue.FIVE, SudokuCellValue.SIX)
-        NumberRow(SudokuCellValue.SEVEN, SudokuCellValue.EIGHT, SudokuCellValue.NINE)
+        NumberRow(NUMBERS[0], NUMBERS[1], NUMBERS[2])
+        NumberRow(NUMBERS[3], NUMBERS[4], NUMBERS[5])
+        NumberRow(NUMBERS[6], NUMBERS[7], NUMBERS[8])
     }
 }
 
@@ -78,10 +87,11 @@ fun GridNumberPad(
 private fun NumberButton(
     modifier: Modifier = Modifier,
     cellValue: SudokuCellValue,
+    testTag: String,
     onClick: (SudokuCellValue) -> Unit,
 ) {
     IconButton(
-        modifier = modifier,
+        modifier = modifier.testTag(testTag),
         onClick = { onClick(cellValue) }
     ) {
         getSudokuCellIconOrNullIfEmpty(cellValue)?.let {
