@@ -11,11 +11,5 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: Assemble
-        run: ./gradlew clean assembleDebug
-      - name: Detekt
-        run: ./gradlew clean detekt
-      - name: Lint
-        run: ./gradlew lint
-      - name: Unit Tests
-        run: ./gradlew test
+      - name: Assemble, detekt, lint and Unit tests
+        run: ./gradlew clean assembleDebug detekt lint test
