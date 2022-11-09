@@ -27,4 +27,5 @@
     <string name="how_to_play_condition_2">Each number must not be repeated in the column in which it is located</string>
     <string name="how_to_play_condition_3">The board of 81 cells is divided into 9 quadrants of 9 cells (3 rows and 3 columns each one). Each number must not be repeated in the quadrant in which it is located</string>
     <string name="how_to_play_paragraph_2">Initially there are some preassigned cells. The most preassigned cells, the easier it will be.</string>
+    <string name="empty_cell_accessibility_label">Empty cell</string>
 </resources>

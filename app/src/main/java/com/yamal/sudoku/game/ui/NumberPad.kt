@@ -95,7 +95,7 @@ private fun NumberButton(
         onClick = { onClick(cellValue) }
     ) {
         getSudokuCellIconOrNullIfEmpty(cellValue)?.let {
-            Icon(painter = painterResource(id = it), contentDescription = null)
+            Icon(painter = painterResource(id = it), contentDescription = cellValue.toString())
         }
     }
 }

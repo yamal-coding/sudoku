@@ -21,8 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.BuildConfig
+import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCell as Cell
@@ -118,6 +120,12 @@ private fun SudokuCell(
     gameHasFinished: Boolean,
     testTag: String?,
 ) {
+    val onClickLabel = if (cell.value != SudokuCellValue.EMPTY) {
+        stringResource(id = R.string.empty_cell_accessibility_label)
+    } else {
+        ""
+    }
+
     val baseCellModifier = modifier
         .aspectRatio(1F)
         .background(
@@ -129,7 +137,7 @@ private fun SudokuCell(
             }
         )
         .`if`(!cell.isFixed) {
-            clickable { onSelected() }
+            clickable(onClickLabel = onClickLabel) { onSelected() }
         }
         .padding(1.dp)
 
@@ -160,7 +168,7 @@ private fun CellValueIcon(
         Icon(
             modifier = modifier,
             painter = painterResource(id = it),
-            contentDescription = null,
+            contentDescription = value.toString(),
             tint = SudokuTheme.colors.cellText
         )
     }

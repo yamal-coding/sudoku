@@ -28,4 +28,5 @@
     <string name="how_to_play_condition_2">Cada número no debe repetirse en la columna en la que se encuentra</string>
     <string name="how_to_play_condition_3">El tablero de 81 celdas está divido en pequeños cuadrantes de 9 celdas (3 filas y 3 columnas). Cada número no debe repetirse en el cuadrante en el que se encuentra</string>
     <string name="how_to_play_paragraph_2">Inicialmente algunas celdas del tablero ya están preasignadas. Cuantas más celdas preasignadas haya, más fácil será completar todo el tablero.</string>
+    <string name="empty_cell_accessibility_label">Celda vacía</string>
 </resources>
