@@ -59,7 +59,7 @@ dependencies {
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
     androidTestImplementation "androidx.test:core:$androidX_test_version"
     androidTestImplementation "androidx.test:runner:$androidX_test_version"
     androidTestImplementation "androidx.test:rules:$androidX_test_version"
