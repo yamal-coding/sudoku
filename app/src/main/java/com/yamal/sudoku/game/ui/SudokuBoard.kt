@@ -128,9 +128,19 @@ private fun SudokuCell(
         cell.value == SudokuCellValue.EMPTY ->
             stringResource(id = R.string.empty_cell_accessibility_label, absoluteRow, absoluteColumn)
         cell.isFixed ->
-            stringResource(id = R.string.fixed_cell_value_accessibility_label, cell.value.toString(), absoluteRow, absoluteColumn)
+            stringResource(
+                id = R.string.fixed_cell_value_accessibility_label,
+                cell.value.toString(),
+                absoluteRow,
+                absoluteColumn
+            )
         else ->
-            stringResource(id = R.string.cell_value_accessibility_label, cell.value.toString(), absoluteRow, absoluteColumn)
+            stringResource(
+                id = R.string.cell_value_accessibility_label,
+                cell.value.toString(),
+                absoluteRow,
+                absoluteColumn
+            )
     }
 
     val baseCellModifier = modifier
