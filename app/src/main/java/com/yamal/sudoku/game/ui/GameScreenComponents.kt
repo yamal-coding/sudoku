@@ -151,8 +151,12 @@ private fun IconButton(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(painter = painterResource(id = iconRes), contentDescription = null)
-            Text(text = stringResource(id = textRes))
+            val text =  stringResource(id = textRes)
+            Icon(
+                painter = painterResource(id = iconRes),
+                contentDescription = text
+            )
+            Text(text = text)
         }
     }
 }

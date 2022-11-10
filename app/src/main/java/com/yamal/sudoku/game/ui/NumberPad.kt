@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.model.SudokuCellValue
 
@@ -95,7 +97,12 @@ private fun NumberButton(
         onClick = { onClick(cellValue) }
     ) {
         getSudokuCellIconOrNullIfEmpty(cellValue)?.let {
-            Icon(painter = painterResource(id = it), contentDescription = cellValue.toString())
+            Icon(
+                painter = painterResource(id = it),
+                contentDescription = stringResource(
+                    id = R.string.number_button_accessibility_label,
+                    cellValue.toString()
+                ))
         }
     }
 }

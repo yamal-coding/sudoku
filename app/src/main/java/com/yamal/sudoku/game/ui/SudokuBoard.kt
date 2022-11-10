@@ -94,6 +94,8 @@ private fun SudokuBoardImpl(
                         } else {
                             null
                         },
+                        absoluteRow = row + 1,
+                        absoluteColumn = column + 1,
                     )
                     if ((column + 1) % QUADRANTS_PER_SIDE == 0) {
                         StrongVerticalDivider()
@@ -119,11 +121,16 @@ private fun SudokuCell(
     isSelected: Boolean,
     gameHasFinished: Boolean,
     testTag: String?,
+    absoluteRow: Int,
+    absoluteColumn: Int
 ) {
-    val onClickLabel = if (cell.value != SudokuCellValue.EMPTY) {
-        stringResource(id = R.string.empty_cell_accessibility_label)
-    } else {
-        ""
+    val contentDescription = when {
+        cell.value == SudokuCellValue.EMPTY ->
+            stringResource(id = R.string.empty_cell_accessibility_label, absoluteRow, absoluteColumn)
+        cell.isFixed ->
+            stringResource(id = R.string.fixed_cell_value_accessibility_label, cell.value.toString(), absoluteRow, absoluteColumn)
+        else ->
+            stringResource(id = R.string.cell_value_accessibility_label, cell.value.toString(), absoluteRow, absoluteColumn)
     }
 
     val baseCellModifier = modifier
@@ -137,7 +144,7 @@ private fun SudokuCell(
             }
         )
         .`if`(!cell.isFixed) {
-            clickable(onClickLabel = onClickLabel) { onSelected() }
+            clickable(onClickLabel = contentDescription) { onSelected() }
         }
         .padding(1.dp)
 
@@ -152,9 +159,14 @@ private fun SudokuCell(
         when {
             cell.value != SudokuCellValue.EMPTY -> CellValueIcon(
                 modifier = Modifier.fillMaxSize(fraction = 0.7F),
+                contentDescription = contentDescription,
                 value = cell.value
             )
-            cell.possibilities?.isNotEmpty() == true -> CellPossibilities(cell.possibilities)
+            cell.possibilities?.isNotEmpty() == true -> CellPossibilities(
+                possibilities = cell.possibilities,
+                absoluteRow = absoluteRow,
+                absoluteColumn = absoluteColumn,
+            )
         }
     }
 }
@@ -162,13 +174,14 @@ private fun SudokuCell(
 @Composable
 private fun CellValueIcon(
     modifier: Modifier = Modifier,
-    value: SudokuCellValue
+    value: SudokuCellValue,
+    contentDescription: String
 ) {
     getSudokuCellIconOrNullIfEmpty(value)?.let {
         Icon(
             modifier = modifier,
             painter = painterResource(id = it),
-            contentDescription = value.toString(),
+            contentDescription = contentDescription,
             tint = SudokuTheme.colors.cellText
         )
     }
@@ -176,7 +189,9 @@ private fun CellValueIcon(
 
 @Composable
 private fun CellPossibilities(
-    possibilities: Set<SudokuCellValue>
+    possibilities: Set<SudokuCellValue>,
+    absoluteRow: Int,
+    absoluteColumn: Int,
 ) {
     @Composable
     fun Possibilities(vararg values: SudokuCellValue) {
@@ -187,6 +202,12 @@ private fun CellPossibilities(
                         .weight(1F)
                         .alpha(if (possibilities.contains(value)) 1F else 0F),
                     value = value,
+                    contentDescription = stringResource(
+                        id = R.string.possibility_value_accessibility_label,
+                        value.toString(),
+                        absoluteRow,
+                        absoluteColumn,
+                    )
                 )
             }
         }
