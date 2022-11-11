@@ -3,8 +3,8 @@ android {
         applicationId "com.yamal.sudoku"
         minSdkVersion min_api_level
         targetSdkVersion sdk_version
-        versionCode 20221111
-        versionName "1.0.0"
+        versionCode 20221112
+        versionName "1.0.1"
 
         testInstrumentationRunner "com.yamal.sudoku.test.di.HiltTestRunner"
     }
