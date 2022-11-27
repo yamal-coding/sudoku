@@ -57,6 +57,23 @@ class GameStatusRepositoryTest : UnitTest() {
         verify(storage).updateBoard(null)
     }
 
+    @Test
+    fun `Should return saved time counter`() = runTest {
+        val expectedTimeCounter = 1000L
+        whenever(storage.getTimeCounter()).thenReturn(expectedTimeCounter)
+
+        assertEquals(expectedTimeCounter, repository.getTimeCounterSync())
+    }
+
+    @Test
+    fun `Should update time counter`() = runTest {
+        val someTimeCounter = 1000L
+
+        repository.saveTimeCounter(someTimeCounter)
+
+        verify(storage).updateTimeCounter(someTimeCounter)
+    }
+
     private fun givenASavedBoard(): Board {
         val (domainBoard, doBoard) = SudokuDOMother.someBoardWithExpectedDOModel()
         whenever(storage.observeBoard()).thenReturn(flowOf(doBoard))

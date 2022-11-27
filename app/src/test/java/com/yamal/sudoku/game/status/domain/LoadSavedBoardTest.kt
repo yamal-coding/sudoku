@@ -20,10 +20,12 @@ class LoadSavedBoardTest : UnitTest() {
     private val repository: GameStatusRepository = mock()
     private val currentGame: CurrentGame = mock()
     private val gameFactory: GameFactory = mock()
+    private val timeCounter: TimeCounter = mock()
     private val loadSavedBoard = LoadSavedBoard(
         repository,
         currentGame,
         gameFactory,
+        timeCounter,
     )
 
     @Before
@@ -35,11 +37,13 @@ class LoadSavedBoardTest : UnitTest() {
     fun `should load existing saved game`() = runTest {
         givenASavedBoard()
         givenAGame()
+        givenSomeSavedTimeCount()
 
         loadSavedBoard()
 
         verify(currentGame).onLoadingGame()
         verify(currentGame).onGameReady(ANY_GAME)
+        verify(timeCounter).start(ANY_SECONDS)
     }
 
     @Test
@@ -74,8 +78,13 @@ class LoadSavedBoardTest : UnitTest() {
         whenever(gameFactory.get(ANY_BOARD)).thenReturn(ANY_GAME)
     }
 
+    private suspend fun givenSomeSavedTimeCount() {
+        whenever(repository.getTimeCounterSync()).thenReturn(ANY_SECONDS)
+    }
+
     private companion object {
         val ANY_BOARD = AlmostSolvedSudokuMother.almostSolvedSudoku()
         val ANY_GAME = Game(ANY_BOARD)
+        const val ANY_SECONDS = 1345L
     }
 }

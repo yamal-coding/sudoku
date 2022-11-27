@@ -3,15 +3,15 @@ package com.yamal.sudoku.game.viewmodel
 import javax.inject.Inject
 
 class TimeCounterFormatter @Inject constructor() {
-    fun format(counter: Long): String {
-        val minutes = (counter / ONE_MINUTE_IN_SECONDS).toStringWithLeadingZeroIfNeeded()
-        val seconds = (counter % ONE_MINUTE_IN_SECONDS).toStringWithLeadingZeroIfNeeded()
+    fun format(seconds: Long): String {
+        val minutes = (seconds / ONE_MINUTE_IN_SECONDS).toStringWithLeadingZeroIfNeeded()
+        val remainingSeconds = (seconds % ONE_MINUTE_IN_SECONDS).toStringWithLeadingZeroIfNeeded()
 
-        return "$minutes:$seconds"
+        return "$minutes:$remainingSeconds"
     }
 
     private fun Long.toStringWithLeadingZeroIfNeeded(): String =
-        if (this < 10) {
+        if (this < FIRST_NUMBER_WITH_TWO_DIGITS) {
             "0$this"
         } else {
             toString()
@@ -19,5 +19,6 @@ class TimeCounterFormatter @Inject constructor() {
 
     private companion object {
         const val ONE_MINUTE_IN_SECONDS = 60L
+        const val FIRST_NUMBER_WITH_TWO_DIGITS = 10L
     }
 }

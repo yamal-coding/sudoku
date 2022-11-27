@@ -25,11 +25,13 @@ class LoadNewBoardTest : UnitTest() {
     private val levelsRepository: LevelsRepository = mock()
     private val currentGame: CurrentGame = mock()
     private val gameFactory: GameFactory = mock()
+    private val timeCounter: TimeCounter = mock()
     private val loadNewBoard = LoadNewBoard(
         gameStatusRepository,
         levelsRepository,
         currentGame,
         gameFactory,
+        timeCounter,
     )
 
     @Before
@@ -48,6 +50,7 @@ class LoadNewBoardTest : UnitTest() {
         verify(levelsRepository).markLevelAsAlreadyReturned(ANY_LEVEL_ID)
         verify(currentGame).onGameReady(ANY_GAME)
         verify(gameStatusRepository).saveBoard(ANY_BOARD)
+        verify(timeCounter).start(0L)
     }
 
     @Test

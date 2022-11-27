@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 @ViewModelScoped
-class TimeCounter @Inject constructor(
+open class TimeCounter @Inject constructor(
     @DefaultDispatcher dispatcher: CoroutineDispatcher,
     private val gameStatusRepository: GameStatusRepository,
 ) {
@@ -26,7 +26,7 @@ class TimeCounter @Inject constructor(
 
     private val alreadyStarted = AtomicBoolean(false)
 
-    fun start(initialSeconds: Long) {
+    open fun start(initialSeconds: Long) {
         onStarted {
             timerJob = scope.launch {
                 updateSeconds(initialSeconds)
@@ -35,7 +35,7 @@ class TimeCounter @Inject constructor(
         }
     }
 
-    fun resume() {
+    open fun resume() {
         onStarted {
             timerJob = scope.launch {
                 startTimeCounter()
@@ -43,13 +43,13 @@ class TimeCounter @Inject constructor(
         }
     }
 
-    fun pause() {
+    open fun pause() {
         timerJob?.cancel()
         timerJob = null
         alreadyStarted.set(false)
     }
 
-    fun stop() {
+    open fun stop() {
         scope.launch {
             timerJob?.cancel()
             timerJob?.join()

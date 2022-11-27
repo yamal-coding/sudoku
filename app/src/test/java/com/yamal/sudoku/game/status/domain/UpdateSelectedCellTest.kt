@@ -13,9 +13,11 @@ import org.mockito.kotlin.whenever
 class UpdateSelectedCellTest {
     private val currentGame: CurrentGame = mock()
     private val gameStatusRepository: GameStatusRepository = mock()
+    private val timeCounter: TimeCounter = mock()
     private val updateSelectedCell = UpdateSelectedCell(
         currentGame,
         gameStatusRepository,
+        timeCounter,
     )
 
     @Test
@@ -39,12 +41,45 @@ class UpdateSelectedCellTest {
         verify(gameStatusRepository, never()).saveBoard(any())
     }
 
+    @Test
+    fun `should remove saved board when game has finished`() {
+        givenGameThatWillFinishOnLastUpdate()
+
+        updateSelectedCell(ANY_CELL_VALUE)
+
+        verify(gameStatusRepository).removeSavedBoard()
+    }
+
+    @Test
+    fun `should stop time counter when game has finished`() {
+        givenGameThatWillFinishOnLastUpdate()
+
+        updateSelectedCell(ANY_CELL_VALUE)
+
+        verify(timeCounter).stop()
+    }
+
+    @Test
+    fun `game should be finished`() {
+        givenGameThatWillFinishOnLastUpdate()
+
+        updateSelectedCell(ANY_CELL_VALUE)
+
+        verify(currentGame).onGameFinished()
+    }
+
     private fun givenGameHasNotFinished() {
         whenever(currentGame.hasFinished()).thenReturn(false)
     }
 
     private fun givenGameHasFinished() {
         whenever(currentGame.hasFinished()).thenReturn(true)
+    }
+
+    private fun givenGameThatWillFinishOnLastUpdate() {
+        whenever(currentGame.hasFinished())
+            .thenReturn(false)
+            .thenReturn(true)
     }
 
     private fun givenAnyCurrentBoard() {

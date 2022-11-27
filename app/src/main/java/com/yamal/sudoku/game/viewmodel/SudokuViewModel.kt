@@ -66,7 +66,7 @@ class SudokuViewModel @Inject constructor(
     val shouldShowNewGameButtons: Flow<Boolean> = _shouldShowNewGameButtons
 
     val timeCounter: Flow<String?> = getTimeCounter().map {
-        it?.let { counter -> timeCounterFormatter.format(counter) }
+        it?.let { counter -> timeCounterFormatter.format(seconds = counter) }
     }
 
     fun initNewGame(difficulty: Difficulty) {
