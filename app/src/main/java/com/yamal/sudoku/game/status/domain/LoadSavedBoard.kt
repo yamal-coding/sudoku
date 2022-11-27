@@ -7,6 +7,7 @@ open class LoadSavedBoard @Inject constructor(
     private val repository: GameStatusRepository,
     private val currentGame: CurrentGame,
     private val gameFactory: GameFactory,
+    private val timeCounter: TimeCounter,
 ) {
     open suspend operator fun invoke() {
         currentGame.onGameStarted {
@@ -15,10 +16,16 @@ open class LoadSavedBoard @Inject constructor(
 
             if (savedBoard != null) {
                 val savedGame = gameFactory.get(savedBoard)
+                val currentTimeCount = repository.getTimeCounterSync() ?: DEFAULT_INITIAL_TIME_COUNTER
+                timeCounter.start(initialSeconds = currentTimeCount)
                 currentGame.onGameReady(savedGame)
             } else {
                 currentGame.onSavedGameNotFound()
             }
         }
+    }
+
+    private companion object {
+        const val DEFAULT_INITIAL_TIME_COUNTER = 0L
     }
 }

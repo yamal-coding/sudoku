@@ -5,8 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.yamal.sudoku.game.status.domain.AddOrRemovePossibilityToSelectedCell
 import com.yamal.sudoku.game.status.domain.ClearBoard
 import com.yamal.sudoku.game.status.domain.GetCurrentGameState
+import com.yamal.sudoku.game.status.domain.GetTimeCounter
 import com.yamal.sudoku.game.status.domain.LoadNewBoard
 import com.yamal.sudoku.game.status.domain.LoadSavedBoard
+import com.yamal.sudoku.game.status.domain.PauseGame
+import com.yamal.sudoku.game.status.domain.ResumeGame
 import com.yamal.sudoku.game.status.domain.SelectCell
 import com.yamal.sudoku.game.status.domain.SudokuState
 import com.yamal.sudoku.game.status.domain.Undo
@@ -23,6 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SudokuViewModel @Inject constructor(
     getCurrentGameState: GetCurrentGameState,
+    getTimeCounter: GetTimeCounter,
     private val loadSavedBoard: LoadSavedBoard,
     private val loadNewBoard: LoadNewBoard,
     private val undo: Undo,
@@ -30,6 +34,9 @@ class SudokuViewModel @Inject constructor(
     private val selectCell: SelectCell,
     private val updateSelectedCell: UpdateSelectedCell,
     private val addOrRemovePossibilityToSelectedCell: AddOrRemovePossibilityToSelectedCell,
+    private val pauseGame: PauseGame,
+    private val resumeGame: ResumeGame,
+    private val timeCounterFormatter: TimeCounterFormatter,
 ) : ViewModel() {
 
     val state: Flow<SudokuViewState> = getCurrentGameState().map {
@@ -57,6 +64,10 @@ class SudokuViewModel @Inject constructor(
 
     private val _shouldShowNewGameButtons = MutableStateFlow(false)
     val shouldShowNewGameButtons: Flow<Boolean> = _shouldShowNewGameButtons
+
+    val timeCounter: Flow<String?> = getTimeCounter().map {
+        it?.let { counter -> timeCounterFormatter.format(counter) }
+    }
 
     fun initNewGame(difficulty: Difficulty) {
         viewModelScope.launch {
@@ -109,5 +120,13 @@ class SudokuViewModel @Inject constructor(
 
     fun onPLayAgain() {
         _shouldShowNewGameButtons.value = true
+    }
+
+    fun onResumeGame() {
+        resumeGame()
+    }
+
+    fun onPauseGame() {
+        pauseGame()
     }
 }

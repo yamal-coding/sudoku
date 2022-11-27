@@ -11,6 +11,7 @@ open class LoadNewBoard @Inject constructor(
     private val levelsRepository: LevelsRepository,
     private val currentGame: CurrentGame,
     private val gameFactory: GameFactory,
+    private val timeCounter: TimeCounter,
 ) {
     open suspend operator fun invoke(difficulty: Difficulty) {
         currentGame.onGameStarted {
@@ -28,6 +29,7 @@ open class LoadNewBoard @Inject constructor(
         levelsRepository.markLevelAsAlreadyReturned(level.id)
 
         val newGame = gameFactory.get(level.board)
+        timeCounter.start(initialSeconds = INITIAL_TIME_COUNTER)
         currentGame.onGameReady(newGame)
         gameStatusRepository.saveBoard(level.board)
     }
@@ -42,5 +44,9 @@ open class LoadNewBoard @Inject constructor(
         } else {
             currentGame.onNewBoardNotFound()
         }
+    }
+
+    private companion object {
+        const val INITIAL_TIME_COUNTER = 0L
     }
 }

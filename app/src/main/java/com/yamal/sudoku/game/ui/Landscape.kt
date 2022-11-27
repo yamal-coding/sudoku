@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +25,7 @@ import com.yamal.sudoku.model.SudokuCellValue
 @Composable
 fun LandscapeUpdatedBoard(
     updatedBoard: SudokuViewState.UpdatedBoard,
+    timeCounter: String?,
     onCellSelected: (row: Int, column: Int) -> Unit,
     onValueSelected: (SudokuCellValue) -> Unit,
     onUndo: () -> Unit,
@@ -64,6 +66,7 @@ fun LandscapeUpdatedBoard(
                         DifficultyLabel(
                             difficulty = updatedBoard.board.difficulty
                         )
+                        timeCounter?.let { Text(text = it) }
                         MovementsPad(
                             canUndo = updatedBoard.canUndo,
                             onUndo = onUndo,

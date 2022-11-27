@@ -39,4 +39,14 @@ open class GameStatusRepository @Inject constructor(
             gameStatusStorage.updateBoard(null)
         }
     }
+
+    open fun saveTimeCounter(timeCounter: Long?) {
+        scope.launch(ioDispatcher) {
+            gameStatusStorage.updateTimeCounter(timeCounter)
+        }
+    }
+
+    open suspend fun getTimeCounterSync(): Long? = withContext(ioDispatcher) {
+        gameStatusStorage.getTimeCounter()
+    }
 }

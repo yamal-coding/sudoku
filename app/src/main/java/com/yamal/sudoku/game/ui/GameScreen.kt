@@ -3,13 +3,13 @@ package com.yamal.sudoku.game.ui
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
+import com.yamal.sudoku.commons.ui.effect.DisposableLifecycleAwareEffect
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.game.viewmodel.SudokuViewModel
@@ -58,9 +58,13 @@ private fun GameScreen(
     onBackToMenu: () -> Unit,
     onNewGame: (DifficultyViewData) -> Unit,
 ) {
-    LaunchedEffect(viewModel) {
-        onInit()
-    }
+    DisposableLifecycleAwareEffect(
+        key = viewModel,
+        onStart = onInit,
+        onResume = viewModel::onResumeGame,
+        onStop = viewModel::onPauseGame,
+        onDispose = viewModel::onPauseGame
+    )
 
     val state by viewModel.state.collectAsState(initial = SudokuViewState.Idle)
     when (state) {
@@ -93,8 +97,10 @@ private fun GameScreen(
                 viewModel.shouldShowClearBoardConfirmationDialog.collectAsState(initial = false)
             val isPossibilitiesModeEnabled by
                 viewModel.isPossibilitiesModeEnabled.collectAsState(initial = false)
+            val timeCounter by viewModel.timeCounter.collectAsState(initial = null)
             UpdatedBoard(
                 updatedBoard = updatedBoard,
+                timeCounter = timeCounter,
                 onCellSelected = viewModel::onCellSelected,
                 onValueSelected = viewModel::setCellValue,
                 onUndo = viewModel::onUndo,
@@ -114,6 +120,7 @@ private fun GameScreen(
 @Composable
 private fun UpdatedBoard(
     updatedBoard: SudokuViewState.UpdatedBoard,
+    timeCounter: String?,
     onCellSelected: (row: Int, column: Int) -> Unit,
     onValueSelected: (SudokuCellValue) -> Unit,
     onUndo: () -> Unit,
@@ -141,6 +148,7 @@ private fun UpdatedBoard(
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             PortraitUpdatedBoard(
                 updatedBoard = updatedBoard,
+                timeCounter = timeCounter,
                 onCellSelected = onCellSelected,
                 onValueSelected = onValueSelected,
                 onUndo = onUndo,
@@ -153,6 +161,7 @@ private fun UpdatedBoard(
         } else {
             LandscapeUpdatedBoard(
                 updatedBoard = updatedBoard,
+                timeCounter = timeCounter,
                 onCellSelected = onCellSelected,
                 onValueSelected = onValueSelected,
                 onUndo = onUndo,
@@ -215,6 +224,7 @@ private fun UpdatedBoardPreview() {
 
         UpdatedBoard(
             updatedBoard = state,
+            timeCounter = "00:23",
             onCellSelected = { _, _ -> },
             onValueSelected = {},
             onUndo = {},
