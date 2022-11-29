@@ -16,8 +16,10 @@ open class LoadSavedBoard @Inject constructor(
 
             if (savedBoard != null) {
                 val savedGame = gameFactory.get(savedBoard)
-                val currentTimeCount = repository.getTimeCounterSync() ?: DEFAULT_INITIAL_TIME_COUNTER
-                timeCounter.start(initialSeconds = currentTimeCount)
+                // If no current time was found, we shouldn't count the remaining time since it would be incorrect
+                repository.getTimeCounterSync()?.let { currentTimeCount ->
+                    timeCounter.start(initialSeconds = currentTimeCount)
+                }
                 currentGame.onGameReady(savedGame)
             } else {
                 currentGame.onSavedGameNotFound()
