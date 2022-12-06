@@ -10,7 +10,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -24,10 +25,11 @@ open class TimeCounter @Inject constructor(
     private val scope = CoroutineScope(dispatcher)
     private var timerJob: Job? = null
 
-    private val alreadyStarted = AtomicBoolean(false)
+    private var currentState = TimeCounterState.IDLE
+    private val stateMutex = Mutex()
 
     open fun start(initialSeconds: Long) {
-        onStarted {
+        onState(expect = TimeCounterState.IDLE, update = TimeCounterState.RESUMED) {
             timerJob = scope.launch {
                 updateSeconds(initialSeconds)
                 startTimeCounter()
@@ -36,7 +38,7 @@ open class TimeCounter @Inject constructor(
     }
 
     open fun resume() {
-        onStarted {
+        onState(expect = TimeCounterState.PAUSED, update = TimeCounterState.RESUMED) {
             timerJob = scope.launch {
                 startTimeCounter()
             }
@@ -44,13 +46,14 @@ open class TimeCounter @Inject constructor(
     }
 
     open fun pause() {
-        timerJob?.cancel()
-        timerJob = null
-        alreadyStarted.set(false)
+        onState(expect = TimeCounterState.RESUMED, update = TimeCounterState.PAUSED) {
+            timerJob?.cancel()
+            timerJob = null
+        }
     }
 
     open fun stop() {
-        scope.launch {
+        onState(expect = TimeCounterState.RESUMED, update = TimeCounterState.STOPPED) {
             timerJob?.cancel()
             timerJob?.join()
             timerJob = null
@@ -74,13 +77,29 @@ open class TimeCounter @Inject constructor(
         gameStatusRepository.saveTimeCounter(seconds)
     }
 
-    private inline fun onStarted(block: () -> Unit) {
-        if (alreadyStarted.compareAndSet(false, true)) {
-            block()
+    private inline fun onState(
+        expect: TimeCounterState,
+        update: TimeCounterState,
+        crossinline block: suspend () -> Unit
+    ) {
+        scope.launch {
+            stateMutex.withLock {
+                if (currentState == expect) {
+                    currentState = update
+                    block()
+                }
+            }
         }
     }
 
     private companion object {
         const val ONE_SECOND_IN_MILLIS = 1_000L
+    }
+
+    private enum class TimeCounterState {
+        IDLE,
+        PAUSED,
+        RESUMED,
+        STOPPED
     }
 }
