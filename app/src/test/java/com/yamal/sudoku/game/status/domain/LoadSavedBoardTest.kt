@@ -9,8 +9,10 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -47,6 +49,17 @@ class LoadSavedBoardTest : UnitTest() {
     }
 
     @Test
+    fun `should not start timer when there is no previous time saved`() = runTest {
+        givenASavedBoard()
+        givenAGame()
+        givenNoSavedTimeCount()
+
+        loadSavedBoard()
+
+        verify(timeCounter, never()).start(any())
+    }
+
+    @Test
     fun `should not load existing saved game`() = runTest {
         givenThereIsNoSavedBoard()
 
@@ -80,6 +93,10 @@ class LoadSavedBoardTest : UnitTest() {
 
     private suspend fun givenSomeSavedTimeCount() {
         whenever(repository.getTimeCounterSync()).thenReturn(ANY_SECONDS)
+    }
+
+    private suspend fun givenNoSavedTimeCount() {
+        whenever(repository.getTimeCounterSync()).thenReturn(null)
     }
 
     private companion object {
