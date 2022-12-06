@@ -26,8 +26,4 @@ open class LoadSavedBoard @Inject constructor(
             }
         }
     }
-
-    private companion object {
-        const val DEFAULT_INITIAL_TIME_COUNTER = 0L
-    }
 }
