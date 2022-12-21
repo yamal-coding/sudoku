@@ -29,9 +29,11 @@ open class GetGameStatistics @Inject constructor(
         statisticsRepository.getGamesPlayed(difficulty),
         statisticsRepository.getGamesWon(difficulty),
     ) { savedBoard, bestTimeInSeconds, gamesPlayed, gamesWon ->
+        val getActualPlayedGames = gamesPlayed
+            ?: getActualPlayedGamesWhenThereArentPreviousStats(difficulty, savedBoard?.difficulty)
         GameStatistics(
             bestTimeInSeconds = bestTimeInSeconds,
-            gamesPlayed = gamesPlayed ?: getActualPlayedGamesWhenThereArentPreviousStats(difficulty, savedBoard?.difficulty),
+            gamesPlayed = getActualPlayedGames,
             gamesWon = gamesWon ?: 0,
         )
     }
@@ -39,7 +41,10 @@ open class GetGameStatistics @Inject constructor(
     // If there aren't any previous statistics but there is a current game in progress,
     // we return 1 as the number of played games and update the stats.
     // This scenario can take place after having updated the app but the user still has an in progress game
-    private suspend fun getActualPlayedGamesWhenThereArentPreviousStats(difficulty: Difficulty, savedBoardDifficulty: Difficulty?): Long =
+    private suspend fun getActualPlayedGamesWhenThereArentPreviousStats(
+        difficulty: Difficulty,
+        savedBoardDifficulty: Difficulty?
+    ): Long =
         if (difficulty == savedBoardDifficulty) {
             val playedGames = 1L
             statisticsRepository.setGamesPlayed(difficulty, playedGames)
