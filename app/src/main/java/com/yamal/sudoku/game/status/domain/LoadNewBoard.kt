@@ -4,6 +4,7 @@ import com.yamal.sudoku.game.level.data.LevelsRepository
 import com.yamal.sudoku.game.level.domain.Level
 import com.yamal.sudoku.game.status.data.GameStatusRepository
 import com.yamal.sudoku.model.Difficulty
+import com.yamal.sudoku.stats.domain.IncreaseGamesPlayed
 import javax.inject.Inject
 
 open class LoadNewBoard @Inject constructor(
@@ -12,6 +13,7 @@ open class LoadNewBoard @Inject constructor(
     private val currentGame: CurrentGame,
     private val gameFactory: GameFactory,
     private val timeCounter: TimeCounter,
+    private val increaseGamesPlayed: IncreaseGamesPlayed,
 ) {
     open suspend operator fun invoke(difficulty: Difficulty) {
         currentGame.onGameStarted {
@@ -32,6 +34,8 @@ open class LoadNewBoard @Inject constructor(
         timeCounter.start(initialSeconds = INITIAL_TIME_COUNTER)
         currentGame.onGameReady(newGame)
         gameStatusRepository.saveBoard(level.board)
+
+        increaseGamesPlayed(level.difficulty)
     }
 
     private suspend fun tryAgainAfterResettingAlreadyReturnedLevels(difficulty: Difficulty) {

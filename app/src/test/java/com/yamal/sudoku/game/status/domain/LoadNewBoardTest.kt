@@ -5,6 +5,7 @@ import com.yamal.sudoku.game.level.data.LevelsRepository
 import com.yamal.sudoku.game.level.domain.Level
 import com.yamal.sudoku.game.status.data.GameStatusRepository
 import com.yamal.sudoku.model.Difficulty
+import com.yamal.sudoku.stats.domain.IncreaseGamesPlayed
 import com.yamal.sudoku.test.base.UnitTest
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,12 +27,14 @@ class LoadNewBoardTest : UnitTest() {
     private val currentGame: CurrentGame = mock()
     private val gameFactory: GameFactory = mock()
     private val timeCounter: TimeCounter = mock()
+    private val increaseGamesPlayed: IncreaseGamesPlayed = mock()
     private val loadNewBoard = LoadNewBoard(
         gameStatusRepository,
         levelsRepository,
         currentGame,
         gameFactory,
         timeCounter,
+        increaseGamesPlayed,
     )
 
     @Before
@@ -51,6 +54,7 @@ class LoadNewBoardTest : UnitTest() {
         verify(currentGame).onGameReady(ANY_GAME)
         verify(gameStatusRepository).saveBoard(ANY_BOARD)
         verify(timeCounter).start(0L)
+        verify(increaseGamesPlayed).invoke(ANY_DIFFICULTY)
     }
 
     @Test
@@ -64,6 +68,7 @@ class LoadNewBoardTest : UnitTest() {
         verify(levelsRepository).markLevelAsAlreadyReturned(ANY_LEVEL_ID)
         verify(currentGame).onGameReady(ANY_GAME)
         verify(gameStatusRepository).saveBoard(ANY_BOARD)
+        verify(increaseGamesPlayed).invoke(ANY_DIFFICULTY)
     }
 
     @Test
