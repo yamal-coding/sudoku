@@ -1,15 +1,19 @@
 package com.yamal.sudoku.stats.domain
 
+import com.yamal.sudoku.commons.thread.di.DefaultDispatcher
 import com.yamal.sudoku.game.status.data.GameStatusRepository
 import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.stats.data.StatisticsRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 open class GetGameStatistics @Inject constructor(
     private val gameStatusRepository: GameStatusRepository,
     private val statisticsRepository: StatisticsRepository,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
 ) {
     open operator fun invoke(): Flow<GameStatisticsByDifficulty> = combine(
         getStats(Difficulty.EASY),
@@ -21,7 +25,7 @@ open class GetGameStatistics @Inject constructor(
             mediumStatistics = mediumStats,
             hardStatistics = hardStats,
         )
-    }
+    }.flowOn(defaultDispatcher)
 
     private fun getStats(difficulty: Difficulty): Flow<GameStatistics> = combine(
         gameStatusRepository.getSavedBoard(),

@@ -7,6 +7,7 @@ import com.yamal.sudoku.game.navigation.gameNavGraph
 import com.yamal.sudoku.help.navigation.helpNavGraph
 import com.yamal.sudoku.start.navigation.StartDestination
 import com.yamal.sudoku.start.navigation.startNavGraph
+import com.yamal.sudoku.stats.navigation.statisticsNavGraph
 
 @Composable
 fun SudokuNavHost() {
@@ -18,5 +19,6 @@ fun SudokuNavHost() {
         startNavGraph(navController)
         gameNavGraph(navController)
         helpNavGraph()
+        statisticsNavGraph()
     }
 }

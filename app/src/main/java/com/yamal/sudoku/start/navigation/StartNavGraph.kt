@@ -8,6 +8,7 @@ import com.yamal.sudoku.game.navigation.ContinueGameDestination
 import com.yamal.sudoku.game.ui.toNavDestination
 import com.yamal.sudoku.help.navigation.HelpDestination
 import com.yamal.sudoku.start.ui.StartScreen
+import com.yamal.sudoku.stats.navigation.StatisticsDestination
 
 fun NavGraphBuilder.startNavGraph(navController: NavController) {
     composable(
@@ -23,6 +24,9 @@ fun NavGraphBuilder.startNavGraph(navController: NavController) {
             },
             onHowToPlayClicked = {
                 navController.navigate(HelpDestination.route)
+            },
+            onStatisticsClicked = {
+                navController.navigate(StatisticsDestination.route)
             }
         )
     }

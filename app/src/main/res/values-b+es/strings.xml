@@ -33,4 +33,8 @@
     <string name="cell_value_accessibility_label">%s en (%s, %s)</string>
     <string name="fixed_cell_value_accessibility_label">%s fijado en (%s, %s)</string>
     <string name="possibility_value_accessibility_label">Posible %s en (%s, %s)</string>
+    <string name="statistics_screen_title">Estadísticas</string>
+    <string name="statistics_best_time_label">Mejor tiempo</string>
+    <string name="statistics_games_played_label">Partidas jugadas</string>
+    <string name="statistics_games_won_label">Partidas ganadas</string>
 </resources>

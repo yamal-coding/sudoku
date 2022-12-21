@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -35,6 +36,7 @@ fun StartScreen(
     onContinueGame: () -> Unit,
     onNewGame: (DifficultyViewData) -> Unit,
     onHowToPlayClicked: () -> Unit,
+    onStatisticsClicked: () -> Unit,
 ) {
     val startScreenState by remember {
         viewModel.startScreenState
@@ -48,6 +50,7 @@ fun StartScreen(
                 onContinueGame = onContinueGame,
                 onNewGame = onNewGame,
                 onHowToPlayClicked = onHowToPlayClicked,
+                onStatisticsClicked = onStatisticsClicked,
             )
         }
     }
@@ -60,6 +63,7 @@ private fun StartScreen(
     onContinueGame: () -> Unit,
     onNewGame: (DifficultyViewData) -> Unit,
     onHowToPlayClicked: () -> Unit,
+    onStatisticsClicked: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -89,6 +93,10 @@ private fun StartScreen(
                 onContinueGame = onContinueGame,
                 onNewGame = onNewGame,
             )
+        }
+        // TODO
+        Button(onClick = onStatisticsClicked) {
+            Text(text = stringResource(id = R.string.statistics_screen_title))
         }
         HowToPlayLink(
             modifier = Modifier.padding(vertical = 8.dp),
@@ -131,6 +139,7 @@ private fun StartScreenPreview() {
             onContinueGame = { },
             onNewGame = { },
             onHowToPlayClicked = { },
+            onStatisticsClicked = { },
         )
     }
 }

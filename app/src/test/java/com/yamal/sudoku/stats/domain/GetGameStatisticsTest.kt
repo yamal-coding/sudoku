@@ -23,6 +23,7 @@ class GetGameStatisticsTest : UnitTest() {
     private val getGameStatistics = GetGameStatistics(
         gameStatusRepository,
         statisticsRepository,
+        testDispatcher,
     )
 
     @Test
