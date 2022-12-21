@@ -48,7 +48,8 @@ object SolvedSudokuMother {
 object AlmostSolvedSudokuMother {
 
     fun almostSolvedSudoku(
-        remainingCelValue: SudokuCellValue = SudokuCellValue.EMPTY
+        remainingCelValue: SudokuCellValue = SudokuCellValue.EMPTY,
+        difficulty: Difficulty = Difficulty.EASY
     ): Board =
         Board(
             cells = SudokuUtils.fixedCells(
@@ -64,7 +65,7 @@ object AlmostSolvedSudokuMother {
             ).also {
                 it.add(SudokuCell(remainingCelValue, isFixed = false))
             },
-            difficulty = Difficulty.EASY,
+            difficulty = difficulty,
         )
 
     const val almostSolvedSudokuAsRawLevel: String =
