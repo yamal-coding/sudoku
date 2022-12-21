@@ -2,7 +2,9 @@ package com.yamal.sudoku.game.status.domain
 
 import com.yamal.sudoku.game.status.data.GameStatusRepository
 import com.yamal.sudoku.model.SudokuCellValue
+import com.yamal.sudoku.stats.domain.UpdateGameFinishedStatistics
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
+import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -14,16 +16,22 @@ class UpdateSelectedCellTest {
     private val currentGame: CurrentGame = mock()
     private val gameStatusRepository: GameStatusRepository = mock()
     private val timeCounter: TimeCounter = mock()
+    private val updateStatistics: UpdateGameFinishedStatistics = mock()
     private val updateSelectedCell = UpdateSelectedCell(
         currentGame,
         gameStatusRepository,
         timeCounter,
+        updateStatistics
     )
+
+    @Before
+    fun setUp() {
+        givenAnyCurrentBoard()
+    }
 
     @Test
     fun `should update selected cell when game has not finished`() {
         givenGameHasNotFinished()
-        givenAnyCurrentBoard()
 
         updateSelectedCell(ANY_CELL_VALUE)
 
@@ -68,6 +76,16 @@ class UpdateSelectedCellTest {
         verify(currentGame).onGameFinished()
     }
 
+    @Test
+    fun `Should update statistics when game has finished`() {
+        givenGameThatWillFinishOnLastUpdate()
+        givenSomeGameFinishedTimeInSeconds()
+
+        updateSelectedCell(ANY_CELL_VALUE)
+
+        verify(updateStatistics).invoke(ANY_BOARD.difficulty, ANY_GAME_TIME_IN_SECONDS)
+    }
+
     private fun givenGameHasNotFinished() {
         whenever(currentGame.hasFinished()).thenReturn(false)
     }
@@ -86,8 +104,13 @@ class UpdateSelectedCellTest {
         whenever(currentGame.getCurrentBoard()).thenReturn(ANY_BOARD)
     }
 
+    private fun givenSomeGameFinishedTimeInSeconds() {
+        whenever(timeCounter.getCurrentTime()).thenReturn(ANY_GAME_TIME_IN_SECONDS)
+    }
+
     private companion object {
         val ANY_CELL_VALUE = SudokuCellValue.FIVE
         val ANY_BOARD = AlmostSolvedSudokuMother.almostSolvedSudoku()
+        const val ANY_GAME_TIME_IN_SECONDS = 1L
     }
 }

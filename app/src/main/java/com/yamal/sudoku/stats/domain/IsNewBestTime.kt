@@ -5,10 +5,10 @@ import com.yamal.sudoku.stats.data.StatisticsRepository
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
-class IsNewBestTime @Inject constructor(
+open class IsNewBestTime @Inject constructor(
     private val repository: StatisticsRepository,
 ) {
-    suspend operator fun invoke(difficulty: Difficulty, candidateBestTimeInSeconds: Long): Boolean {
+    open suspend operator fun invoke(difficulty: Difficulty, candidateBestTimeInSeconds: Long): Boolean {
         val previousBestTime = repository.getBestTimeInSeconds(difficulty).firstOrNull()
 
         return previousBestTime == null || candidateBestTimeInSeconds < previousBestTime

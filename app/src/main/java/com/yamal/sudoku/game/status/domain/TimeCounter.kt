@@ -61,6 +61,9 @@ open class TimeCounter @Inject constructor(
         }
     }
 
+    open fun getCurrentTime(): Long =
+        _timeCounterState.value ?: 0L
+
     private suspend fun startTimeCounter() {
         while (true) {
             delay(ONE_SECOND_IN_MILLIS)
