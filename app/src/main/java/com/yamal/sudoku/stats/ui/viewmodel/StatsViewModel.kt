@@ -10,10 +10,11 @@ import javax.inject.Inject
 @HiltViewModel
 class StatsViewModel @Inject constructor(
     getGameStatistics: GetGameStatistics,
+    private val viewModelMapper: StatisticsViewModelMapper,
 ) : ViewModel() {
     val statisticsState: Flow<StatisticsState> =
         getGameStatistics().map {
-            StatisticsState.Ready(statistics = it.toViewData())
+            StatisticsState.Ready(statistics = viewModelMapper.toViewModel(it))
         }
 }
 

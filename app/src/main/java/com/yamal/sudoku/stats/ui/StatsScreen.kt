@@ -94,8 +94,7 @@ private fun Statistics(
         StatisticsRow(
             modifier = Modifier.fillMaxWidth(),
             labelResId = R.string.statistics_best_time_label,
-            value = statistics.bestTimeInSeconds?.toString()
-                ?: stringResource(id = R.string.statistics_best_time_undefined)
+            value = statistics.bestTimeInSeconds ?: stringResource(id = R.string.statistics_best_time_undefined)
         )
         StatisticsRow(
             modifier = Modifier.fillMaxWidth(),
@@ -132,9 +131,9 @@ private fun StatisticsRow(
 private fun StatisticsScreenPreview() {
     SudokuTheme {
         StatisticsByDifficulty(statisticsByDifficulty = GameStatisticsByDifficultyViewData(
-            easyStatistics = GameStatisticsViewData(1, 1, 1),
-            mediumStatistics = GameStatisticsViewData(1, 1, 1),
-            hardStatistics = GameStatisticsViewData(1, 1, 1),
+            easyStatistics = GameStatisticsViewData("01:00", 1, 1),
+            mediumStatistics = GameStatisticsViewData("01:00", 1, 1),
+            hardStatistics = GameStatisticsViewData("01:00", 1, 1),
         ))
     }
 }

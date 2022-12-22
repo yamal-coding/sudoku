@@ -1,4 +1,4 @@
-package com.yamal.sudoku.game.viewmodel
+package com.yamal.sudoku.commons.ui
 
 import javax.inject.Inject
 
