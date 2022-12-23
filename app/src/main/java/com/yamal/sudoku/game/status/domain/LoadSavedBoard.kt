@@ -10,17 +10,15 @@ open class LoadSavedBoard @Inject constructor(
     private val timeCounter: TimeCounter,
 ) {
     open suspend operator fun invoke() {
-        currentGame.onGameStarted {
-            currentGame.onLoadingGame()
-            val savedBoard = repository.getSavedBoardSync()
+        currentGame.onLoadingGame()
+        val savedBoard = repository.getSavedBoardSync()
 
-            if (savedBoard != null) {
-                val savedGame = gameFactory.get(savedBoard)
-                startTimeCounter()
-                currentGame.onGameReady(savedGame)
-            } else {
-                currentGame.onSavedGameNotFound()
-            }
+        if (savedBoard != null) {
+            val savedGame = gameFactory.get(savedBoard)
+            startTimeCounter()
+            currentGame.onGameReady(savedGame)
+        } else {
+            currentGame.onSavedGameNotFound()
         }
     }
 

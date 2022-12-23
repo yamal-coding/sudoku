@@ -20,21 +20,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.animation.AutomaticAnimatedVisibility
-import com.yamal.sudoku.commons.ui.theme.SudokuTheme
-import com.yamal.sudoku.game.ui.DifficultyViewData
+import com.yamal.sudoku.game.navigation.GameNavigationParams
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.start.StartScreenTestTags
+import com.yamal.sudoku.start.ui.viewmodel.ExistingGameViewData
 import com.yamal.sudoku.start.ui.viewmodel.StartScreenState
 import com.yamal.sudoku.start.ui.viewmodel.StartViewModel
 
 @Composable
 fun StartScreen(
     viewModel: StartViewModel,
-    onContinueGame: () -> Unit,
-    onNewGame: (DifficultyViewData) -> Unit,
+    onStartGame: (GameNavigationParams) -> Unit,
     onHowToPlayClicked: () -> Unit,
     onStatisticsClicked: () -> Unit,
 ) {
@@ -46,9 +45,13 @@ fun StartScreen(
         is StartScreenState.Idle -> {}
         is StartScreenState.Ready -> {
             StartScreen(
-                shouldShowContinueButton = (startScreenState as StartScreenState.Ready).shouldShowContinueButton,
-                onContinueGame = onContinueGame,
-                onNewGame = onNewGame,
+                existingGame = (startScreenState as StartScreenState.Ready).existingGame,
+                onContinueGame = { existingGame ->
+                    onStartGame(GameNavigationParams(existingGame.gameId, existingGame.difficulty))
+                },
+                onNewGame = { selectedDifficulty ->
+                    onStartGame(GameNavigationParams(selectedDifficulty))
+                },
                 onHowToPlayClicked = onHowToPlayClicked,
                 onStatisticsClicked = onStatisticsClicked,
             )
@@ -59,9 +62,9 @@ fun StartScreen(
 @Suppress("MagicNumber")
 @Composable
 private fun StartScreen(
-    shouldShowContinueButton: Boolean,
-    onContinueGame: () -> Unit,
-    onNewGame: (DifficultyViewData) -> Unit,
+    existingGame: ExistingGameViewData?,
+    onContinueGame: (existingGame: ExistingGameViewData) -> Unit,
+    onNewGame: (Difficulty) -> Unit,
     onHowToPlayClicked: () -> Unit,
     onStatisticsClicked: () -> Unit,
 ) {
@@ -89,7 +92,7 @@ private fun StartScreen(
                 modifier = Modifier
                     .fillMaxWidth(fraction = 0.7F)
                     .weight(0.6F),
-                shouldShowContinueButton = shouldShowContinueButton,
+                existingGame = existingGame,
                 onContinueGame = onContinueGame,
                 onNewGame = onNewGame,
             )
@@ -127,19 +130,5 @@ private fun HowToPlayLink(
         onClick = onHowToPlayClicked
     ) {
         Text(text = stringResource(id = R.string.how_to_play_button).uppercase())
-    }
-}
-
-@Preview
-@Composable
-private fun StartScreenPreview() {
-    SudokuTheme {
-        StartScreen(
-            shouldShowContinueButton = true,
-            onContinueGame = { },
-            onNewGame = { },
-            onHowToPlayClicked = { },
-            onStatisticsClicked = { },
-        )
     }
 }

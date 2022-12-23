@@ -16,14 +16,12 @@ open class LoadNewBoard @Inject constructor(
     private val increaseGamesPlayed: IncreaseGamesPlayed,
 ) {
     open suspend operator fun invoke(difficulty: Difficulty) {
-        currentGame.onGameStarted {
-            val newLevel = levelsRepository.getNewLevel(difficulty)
+        val newLevel = levelsRepository.getNewLevel(difficulty)
 
-            if (newLevel != null) {
-                startNewGame(newLevel)
-            } else {
-                tryAgainAfterResettingAlreadyReturnedLevels(difficulty)
-            }
+        if (newLevel != null) {
+            startNewGame(newLevel)
+        } else {
+            tryAgainAfterResettingAlreadyReturnedLevels(difficulty)
         }
     }
 

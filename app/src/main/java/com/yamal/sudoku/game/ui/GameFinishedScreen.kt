@@ -21,6 +21,7 @@ import com.yamal.sudoku.commons.ui.Header
 import com.yamal.sudoku.commons.ui.animation.AutomaticAnimatedVisibility
 import com.yamal.sudoku.commons.ui.MenuButton
 import com.yamal.sudoku.commons.ui.MenuDivider
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.start.ui.NewEasyGameButton
 import com.yamal.sudoku.start.ui.NewHardGameButton
 import com.yamal.sudoku.start.ui.NewMediumGameButton
@@ -30,7 +31,7 @@ fun GameFinishedScreen(
     modifier: Modifier = Modifier,
     shouldShowNewGameButtons: Boolean,
     onPlayAgain: () -> Unit,
-    onNewGame: (DifficultyViewData) -> Unit,
+    onNewGame: (Difficulty) -> Unit,
     onBackToMenu: () -> Unit,
 ) {
     AutomaticAnimatedVisibility(
@@ -76,7 +77,7 @@ private fun Menu(
     modifier: Modifier = Modifier,
     shouldShowNewGameButtons: Boolean,
     onPlayAgain: () -> Unit,
-    onNewGame: (DifficultyViewData) -> Unit,
+    onNewGame: (Difficulty) -> Unit,
     onBackToMenu: () -> Unit,
 ) {
     Column(

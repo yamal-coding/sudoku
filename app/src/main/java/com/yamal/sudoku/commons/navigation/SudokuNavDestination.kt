@@ -1,5 +1,8 @@
 package com.yamal.sudoku.commons.navigation
 
-interface SudokuNavDestination {
-    val route: String
+import androidx.navigation.NamedNavArgument
+
+abstract class SudokuNavDestination {
+    abstract val route: String
+    open val arguments: List<NamedNavArgument> = emptyList()
 }

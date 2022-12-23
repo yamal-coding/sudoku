@@ -7,8 +7,7 @@ import com.yamal.sudoku.game.status.domain.AddOrRemovePossibilityToSelectedCell
 import com.yamal.sudoku.game.status.domain.ClearBoard
 import com.yamal.sudoku.game.status.domain.GetCurrentGameState
 import com.yamal.sudoku.game.status.domain.GetTimeCounter
-import com.yamal.sudoku.game.status.domain.LoadNewBoard
-import com.yamal.sudoku.game.status.domain.LoadSavedBoard
+import com.yamal.sudoku.game.status.domain.LoadGame
 import com.yamal.sudoku.game.status.domain.PauseGame
 import com.yamal.sudoku.game.status.domain.ResumeGame
 import com.yamal.sudoku.game.status.domain.SelectCell
@@ -28,8 +27,6 @@ import javax.inject.Inject
 class SudokuViewModel @Inject constructor(
     getCurrentGameState: GetCurrentGameState,
     getTimeCounter: GetTimeCounter,
-    private val loadSavedBoard: LoadSavedBoard,
-    private val loadNewBoard: LoadNewBoard,
     private val undo: Undo,
     private val clearBoard: ClearBoard,
     private val selectCell: SelectCell,
@@ -38,6 +35,7 @@ class SudokuViewModel @Inject constructor(
     private val pauseGame: PauseGame,
     private val resumeGame: ResumeGame,
     private val timeCounterFormatter: TimeCounterFormatter,
+    private val loadGame: LoadGame,
 ) : ViewModel() {
 
     val state: Flow<SudokuViewState> = getCurrentGameState().map {
@@ -70,15 +68,9 @@ class SudokuViewModel @Inject constructor(
         it?.let { counter -> timeCounterFormatter.format(seconds = counter) }
     }
 
-    fun initNewGame(difficulty: Difficulty) {
+    fun initGame(gameId: String, difficulty: Difficulty) {
         viewModelScope.launch {
-            loadNewBoard(difficulty)
-        }
-    }
-
-    fun initExistingGame() {
-        viewModelScope.launch {
-            loadSavedBoard()
+            loadGame(gameId, difficulty)
         }
     }
 

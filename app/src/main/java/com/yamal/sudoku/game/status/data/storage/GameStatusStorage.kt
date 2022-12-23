@@ -16,6 +16,17 @@ open class GameStatusStorage @Inject constructor(
     private val jsonUtils: JsonUtils,
 ) {
 
+    open suspend fun setGameId(id: String?) {
+        dataStorage.edit { preferences ->
+            id?.let {
+                preferences[GAME_ID] = id
+            } ?: preferences.remove(GAME_ID)
+        }
+    }
+
+    open fun getGameId(): Flow<String?> =
+        dataStorage.data.map { it[GAME_ID] }
+
     open suspend fun updateBoard(boardDO: BoardDO?) {
         dataStorage.edit { preferences ->
             val jsonBoard = boardDO?.let {
@@ -52,5 +63,6 @@ open class GameStatusStorage @Inject constructor(
     private companion object {
         val BOARD_KEY = stringPreferencesKey("board")
         val TIME_COUNTER_KEY = longPreferencesKey("time_counter")
+        val GAME_ID = stringPreferencesKey("game_id")
     }
 }

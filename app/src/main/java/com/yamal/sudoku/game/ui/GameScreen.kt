@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.yamal.sudoku.commons.ui.effect.DisposableLifecycleAwareEffect
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
+import com.yamal.sudoku.game.navigation.GameNavigationParams
 import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.game.viewmodel.SudokuViewModel
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
@@ -19,48 +20,18 @@ import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 
 @Composable
-fun ExistingGameScreen(
+fun GameScreen(
     viewModel: SudokuViewModel,
-    onBackToMenu: () -> Unit,
-    onNewGame: (DifficultyViewData) -> Unit,
-) {
-    GameScreen(
-        viewModel = viewModel,
-        onInit = {
-            viewModel.initExistingGame()
-        },
-        onBackToMenu = onBackToMenu,
-        onNewGame = onNewGame,
-    )
-}
-
-@Composable
-fun NewGameScreen(
+    gameId: String,
     difficulty: Difficulty,
-    viewModel: SudokuViewModel,
     onBackToMenu: () -> Unit,
-    onNewGame: (DifficultyViewData) -> Unit,
-) {
-    GameScreen(
-        viewModel = viewModel,
-        onInit = {
-            viewModel.initNewGame(difficulty)
-        },
-        onBackToMenu = onBackToMenu,
-        onNewGame = onNewGame,
-    )
-}
-
-@Composable
-private fun GameScreen(
-    viewModel: SudokuViewModel,
-    onInit: () -> Unit,
-    onBackToMenu: () -> Unit,
-    onNewGame: (DifficultyViewData) -> Unit,
+    onNewGame: (GameNavigationParams) -> Unit,
 ) {
     DisposableLifecycleAwareEffect(
         key = viewModel,
-        onStart = onInit,
+        onStart = {
+            viewModel.initGame(gameId, difficulty)
+        },
         onResume = viewModel::onResumeGame,
         onStop = viewModel::onPauseGame,
         onDispose = viewModel::onPauseGame
@@ -89,7 +60,9 @@ private fun GameScreen(
                     shouldShowNewGameButtons = shouldShowNewGameButtons,
                     onPlayAgain = viewModel::onPLayAgain,
                     onBackToMenu = onBackToMenu,
-                    onNewGame = onNewGame,
+                    onNewGame =  { selectedDifficulty ->
+                        onNewGame(GameNavigationParams(selectedDifficulty))
+                    },
                 )
             }
 

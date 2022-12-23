@@ -29,6 +29,7 @@ open class UpdateSelectedCell @Inject constructor(
             gameTimeInSeconds = timeCounter.getCurrentTime(),
         )
         repository.removeSavedBoard()
+        repository.removeGameId()
         currentGame.onGameFinished()
     }
 }

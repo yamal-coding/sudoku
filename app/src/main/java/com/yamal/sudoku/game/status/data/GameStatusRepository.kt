@@ -21,6 +21,21 @@ open class GameStatusRepository @Inject constructor(
     private val scope: ApplicationScope,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
+    open suspend fun setGameId(id: String) {
+        withContext(ioDispatcher) {
+            gameStatusStorage.setGameId(id)
+        }
+    }
+
+    open fun getGameId(): Flow<String?> =
+        gameStatusStorage.getGameId()
+
+    open fun removeGameId() {
+        scope.launch(ioDispatcher) {
+            gameStatusStorage.setGameId(null)
+        }
+    }
+
     open fun getSavedBoard(): Flow<Board?> =
         gameStatusStorage.observeBoard().map { it?.toDomain() }
 

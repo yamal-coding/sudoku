@@ -7,24 +7,25 @@ import androidx.compose.ui.Modifier
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.MenuButton
 import com.yamal.sudoku.commons.ui.MenuDivider
-import com.yamal.sudoku.game.ui.DifficultyViewData
+import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.start.StartScreenTestTags
+import com.yamal.sudoku.start.ui.viewmodel.ExistingGameViewData
 
 @Composable
 fun Menu(
     modifier: Modifier = Modifier,
-    shouldShowContinueButton: Boolean,
-    onContinueGame: () -> Unit,
-    onNewGame: (DifficultyViewData) -> Unit,
+    existingGame: ExistingGameViewData?,
+    onContinueGame: (existingGame: ExistingGameViewData) -> Unit,
+    onNewGame: (Difficulty) -> Unit,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (shouldShowContinueButton) {
+        if (existingGame != null) {
             MenuDivider()
             MenuButton(
-                onClick = onContinueGame,
+                onClick = { onContinueGame(existingGame) },
                 textRes = R.string.load_game_button,
                 testTag = StartScreenTestTags.CONTINUE_GAME_BUTTON,
             )
@@ -42,11 +43,11 @@ fun Menu(
 @Composable
 fun NewEasyGameButton(
     modifier: Modifier = Modifier,
-    onClick: (DifficultyViewData) -> Unit,
+    onClick: (Difficulty) -> Unit,
 ) {
     MenuButton(
         modifier = modifier,
-        onClick = { onClick(DifficultyViewData.EASY) },
+        onClick = { onClick(Difficulty.EASY) },
         textRes = R.string.difficulty_easy
     )
 }
@@ -54,11 +55,11 @@ fun NewEasyGameButton(
 @Composable
 fun NewMediumGameButton(
     modifier: Modifier = Modifier,
-    onClick: (DifficultyViewData) -> Unit,
+    onClick: (Difficulty) -> Unit,
 ) {
     MenuButton(
         modifier = modifier,
-        onClick = { onClick(DifficultyViewData.MEDIUM) },
+        onClick = { onClick(Difficulty.MEDIUM) },
         textRes = R.string.difficulty_medium
     )
 }
@@ -66,11 +67,11 @@ fun NewMediumGameButton(
 @Composable
 fun NewHardGameButton(
     modifier: Modifier = Modifier,
-    onClick: (DifficultyViewData) -> Unit,
+    onClick: (Difficulty) -> Unit,
 ) {
     MenuButton(
         modifier = modifier,
-        onClick = { onClick(DifficultyViewData.HARD) },
+        onClick = { onClick(Difficulty.HARD) },
         textRes = R.string.difficulty_hard
     )
 }
