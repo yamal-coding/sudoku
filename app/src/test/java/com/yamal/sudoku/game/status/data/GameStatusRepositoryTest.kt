@@ -74,6 +74,30 @@ class GameStatusRepositoryTest : UnitTest() {
         verify(storage).updateTimeCounter(someTimeCounter)
     }
 
+    @Test
+    fun `Should return saved game Id`() = runTest {
+        val someGameId = "1234"
+        whenever(storage.getGameId()).thenReturn(flowOf(someGameId))
+
+        assertEquals(someGameId, repository.getGameId().firstOrNull())
+    }
+
+    @Test
+    fun `Should update game Id`() = runTest {
+        val someGameId = "1234"
+
+        repository.setGameId(someGameId)
+
+        verify(storage).setGameId(someGameId)
+    }
+
+    @Test
+    fun `Should remove game Id`() = runTest {
+        repository.removeGameId()
+
+        verify(storage).setGameId(null)
+    }
+
     private fun givenASavedBoard(): Board {
         val (domainBoard, doBoard) = SudokuDOMother.someBoardWithExpectedDOModel()
         whenever(storage.observeBoard()).thenReturn(flowOf(doBoard))

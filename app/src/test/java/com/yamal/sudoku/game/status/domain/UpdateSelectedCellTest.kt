@@ -56,6 +56,7 @@ class UpdateSelectedCellTest {
         updateSelectedCell(ANY_CELL_VALUE)
 
         verify(gameStatusRepository).removeSavedBoard()
+        verify(gameStatusRepository).removeGameId()
     }
 
     @Test

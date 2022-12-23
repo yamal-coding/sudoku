@@ -2,7 +2,7 @@ package com.yamal.sudoku.start.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.yamal.sudoku.model.Difficulty
-import com.yamal.sudoku.start.domain.GetExistingGameInfo
+import com.yamal.sudoku.game.status.domain.GetExistingGameInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
