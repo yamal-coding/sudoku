@@ -61,9 +61,6 @@ class SudokuViewModel @Inject constructor(
     private val _isPossibilitiesModeEnabled = MutableStateFlow(false)
     val isPossibilitiesModeEnabled: Flow<Boolean> = _isPossibilitiesModeEnabled
 
-    private val _shouldShowNewGameButtons = MutableStateFlow(false)
-    val shouldShowNewGameButtons: Flow<Boolean> = _shouldShowNewGameButtons
-
     val timeCounter: Flow<String?> = getTimeCounter().map {
         it?.let { counter -> timeCounterFormatter.format(seconds = counter) }
     }
@@ -109,10 +106,6 @@ class SudokuViewModel @Inject constructor(
 
     fun onDisablePossibilitiesMode() {
         _isPossibilitiesModeEnabled.value = false
-    }
-
-    fun onPLayAgain() {
-        _shouldShowNewGameButtons.value = true
     }
 
     fun onResumeGame() {

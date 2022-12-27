@@ -3,6 +3,7 @@ package com.yamal.sudoku.game.ui
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -11,13 +12,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import com.yamal.sudoku.commons.ui.effect.DisposableLifecycleAwareEffect
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
-import com.yamal.sudoku.game.navigation.GameNavigationParams
 import com.yamal.sudoku.game.status.data.toSudokuCell
 import com.yamal.sudoku.game.viewmodel.SudokuViewModel
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
 import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
+import kotlinx.coroutines.delay
 
 @Composable
 fun GameScreen(
@@ -25,7 +26,7 @@ fun GameScreen(
     gameId: String,
     difficulty: Difficulty,
     onBackToMenu: () -> Unit,
-    onNewGame: (GameNavigationParams) -> Unit,
+    onGameFinished: () -> Unit,
 ) {
     DisposableLifecycleAwareEffect(
         key = viewModel,
@@ -54,16 +55,10 @@ fun GameScreen(
         is SudokuViewState.UpdatedBoard -> {
             val updatedBoard = state as SudokuViewState.UpdatedBoard
             if (updatedBoard.gameHasFinished) {
-                val shouldShowNewGameButtons by
-                    viewModel.shouldShowNewGameButtons.collectAsState(initial = false)
-                GameFinishedScreen(
-                    shouldShowNewGameButtons = shouldShowNewGameButtons,
-                    onPlayAgain = viewModel::onPLayAgain,
-                    onBackToMenu = onBackToMenu,
-                    onNewGame =  { selectedDifficulty ->
-                        onNewGame(GameNavigationParams(selectedDifficulty))
-                    },
-                )
+                LaunchedEffect(key1 = true) {
+                    delay(GameAnimationConstants.FadeOutTransitionDuration.toLong())
+                    onGameFinished()
+                }
             }
 
             val shouldShowClearBoardConfirmationDialog by

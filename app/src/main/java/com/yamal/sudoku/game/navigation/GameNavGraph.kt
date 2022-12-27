@@ -4,6 +4,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.yamal.sudoku.game.ui.GameFinishedScreen
 import com.yamal.sudoku.game.ui.GameScreen
 
 fun NavGraphBuilder.gameNavGraph(navController: NavController) {
@@ -18,6 +19,19 @@ fun NavGraphBuilder.gameNavGraph(navController: NavController) {
             viewModel = hiltViewModel(),
             gameId = gameId,
             difficulty = GameDestination.difficultyFromParam(difficulty),
+            onBackToMenu = {
+                navController.onBackToMenu()
+            },
+            onGameFinished = {
+                navController.onGameFinished()
+            },
+        )
+    }
+    composable(
+        route = GameFinishedDestination.route
+    ) {
+        GameFinishedScreen(
+            viewModel = hiltViewModel(),
             onNewGame = { navParams ->
                 navController.onNewGame(navParams)
             },
@@ -35,4 +49,9 @@ private fun NavController.onNewGame(navParams: GameNavigationParams) {
 
 private fun NavController.onBackToMenu() {
     popBackStack()
+}
+
+private fun NavController.onGameFinished() {
+    popBackStack()
+    navigate(GameFinishedDestination.route)
 }
