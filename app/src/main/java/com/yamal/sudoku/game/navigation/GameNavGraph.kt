@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.yamal.sudoku.game.ui.GameFinishedScreen
 import com.yamal.sudoku.game.ui.GameScreen
+import com.yamal.sudoku.game.viewmodel.ioc.gameFinishedViewModel
 
 fun NavGraphBuilder.gameNavGraph(navController: NavController) {
     composable(
@@ -23,15 +24,18 @@ fun NavGraphBuilder.gameNavGraph(navController: NavController) {
                 navController.onBackToMenu()
             },
             onGameFinished = {
-                navController.onGameFinished()
+                navController.onGameFinished(gameId)
             },
         )
     }
     composable(
-        route = GameFinishedDestination.route
+        route = GameFinishedDestination.route,
+        arguments = GameFinishedDestination.arguments
     ) {
+        val gameId = it.arguments?.getString(GameFinishedDestination.GAME_ID_PARAM)!!
+
         GameFinishedScreen(
-            viewModel = hiltViewModel(),
+            viewModel = gameFinishedViewModel(gameId),
             onNewGame = { navParams ->
                 navController.onNewGame(navParams)
             },
@@ -51,7 +55,7 @@ private fun NavController.onBackToMenu() {
     popBackStack()
 }
 
-private fun NavController.onGameFinished() {
+private fun NavController.onGameFinished(gameId: String) {
     popBackStack()
-    navigate(GameFinishedDestination.route)
+    navigate(GameFinishedDestination.routeFromParams(gameId))
 }
