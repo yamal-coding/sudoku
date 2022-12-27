@@ -15,20 +15,20 @@ open class LoadNewBoard @Inject constructor(
     private val timeCounter: TimeCounter,
     private val increaseGamesPlayed: IncreaseGamesPlayed,
 ) {
-    open suspend operator fun invoke(difficulty: Difficulty) {
+    open suspend operator fun invoke(gameId: String, difficulty: Difficulty) {
         val newLevel = levelsRepository.getNewLevel(difficulty)
 
         if (newLevel != null) {
-            startNewGame(newLevel)
+            startNewGame(gameId, newLevel)
         } else {
-            tryAgainAfterResettingAlreadyReturnedLevels(difficulty)
+            tryAgainAfterResettingAlreadyReturnedLevels(gameId, difficulty)
         }
     }
 
-    private suspend fun startNewGame(level: Level) {
+    private suspend fun startNewGame(gameId: String, level: Level) {
         levelsRepository.markLevelAsAlreadyReturned(level.id)
 
-        val newGame = gameFactory.get(level.board)
+        val newGame = gameFactory.get(gameId, level.board)
         timeCounter.start(initialSeconds = INITIAL_TIME_COUNTER)
         currentGame.onGameReady(newGame)
         gameStatusRepository.saveBoard(level.board)
@@ -36,13 +36,16 @@ open class LoadNewBoard @Inject constructor(
         increaseGamesPlayed(level.difficulty)
     }
 
-    private suspend fun tryAgainAfterResettingAlreadyReturnedLevels(difficulty: Difficulty) {
+    private suspend fun tryAgainAfterResettingAlreadyReturnedLevels(
+        gameId: String,
+        difficulty: Difficulty,
+    ) {
         levelsRepository.resetAlreadyReturnedLevels(difficulty)
 
         val newLevel = levelsRepository.getNewLevel(difficulty)
 
         if (newLevel != null) {
-            startNewGame(newLevel)
+            startNewGame(gameId, newLevel)
         } else {
             currentGame.onNewBoardNotFound()
         }

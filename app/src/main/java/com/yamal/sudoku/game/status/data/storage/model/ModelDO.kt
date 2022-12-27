@@ -21,3 +21,10 @@ object DifficultyDO {
     const val MEDIUM = "medium"
     const val HARD = "hard"
 }
+
+@JsonClass(generateAdapter = true)
+data class LastFinishedGameSummaryDO(
+    @Json(name = "gameId") val gameId: String,
+    @Json(name = "gameTimeInSeconds") val gameTimeInSeconds: Long,
+    @Json(name = "isNewBestTime") val isNewBestTime: Boolean,
+)

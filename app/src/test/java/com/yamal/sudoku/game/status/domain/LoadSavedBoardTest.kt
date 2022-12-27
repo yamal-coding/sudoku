@@ -41,7 +41,7 @@ class LoadSavedBoardTest : UnitTest() {
         givenAGame()
         givenSomeSavedTimeCount()
 
-        loadSavedBoard()
+        loadSavedBoard(SOME_GAME_ID)
 
         verify(currentGame).onLoadingGame()
         verify(currentGame).onGameReady(ANY_GAME)
@@ -54,7 +54,7 @@ class LoadSavedBoardTest : UnitTest() {
         givenAGame()
         givenNoSavedTimeCount()
 
-        loadSavedBoard()
+        loadSavedBoard(SOME_GAME_ID)
 
         verify(timeCounter, never()).start(any())
     }
@@ -63,7 +63,7 @@ class LoadSavedBoardTest : UnitTest() {
     fun `should not load existing saved game`() = runTest {
         givenThereIsNoSavedBoard()
 
-        loadSavedBoard()
+        loadSavedBoard(SOME_GAME_ID)
 
         verify(currentGame).onSavedGameNotFound()
     }
@@ -88,7 +88,7 @@ class LoadSavedBoardTest : UnitTest() {
     }
 
     private fun givenAGame() {
-        whenever(gameFactory.get(ANY_BOARD)).thenReturn(ANY_GAME)
+        whenever(gameFactory.get(SOME_GAME_ID, ANY_BOARD)).thenReturn(ANY_GAME)
     }
 
     private suspend fun givenSomeSavedTimeCount() {
@@ -100,8 +100,9 @@ class LoadSavedBoardTest : UnitTest() {
     }
 
     private companion object {
+        const val SOME_GAME_ID = "1234"
         val ANY_BOARD = AlmostSolvedSudokuMother.almostSolvedSudoku()
-        val ANY_GAME = Game(ANY_BOARD)
+        val ANY_GAME = Game(SOME_GAME_ID, ANY_BOARD)
         const val ANY_SECONDS = 1345L
     }
 }

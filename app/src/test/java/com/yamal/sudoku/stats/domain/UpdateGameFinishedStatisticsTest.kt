@@ -1,6 +1,5 @@
 package com.yamal.sudoku.stats.domain
 
-import com.yamal.sudoku.commons.thread.ApplicationScope
 import com.yamal.sudoku.model.Difficulty
 import com.yamal.sudoku.stats.data.StatisticsRepository
 import com.yamal.sudoku.test.base.UnitTest
@@ -18,12 +17,10 @@ import org.mockito.kotlin.whenever
 class UpdateGameFinishedStatisticsTest : UnitTest() {
 
     private val statisticsRepository: StatisticsRepository = mock()
-    private val scope = ApplicationScope(testDispatcher)
     private val isNewBestTime: IsNewBestTime = mock()
     private val increaseGamesWon: IncreaseGamesWon = mock()
     private val updateGameFinishedStatistics = UpdateGameFinishedStatistics(
         statisticsRepository,
-        scope,
         isNewBestTime,
         increaseGamesWon,
     )

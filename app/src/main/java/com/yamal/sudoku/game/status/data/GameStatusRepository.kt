@@ -5,6 +5,7 @@ import com.yamal.sudoku.commons.thread.di.IODispatcher
 import com.yamal.sudoku.game.domain.Board
 import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.game.status.data.storage.GameStatusStorage
+import com.yamal.sudoku.game.status.domain.LastFinishedGameSummary
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -30,8 +31,8 @@ open class GameStatusRepository @Inject constructor(
     open fun getGameId(): Flow<String?> =
         gameStatusStorage.getGameId()
 
-    open fun removeGameId() {
-        scope.launch(ioDispatcher) {
+    open suspend fun removeGameId() {
+        withContext(ioDispatcher) {
             gameStatusStorage.setGameId(null)
         }
     }
@@ -49,8 +50,8 @@ open class GameStatusRepository @Inject constructor(
         }
     }
 
-    open fun removeSavedBoard() {
-        scope.launch(ioDispatcher) {
+    open suspend fun removeSavedBoard() {
+        withContext(ioDispatcher) {
             gameStatusStorage.updateBoard(null)
         }
     }
@@ -64,4 +65,13 @@ open class GameStatusRepository @Inject constructor(
     open suspend fun getTimeCounterSync(): Long? = withContext(ioDispatcher) {
         gameStatusStorage.getTimeCounter()
     }
+
+    open suspend fun setLastFinishedGameSummary(lastFinishedGameSummary: LastFinishedGameSummary) {
+        withContext(ioDispatcher) {
+            gameStatusStorage.setLastFinishedGame(lastFinishedGameSummary.toDO())
+        }
+    }
+
+    open fun getLastFinishedGameSummary(): Flow<LastFinishedGameSummary?> =
+        gameStatusStorage.getLastFinishedGameInfo().map { it?.toDomain() }
 }

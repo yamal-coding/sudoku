@@ -17,10 +17,10 @@ class LoadGame @Inject constructor(
             val existingGameId = getExistingGameInfo().firstOrNull()?.gameId
 
             if (gameId == existingGameId) {
-                loadSavedBoard()
+                loadSavedBoard(gameId)
             } else {
                 gameStatusRepository.setGameId(gameId)
-                loadNewBoard(difficulty)
+                loadNewBoard(gameId, difficulty)
             }
         }
     }

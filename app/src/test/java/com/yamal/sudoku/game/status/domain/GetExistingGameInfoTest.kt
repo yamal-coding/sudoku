@@ -3,7 +3,6 @@ package com.yamal.sudoku.game.status.domain
 import com.yamal.sudoku.game.domain.GameConstants
 import com.yamal.sudoku.game.status.data.GameStatusRepository
 import com.yamal.sudoku.model.Difficulty
-import com.yamal.sudoku.start.domain.ExistingGameInfo
 import com.yamal.sudoku.test.base.UnitTest
 import com.yamal.sudoku.test.utils.AlmostSolvedSudokuMother
 import kotlinx.coroutines.ExperimentalCoroutinesApi

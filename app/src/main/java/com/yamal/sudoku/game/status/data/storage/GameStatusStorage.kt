@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.yamal.sudoku.commons.json.JsonUtils
 import com.yamal.sudoku.commons.storage.GlobalDataStorage
 import com.yamal.sudoku.game.status.data.storage.model.BoardDO
+import com.yamal.sudoku.game.status.data.storage.model.LastFinishedGameSummaryDO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
@@ -60,9 +61,28 @@ open class GameStatusStorage @Inject constructor(
     open suspend fun getTimeCounter(): Long? =
         dataStorage.data.firstOrNull()?.get(TIME_COUNTER_KEY)
 
+    open suspend fun setLastFinishedGame(lastFinishedGameInfo: LastFinishedGameSummaryDO) {
+        dataStorage.edit { preferences ->
+            jsonUtils.toJson(
+                lastFinishedGameInfo,
+                LastFinishedGameSummaryDO::class.java
+            )?.let {
+                preferences[LAST_FINISHED_GAME_INFO_KEY] = it
+            }
+        }
+    }
+
+    open fun getLastFinishedGameInfo(): Flow<LastFinishedGameSummaryDO?> =
+        dataStorage.data.map { preferences ->
+            preferences[LAST_FINISHED_GAME_INFO_KEY]?.let {
+                jsonUtils.fromJsonOrNull(it, LastFinishedGameSummaryDO::class.java)
+            }
+        }
+
     private companion object {
         val BOARD_KEY = stringPreferencesKey("board")
         val TIME_COUNTER_KEY = longPreferencesKey("time_counter")
         val GAME_ID = stringPreferencesKey("game_id")
+        val LAST_FINISHED_GAME_INFO_KEY = stringPreferencesKey("last_finished_game")
     }
 }

@@ -2,7 +2,6 @@ package com.yamal.sudoku.game.status.domain
 
 import com.yamal.sudoku.game.status.data.GameStatusRepository
 import com.yamal.sudoku.model.Difficulty
-import com.yamal.sudoku.start.domain.ExistingGameInfo
 import com.yamal.sudoku.test.base.UnitTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -42,7 +41,7 @@ class LoadGameTest : UnitTest() {
 
         loadGame(SOME_GAME_ID, SOME_DIFFICULTY)
 
-        verify(loadSavedBoard).invoke()
+        verify(loadSavedBoard).invoke(SOME_GAME_ID)
     }
 
     @Test
@@ -51,7 +50,7 @@ class LoadGameTest : UnitTest() {
 
         loadGame(SOME_GAME_ID, SOME_DIFFICULTY)
 
-        verify(loadNewBoard).invoke(SOME_DIFFICULTY)
+        verify(loadNewBoard).invoke(SOME_GAME_ID, SOME_DIFFICULTY)
     }
 
     @Test
@@ -60,7 +59,7 @@ class LoadGameTest : UnitTest() {
 
         loadGame(SOME_GAME_ID, SOME_DIFFICULTY)
 
-        verify(loadNewBoard).invoke(SOME_DIFFICULTY)
+        verify(loadNewBoard).invoke(SOME_GAME_ID, SOME_DIFFICULTY)
     }
 
     private fun givenGameHasStarted() {

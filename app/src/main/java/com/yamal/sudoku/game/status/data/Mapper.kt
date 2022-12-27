@@ -7,7 +7,9 @@ import com.yamal.sudoku.model.SudokuCell
 import com.yamal.sudoku.model.SudokuCellValue
 import com.yamal.sudoku.game.status.data.storage.model.BoardDO
 import com.yamal.sudoku.game.status.data.storage.model.DifficultyDO
+import com.yamal.sudoku.game.status.data.storage.model.LastFinishedGameSummaryDO
 import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
+import com.yamal.sudoku.game.status.domain.LastFinishedGameSummary
 import com.yamal.sudoku.model.Difficulty
 import java.lang.IllegalStateException
 
@@ -107,4 +109,18 @@ private fun SudokuCellDO.toDomain(): SudokuCell =
         value.toSudokuCell(),
         isFixed,
         possibilities = possibilities?.map { it.toSudokuCell() }?.toSet(),
+    )
+
+fun LastFinishedGameSummaryDO.toDomain(): LastFinishedGameSummary =
+    LastFinishedGameSummary(
+        gameId = gameId,
+        gameTimeInSeconds = gameTimeInSeconds,
+        isNewBestTime = isNewBestTime,
+    )
+
+fun LastFinishedGameSummary.toDO(): LastFinishedGameSummaryDO =
+    LastFinishedGameSummaryDO(
+        gameId = gameId,
+        gameTimeInSeconds = gameTimeInSeconds,
+        isNewBestTime = isNewBestTime,
     )

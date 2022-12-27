@@ -47,7 +47,7 @@ class LoadNewBoardTest : UnitTest() {
         givenANewLevel()
         givenAGame()
 
-        loadNewBoard(ANY_DIFFICULTY)
+        loadNewBoard(SOME_GAME_ID, ANY_DIFFICULTY)
 
         verify(levelsRepository, never()).resetAlreadyReturnedLevels(ANY_DIFFICULTY)
         verify(levelsRepository).markLevelAsAlreadyReturned(ANY_LEVEL_ID)
@@ -62,7 +62,7 @@ class LoadNewBoardTest : UnitTest() {
         givenThatThereWillBeALevelAfterResettingThem()
         givenAGame()
 
-        loadNewBoard(ANY_DIFFICULTY)
+        loadNewBoard(SOME_GAME_ID, ANY_DIFFICULTY)
 
         verify(levelsRepository).resetAlreadyReturnedLevels(ANY_DIFFICULTY)
         verify(levelsRepository).markLevelAsAlreadyReturned(ANY_LEVEL_ID)
@@ -75,7 +75,7 @@ class LoadNewBoardTest : UnitTest() {
     fun `should not load any new level even after resetting already returned levels`() = runTest {
         givenThereIsNoNewLevel()
 
-        loadNewBoard(ANY_DIFFICULTY)
+        loadNewBoard(SOME_GAME_ID, ANY_DIFFICULTY)
 
         verify(levelsRepository).resetAlreadyReturnedLevels(ANY_DIFFICULTY)
         verify(currentGame).onNewBoardNotFound()
@@ -119,13 +119,14 @@ class LoadNewBoardTest : UnitTest() {
     }
 
     private fun givenAGame() {
-        whenever(gameFactory.get(ANY_BOARD)).thenReturn(ANY_GAME)
+        whenever(gameFactory.get(SOME_GAME_ID, ANY_BOARD)).thenReturn(ANY_GAME)
     }
 
     private companion object {
+        const val SOME_GAME_ID = "1234"
         const val ANY_LEVEL_ID = "1"
         val ANY_DIFFICULTY = Difficulty.HARD
         val ANY_BOARD = AlmostSolvedSudokuMother.almostSolvedSudoku()
-        val ANY_GAME = Game(ANY_BOARD)
+        val ANY_GAME = Game(SOME_GAME_ID, ANY_BOARD)
     }
 }

@@ -4,6 +4,7 @@ import com.yamal.sudoku.model.SudokuCellValue
 import java.util.Stack
 
 class Game(
+    val id: String,
     private val board: Board,
 ) {
     private lateinit var occurrencesOfEachValuePerRow: List<MutableMap<SudokuCellValue, Int>>

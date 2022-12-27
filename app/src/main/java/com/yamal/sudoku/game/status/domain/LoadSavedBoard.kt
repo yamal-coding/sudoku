@@ -9,12 +9,12 @@ open class LoadSavedBoard @Inject constructor(
     private val gameFactory: GameFactory,
     private val timeCounter: TimeCounter,
 ) {
-    open suspend operator fun invoke() {
+    open suspend operator fun invoke(gameId: String) {
         currentGame.onLoadingGame()
         val savedBoard = repository.getSavedBoardSync()
 
         if (savedBoard != null) {
-            val savedGame = gameFactory.get(savedBoard)
+            val savedGame = gameFactory.get(gameId, savedBoard)
             startTimeCounter()
             currentGame.onGameReady(savedGame)
         } else {

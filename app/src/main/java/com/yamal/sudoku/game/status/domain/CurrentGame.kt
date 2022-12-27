@@ -11,6 +11,9 @@ import javax.inject.Inject
 @ViewModelScoped
 open class CurrentGame @Inject constructor() {
 
+    open val id: String
+        get() = game.id
+
     private val _gameState = MutableStateFlow<SudokuState>(SudokuState.Idle)
     val gameState: Flow<SudokuState> = _gameState
 
