@@ -10,13 +10,13 @@ open class UpdateGameFinishedStatistics @Inject constructor(
     private val isNewBestTime: IsNewBestTime,
     private val increaseGamesWon: IncreaseGamesWon
 ) {
-    open suspend operator fun invoke(difficulty: Difficulty, gameTimeInSeconds: Long) {
+    open suspend operator fun invoke(difficulty: Difficulty, gameTimeInSeconds: Long?) {
         updateCandidateBestTime(difficulty, gameTimeInSeconds)
         updateGamesPlayedIfThereArentPreviousStatistics(difficulty)
         increaseGamesWon(difficulty)
     }
 
-    private suspend fun updateCandidateBestTime(difficulty: Difficulty, gameTimeInSeconds: Long) {
+    private suspend fun updateCandidateBestTime(difficulty: Difficulty, gameTimeInSeconds: Long?) {
         if (isNewBestTime(difficulty, gameTimeInSeconds)) {
             statisticsRepository.setBestTime(difficulty, gameTimeInSeconds)
         }

@@ -61,8 +61,8 @@ open class TimeCounter @Inject constructor(
         }
     }
 
-    open fun getCurrentTime(): Long =
-        _timeCounterState.value ?: 0L
+    open fun getCurrentTime(): Long? =
+        _timeCounterState.value
 
     private suspend fun startTimeCounter() {
         while (true) {

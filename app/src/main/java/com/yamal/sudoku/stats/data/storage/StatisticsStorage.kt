@@ -12,9 +12,12 @@ import javax.inject.Inject
 class StatisticsStorage @Inject constructor(
     private val globalDataStorage: GlobalDataStorage
 ) {
-    suspend fun setBestTime(difficulty: Difficulty, bestTimeInSeconds: Long) {
+    suspend fun setBestTime(difficulty: Difficulty, bestTimeInSeconds: Long?) {
         globalDataStorage.edit { prefs ->
-            prefs[buildBestTimeKey(difficulty)] = bestTimeInSeconds
+            val key = buildBestTimeKey(difficulty)
+            bestTimeInSeconds?.let {
+                prefs[key] = it
+            } ?: prefs.remove(key)
         }
     }
 

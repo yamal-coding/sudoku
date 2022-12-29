@@ -20,6 +20,11 @@ class IsNewBestTimeTest : UnitTest() {
     )
 
     @Test
+    fun `Should return false if current time is null`() = runTest {
+        assertFalse(isNewBestTime(SOME_DIFFICULTY, null))
+    }
+
+    @Test
     fun `Should return true if there is no previous best time`() = runTest {
         givenAPreviousBestTimeInSeconds(null)
 

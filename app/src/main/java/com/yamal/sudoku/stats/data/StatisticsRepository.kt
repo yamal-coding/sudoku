@@ -17,7 +17,7 @@ open class StatisticsRepository @Inject constructor(
     open fun getBestTimeInSeconds(difficulty: Difficulty): Flow<Long?> =
         storage.getBestTimeInSeconds(difficulty)
 
-    open suspend fun setBestTime(difficulty: Difficulty, bestTimeInSeconds: Long) {
+    open suspend fun setBestTime(difficulty: Difficulty, bestTimeInSeconds: Long?) {
         scope.launch(ioDispatcher) {
             storage.setBestTime(difficulty, bestTimeInSeconds)
         }

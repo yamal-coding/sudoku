@@ -37,7 +37,7 @@ open class EndGame @Inject constructor(
     private suspend fun setLastGameFinishedSummary(
         gameId: String,
         difficulty: Difficulty,
-        gameTimeInSeconds: Long,
+        gameTimeInSeconds: Long?,
     ) {
         val finishedGameSummary = LastFinishedGameSummary(
             gameId = gameId,

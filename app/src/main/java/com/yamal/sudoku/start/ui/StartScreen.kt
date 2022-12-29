@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -95,11 +94,8 @@ private fun StartScreen(
                 existingGame = existingGame,
                 onContinueGame = onContinueGame,
                 onNewGame = onNewGame,
+                onStatisticsClicked = onStatisticsClicked,
             )
-        }
-        // TODO
-        Button(onClick = onStatisticsClicked) {
-            Text(text = stringResource(id = R.string.statistics_screen_title))
         }
         HowToPlayLink(
             modifier = Modifier.padding(vertical = 8.dp),

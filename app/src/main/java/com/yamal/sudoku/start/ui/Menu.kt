@@ -17,6 +17,7 @@ fun Menu(
     existingGame: ExistingGameViewData?,
     onContinueGame: (existingGame: ExistingGameViewData) -> Unit,
     onNewGame: (Difficulty) -> Unit,
+    onStatisticsClicked: () -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -37,6 +38,10 @@ fun Menu(
         MenuDivider()
         NewHardGameButton(onClick = onNewGame)
         MenuDivider()
+        MenuButton(
+            onClick = onStatisticsClicked,
+            textRes = R.string.statistics_screen_title,
+        )
     }
 }
 

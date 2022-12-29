@@ -9,6 +9,6 @@ data class ExistingGameInfo(
 
 data class LastFinishedGameSummary(
     val gameId: String,
-    val gameTimeInSeconds: Long,
+    val gameTimeInSeconds: Long?,
     val isNewBestTime: Boolean,
 )
