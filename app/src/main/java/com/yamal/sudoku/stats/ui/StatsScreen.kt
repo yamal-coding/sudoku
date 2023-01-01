@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.MenuDivider
 import com.yamal.sudoku.commons.ui.Title
+import com.yamal.sudoku.commons.ui.animation.SlideInVerticalTransition
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.stats.ui.viewmodel.GameStatisticsByDifficultyViewData
 import com.yamal.sudoku.stats.ui.viewmodel.GameStatisticsViewData
@@ -35,9 +36,11 @@ fun StatsScreen(
     when (val statsState = state) {
         is StatisticsState.Idle -> {}
         is StatisticsState.Ready -> {
-            StatisticsByDifficulty(
-                statisticsByDifficulty = statsState.statistics,
-            )
+            SlideInVerticalTransition {
+                StatisticsByDifficulty(
+                    statisticsByDifficulty = statsState.statistics,
+                )
+            }
         }
     }
 }
