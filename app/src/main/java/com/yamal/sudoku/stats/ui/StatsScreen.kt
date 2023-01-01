@@ -15,8 +15,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.MenuDivider
 import com.yamal.sudoku.commons.ui.Title
@@ -50,20 +52,19 @@ private fun StatisticsByDifficulty(
     modifier: Modifier = Modifier,
     statisticsByDifficulty: GameStatisticsByDifficultyViewData
 ) {
-    // TODO This design is temporary
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Title(
             textResId = R.string.statistics_screen_title
         )
         Statistics(
             modifier = Modifier
-                .padding(4.dp)
+                .padding(top = 8.dp)
                 .fillMaxWidth(),
             titleResId = R.string.difficulty_easy,
             statistics = statisticsByDifficulty.easyStatistics,
@@ -93,7 +94,11 @@ private fun Statistics(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Text(text = stringResource(id = titleResId))
+        Text(
+            text = stringResource(id = titleResId),
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+        )
         StatisticsRow(
             modifier = Modifier.fillMaxWidth(),
             labelResId = R.string.statistics_best_time_label,
