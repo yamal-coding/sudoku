@@ -17,7 +17,7 @@ class StatisticsViewModelMapper @Inject constructor(
             )
         }
 
-    fun GameStatistics.toViewData(): GameStatisticsViewData =
+    private fun GameStatistics.toViewData(): GameStatisticsViewData =
         GameStatisticsViewData(
             bestTimeInSeconds = bestTimeInSeconds?.let { timeCounterFormatter.format(it) },
             gamesPlayed = gamesPlayed,

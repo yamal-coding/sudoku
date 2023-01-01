@@ -37,4 +37,5 @@
     <string name="statistics_best_time_label">Mejor tiempo</string>
     <string name="statistics_games_played_label">Partidas jugadas</string>
     <string name="statistics_games_won_label">Partidas ganadas</string>
+    <string name="game_finished_new_best_time_title">Nuevo mejor tiempo!</string>
 </resources>

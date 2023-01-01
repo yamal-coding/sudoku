@@ -36,4 +36,5 @@
     <string name="statistics_best_time_label">Best time</string>
     <string name="statistics_games_played_label">Games played</string>
     <string name="statistics_games_won_label">Games won</string>
+    <string name="game_finished_new_best_time_title">New best time!</string>
 </resources>
