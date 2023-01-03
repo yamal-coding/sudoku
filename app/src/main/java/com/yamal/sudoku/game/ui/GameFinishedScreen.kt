@@ -2,8 +2,10 @@ package com.yamal.sudoku.game.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,15 +15,21 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.Header
 import com.yamal.sudoku.commons.ui.MenuButton
 import com.yamal.sudoku.commons.ui.MenuDivider
+import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.navigation.GameNavigationParams
 import com.yamal.sudoku.game.viewmodel.GameFinishedViewModel
 import com.yamal.sudoku.game.viewmodel.GameFinishedViewState
@@ -66,6 +74,7 @@ private fun GameFinishedSummary(
         modifier = Modifier
             .testTag(GameTestTags.FINISHED_SCREEN)
             .fillMaxSize()
+            .padding(horizontal = 8.dp, vertical = 16.dp)
             .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -99,17 +108,53 @@ private fun VictoryHeader(
         subtitle = R.string.game_finished_header_subtitle
     )
 
-    // TODO waiting for a better design
     if (summary.isNewBestTime) {
-        Text(
-            text = stringResource(id = R.string.game_finished_new_best_time_title)
+        NewBestTime(
+            gameTime = summary.gameTime,
         )
-        summary.gameTime?.let {
-            Text(
-                text = it
-            )
-        }
     }
+}
+
+@Composable
+private fun NewBestTime(
+    modifier: Modifier = Modifier,
+    gameTime: String?,
+) {
+    Row(
+        modifier = modifier.padding(top = 24.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TrophyIcon()
+
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = stringResource(id = R.string.game_finished_new_best_time_title),
+                fontSize = 16.sp,
+            )
+            gameTime?.let {
+                Text(
+                    text = it,
+                    fontSize = 16.sp,
+                )
+            }
+        }
+
+        TrophyIcon()
+    }
+}
+
+@Composable
+private fun TrophyIcon(
+    modifier: Modifier = Modifier,
+) {
+    Image(
+        modifier = modifier,
+        painter = painterResource(id = R.drawable.ic_trophy),
+        contentDescription = null,
+    )
 }
 
 @Composable
@@ -147,5 +192,25 @@ private fun Menu(
             onClick = onBackToMenu
         )
         MenuDivider()
+    }
+}
+
+
+@Preview
+@Composable
+fun GameFinishedPreview() {
+    SudokuTheme {
+        val showButtons = remember {
+            mutableStateOf(false)
+        }
+        GameFinishedSummary(
+            summary = GameFinishedViewState.Summary(isNewBestTime = true, gameTime = "34:54"),
+            shouldShowNewGameButtons = showButtons.value,
+            onPlayAgain = {
+                showButtons.value = true
+            },
+            onNewGame = {},
+            onBackToMenu = {}
+        )
     }
 }
