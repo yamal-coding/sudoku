@@ -112,6 +112,25 @@ private fun VictoryHeader(
         NewBestTime(
             gameTime = summary.gameTime,
         )
+    } else {
+        GameTime(
+            modifier = Modifier.padding(top = 24.dp),
+            gameTime = summary.gameTime,
+        )
+    }
+}
+
+@Composable
+private fun GameTime(
+    modifier: Modifier = Modifier,
+    gameTime: String?,
+) {
+    gameTime?.let {
+        Text(
+            modifier = modifier,
+            text = it,
+            fontSize = 16.sp,
+        )
     }
 }
 
@@ -134,12 +153,7 @@ private fun NewBestTime(
                 text = stringResource(id = R.string.game_finished_new_best_time_title),
                 fontSize = 16.sp,
             )
-            gameTime?.let {
-                Text(
-                    text = it,
-                    fontSize = 16.sp,
-                )
-            }
+            GameTime(gameTime = gameTime)
         }
 
         TrophyIcon()
@@ -194,7 +208,6 @@ private fun Menu(
         MenuDivider()
     }
 }
-
 
 @Preview
 @Composable
