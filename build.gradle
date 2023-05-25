@@ -9,7 +9,7 @@ buildscript {
         hilt_version = '2.44'
         room_version = '2.4.3'
         android_compat = '1.5.1'
-        compose_version = '1.3.3'
+        compose_bom_version = '2023.01.00'
         compose_compiler_version = '1.3.2'
         moshi_version = '1.13.0'
         google_services_version = '4.3.14'
@@ -56,52 +56,15 @@ allprojects {
     }
 }
 
-// Defining common gradle plugins, config and dependencies to every module.
-// There are some differences between app module and the others,
 subprojects {
     def currentModule = it.name
-    def appModule = 'app'
 
-    if (currentModule == appModule) {
-        apply plugin: 'com.android.application'
+    if (currentModule == 'app') {
         def isReleaseBuildType = gradle.startParameter.taskRequests.toString().contains("Release")
         if (isReleaseBuildType) {
             apply plugin: 'com.google.gms.google-services'
             apply plugin: 'com.google.firebase.crashlytics'
         }
-    } else {
-        apply plugin: 'com.android.library'
-    }
-    apply plugin: 'kotlin-android'
-    apply plugin: 'kotlin-kapt'
-    apply plugin: 'dagger.hilt.android.plugin'
-
-    android {
-        compileSdkVersion sdk_version
-
-        if (currentModule != appModule) {
-            defaultConfig {
-                minSdkVersion min_api_level
-                targetSdkVersion sdk_version
-            }
-        }
-
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_11
-            targetCompatibility JavaVersion.VERSION_11
-        }
-
-        lintOptions {
-            warningsAsErrors true
-            checkDependencies true
-            lintConfig file("lint.xml")
-        }
-    }
-
-    dependencies {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-        implementation "com.google.dagger:hilt-android:$hilt_version"
-        kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     }
 }
 
