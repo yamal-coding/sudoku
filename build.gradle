@@ -65,3 +65,7 @@ subprojects {
 tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
+
+tasks.register("ci") {
+    it.dependsOn("app:test", "app:lint", "app:assembleDebug", "detekt")
+}

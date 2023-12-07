@@ -20,4 +20,4 @@ jobs:
           java-version: '17'
 
       - name: Assemble, detekt, lint and Unit tests
-        run: ./gradlew clean assembleDebug detekt lint test
+        run: ./gradlew clean ci
