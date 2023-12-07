@@ -83,7 +83,7 @@ dependencies {
     releaseImplementation 'com.google.firebase:firebase-crashlytics'
 
     testImplementation "junit:junit:$junit_version"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:5.2.1"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
     androidTestImplementation "androidx.test:core:$androidX_test_version"
