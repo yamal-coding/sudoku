@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -54,7 +54,7 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    ksp "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     implementation platform("androidx.compose:compose-bom:$compose_bom_version")
 
@@ -72,12 +72,12 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     implementation "androidx.activity:activity-ktx:1.8.1"
     implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    ksp "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     releaseImplementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
     releaseImplementation 'com.google.firebase:firebase-crashlytics'
@@ -92,5 +92,5 @@ dependencies {
     androidTestImplementation platform("androidx.compose:compose-bom:$compose_bom_version")
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    kspAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
 }

@@ -32,7 +32,8 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.18.1")
+    id "io.gitlab.arturbosch.detekt" version "1.18.1"
+    id "com.google.devtools.ksp" version "1.9.21-1.0.15" apply false
 }
 
 detekt {
