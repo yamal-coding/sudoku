@@ -28,11 +28,11 @@
     <string name="how_to_play_condition_2">Cada número no debe repetirse en la columna en la que se encuentra</string>
     <string name="how_to_play_condition_3">El tablero de 81 celdas está divido en pequeños cuadrantes de 9 celdas (3 filas y 3 columnas). Cada número no debe repetirse en el cuadrante en el que se encuentra</string>
     <string name="how_to_play_paragraph_2">Inicialmente algunas celdas del tablero ya están preasignadas. Cuantas más celdas preasignadas haya, más fácil será completar todo el tablero.</string>
-    <string name="empty_cell_accessibility_label">Celda vacía (%s, %s)</string>
+    <string name="empty_cell_accessibility_label">Celda vacía (%1$s, %2$s)</string>
     <string name="number_button_accessibility_label">Seleccionar %s</string>
-    <string name="cell_value_accessibility_label">%s en (%s, %s)</string>
-    <string name="fixed_cell_value_accessibility_label">%s fijado en (%s, %s)</string>
-    <string name="possibility_value_accessibility_label">Posible %s en (%s, %s)</string>
+    <string name="cell_value_accessibility_label">%1$s en (%2$s, %3$s)</string>
+    <string name="fixed_cell_value_accessibility_label">%1$s fijado en (%2$s, %3$s)</string>
+    <string name="possibility_value_accessibility_label">Posible %1$s en (%2$s, %3$s)</string>
     <string name="statistics_screen_title">Estadísticas</string>
     <string name="statistics_best_time_label">Mejor tiempo</string>
     <string name="statistics_games_played_label">Partidas jugadas</string>
