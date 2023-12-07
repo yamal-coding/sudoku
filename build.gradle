@@ -2,7 +2,7 @@ buildscript {
     ext {
         sdk_version = 34
         min_api_level = 26
-        gradle_version = '8.1.1'
+        gradle_version = '8.2.0'
         kotlin_version = '1.9.21'
         coroutines_version = '1.7.3'
         junit_version = '4.13.2'
@@ -37,16 +37,9 @@ plugins {
 }
 
 detekt {
-    source = files(rootProject.rootDir)
-    config = files("$projectDir/detekt.yml")
+    source.setFrom(rootProject.rootDir)
+    config.setFrom("$projectDir/detekt.yml")
     buildUponDefaultConfig = true
-
-    reports {
-        html.enabled = true
-        xml.enabled = true
-        xml.destination = file("$buildDir/reports/detekt/detekt-checkstyle.xml")
-        html.destination = file("$buildDir/reports/detekt/detekt-report.html")
-    }
 }
 
 allprojects {
