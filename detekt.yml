@@ -15,7 +15,7 @@ complexity:
     active: false
   ComplexMethod:
     active: true
-    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/generated/source/kapt/**"
+    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/build/**"
 
 empty-blocks:
   EmptyFunctionBlock:
@@ -23,14 +23,14 @@ empty-blocks:
 style:
   MagicNumber:
     active: true
-    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/generated/source/kapt/**,**/commons/ui/numbers/**"
+    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/build/**"
   NewLineAtEndOfFile:
     active: false
   UnusedPrivateMember:
     active: false
   MaxLineLength:
     active: true
-    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/generated/source/kapt/**"
+    excludes: "**/test/**,**/testEnabled/**,**/androidTest/**,**/*.Test.kt,**/build/**"
   UnusedImports:
     active: true
   ReturnCount:
@@ -42,7 +42,10 @@ naming:
   MatchingDeclarationName:
     active: false
   VariableNaming:
-    excludes: "**/generated/source/kapt/**"
+    excludes: "**/build/**"
+  FunctionNaming:
+    active: true
+    ignoreAnnotated: "androidx.compose.runtime.Composable"
 
 exceptions:
   TooGenericExceptionThrown:

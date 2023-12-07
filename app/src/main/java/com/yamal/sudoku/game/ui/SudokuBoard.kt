@@ -28,7 +28,7 @@ import com.yamal.sudoku.R
 import com.yamal.sudoku.commons.ui.theme.SudokuTheme
 import com.yamal.sudoku.game.domain.ReadOnlyBoard
 import com.yamal.sudoku.model.SudokuCell as Cell
-import com.yamal.sudoku.commons.ui.utils.`if`
+import com.yamal.sudoku.commons.ui.utils.modifyIf
 import com.yamal.sudoku.game.domain.BOARD_SIDE
 import com.yamal.sudoku.game.domain.QUADRANTS_PER_SIDE
 import com.yamal.sudoku.model.SudokuCellValue
@@ -153,7 +153,7 @@ private fun SudokuCell(
                 else -> SudokuTheme.colors.cellBackground
             }
         )
-        .`if`(!cell.isFixed) {
+        .modifyIf(!cell.isFixed) {
             clickable(onClickLabel = contentDescription) { onSelected() }
         }
         .padding(1.dp)
