@@ -1,6 +1,8 @@
 package com.yamal.sudoku.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.yamal.sudoku.game.navigation.gameNavGraph
@@ -13,6 +15,7 @@ import com.yamal.sudoku.stats.navigation.statisticsNavGraph
 fun SudokuNavHost() {
     val navController = rememberNavController()
     NavHost(
+        modifier = Modifier.fillMaxSize(),
         navController = navController,
         startDestination = StartDestination.route
     ) {
