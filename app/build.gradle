@@ -10,7 +10,7 @@ android {
         minSdkVersion min_api_level
         targetSdkVersion sdk_version
         compileSdk sdk_version
-        versionCode 20240327
+        versionCode 20240328
         versionName "1.2.0"
 
         testInstrumentationRunner "com.yamal.sudoku.test.di.HiltTestRunner"
