@@ -16,7 +16,7 @@ class MapperTest {
     @Test
     fun `Should return null when rawLevel length is greater than 81`() {
         val builder = StringBuilder()
-        for (i in 0 until 82) {
+        repeat(82) {
             builder.append("1")
         }
         val rawLevel = builder.toString()
@@ -27,7 +27,7 @@ class MapperTest {
     fun `Should return null when rawLevel contains a character that is not a digit`() {
         val builder = StringBuilder()
         builder.append("a")
-        for (i in 0 until 80) {
+        repeat(81) {
             builder.append("1")
         }
         val rawLevel = builder.toString()

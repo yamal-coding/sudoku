@@ -35,7 +35,7 @@ open class LevelsFile(private val fileName: String) {
 
     open fun getRawLevel(levelIndex: Int): String? {
         if (levelIndex >= numOfBoards) {
-            throw IllegalArgumentException("There are only $numOfBoards levels, can't return level number $levelIndex")
+            error("There are only $numOfBoards levels, can't return level number $levelIndex")
         }
 
         if (levelIndex >= loadedLevels.size) {

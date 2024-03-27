@@ -11,7 +11,6 @@ import com.yamal.sudoku.game.status.data.storage.model.LastFinishedGameSummaryDO
 import com.yamal.sudoku.game.status.data.storage.model.SudokuCellDO
 import com.yamal.sudoku.game.status.domain.LastFinishedGameSummary
 import com.yamal.sudoku.model.Difficulty
-import java.lang.IllegalStateException
 
 private const val EMPTY_INT_VALUE = 0
 private const val ONE_INT_VALUE = 1
@@ -36,7 +35,7 @@ fun Int.toSudokuCell(): SudokuCellValue =
         SEVEN_INT_VALUE -> SudokuCellValue.SEVEN
         EIGHT_INT_VALUE -> SudokuCellValue.EIGHT
         NINE_INT_VALUE -> SudokuCellValue.NINE
-        else -> throw IllegalStateException("Can't parse sudoku with cell value $this")
+        else -> error("Can't parse sudoku with cell value $this")
     }
 
 fun ReadOnlyBoard.toDO(): BoardDO {
