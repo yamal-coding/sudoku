@@ -1,3 +1,7 @@
+plugins {
+    alias libs.plugins.android.application
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.devtools.ksp'
