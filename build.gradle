@@ -15,7 +15,6 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "com.google.gms:google-services:$google_services_version"
         classpath "com.google.firebase:firebase-crashlytics-gradle:$crashlytics_version"
@@ -26,6 +25,7 @@ plugins {
     id "io.gitlab.arturbosch.detekt" version "1.23.4"
     id "com.google.devtools.ksp" version "1.9.21-1.0.15" apply false
     alias libs.plugins.android.application apply false
+    alias libs.plugins.kotlin apply false
 }
 
 detekt {
