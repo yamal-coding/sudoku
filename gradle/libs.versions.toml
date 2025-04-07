@@ -14,7 +14,7 @@ lifecycleRuntimeKtx = "2.8.7"
 min-sdk = "26"
 mockitoKotlin = "5.2.1"
 moshi = "1.15.2"
-navigationCompose = "2.5.3"
+navigationCompose = "2.8.9"
 room = "2.6.1"
 sdk-version = "35"
 
