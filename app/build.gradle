@@ -10,9 +10,9 @@ android {
     namespace "com.yamal.sudoku"
     defaultConfig {
         applicationId "com.yamal.sudoku"
-        minSdkVersion min_api_level
-        targetSdkVersion sdk_version
-        compileSdk sdk_version
+        minSdkVersion libs.versions.min.sdk.get().toInteger()
+        targetSdkVersion libs.versions.sdk.version.get().toInteger()
+        compileSdk libs.versions.sdk.version.get().toInteger()
         versionCode 20240328
         versionName "1.2.0"
 
@@ -68,8 +68,6 @@ dependencies {
     implementation libs.hilt.navigation.compose
 
     implementation libs.appcompat
-    implementation libs.coroutines.core
-    implementation libs.coroutines.android
     implementation libs.activity.ktx
     implementation libs.room.runtime
     ksp libs.room.compiler
