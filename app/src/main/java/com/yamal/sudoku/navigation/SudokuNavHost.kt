@@ -12,10 +12,12 @@ import com.yamal.sudoku.start.navigation.startNavGraph
 import com.yamal.sudoku.stats.navigation.statisticsNavGraph
 
 @Composable
-fun SudokuNavHost() {
+fun SudokuNavHost(
+    modifier: Modifier,
+) {
     val navController = rememberNavController()
     NavHost(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         navController = navController,
         startDestination = StartDestination.route
     ) {
