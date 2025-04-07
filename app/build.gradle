@@ -3,6 +3,7 @@ plugins {
     alias libs.plugins.kotlin
     alias libs.plugins.hilt
     alias libs.plugins.ksp
+    alias libs.plugins.compose.compiler
 }
 
 android {
@@ -40,9 +41,6 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_version
-    }
     lint {
         checkDependencies true
         lintConfig file('lint.xml')
