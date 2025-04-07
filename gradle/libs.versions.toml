@@ -50,6 +50,8 @@ ui = { module = "androidx.compose.ui:ui" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+google-services-plugin = "com.google.gms:google-services:4.4.2"
+crashlytics-plugin = "com.google.firebase:firebase-crashlytics-gradle:3.0.3"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
