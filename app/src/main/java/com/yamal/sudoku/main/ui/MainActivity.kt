@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SudokuTheme() {
+            SudokuTheme {
                 Scaffold(
                     modifier = Modifier.safeDrawingPadding()
                 ) { insets ->

@@ -10,6 +10,7 @@ android {
     namespace = "com.yamal.sudoku"
     compileSdk = libs.versions.sdk.version.get().toInt()
 
+    @Suppress("MagicNumber")
     defaultConfig {
         applicationId = "com.yamal.sudoku"
         minSdk =  libs.versions.min.sdk.get().toInt()

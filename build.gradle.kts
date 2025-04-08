@@ -1,5 +1,3 @@
-import com.android.build.gradle.api.AndroidBasePlugin
-
 buildscript {
     dependencies {
         classpath(libs.google.services.plugin)
