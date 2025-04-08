@@ -1,51 +1,40 @@
 [versions]
-activityCompose = "1.10.1"
-agp = "8.9.1"
-appcompat = "1.7.0"
-coroutines = '1.10.1'
-datastorePreferences = "1.1.4"
-detekt = "1.23.4"
-espressoCore = "3.6.1"
+activity = "1.10.1"
 hilt = "2.55"
-hiltNavigationCompose = "1.2.0"
-junit = "4.13.2"
 kotlin = "2.1.20"
-lifecycleRuntimeKtx = "2.8.7"
 min-sdk = "26"
-mockitoKotlin = "5.2.1"
 moshi = "1.15.2"
-navigationCompose = "2.8.9"
 room = "2.6.1"
 sdk-version = "35"
 
 [libraries]
-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityCompose" }
-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
+appcompat = "androidx.appcompat:appcompat:1.7.0"
 compose-bom = "androidx.compose:compose-bom:2025.03.01"
-core = { module = "androidx.test:core", version = "1.6.1" }
-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+core = "androidx.test:core:1.6.1"
+coroutines-test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1"
+datastore-preferences = "androidx.datastore:datastore-preferences:1.1.4"
+espresso-core = "androidx.test.espresso:espresso-core:3.6.1"
 firebase-bom = "com.google.firebase:firebase-bom:33.12.0"
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-junit = { module = "junit:junit", version.ref = "junit" }
+hilt-navigation-compose = "androidx.hilt:hilt-navigation-compose:1.2.0"
+junit = "junit:junit:4.13.2"
 kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.8.7" }
 material = { module = "androidx.compose.material:material" }
-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.2.1"
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+navigation-compose = "androidx.navigation:navigation-compose:2.8.9"
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-rules = { module = "androidx.test:rules", version = "1.6.1" }
-runner = { module = "androidx.test:runner", version = "1.6.2" }
+rules = "androidx.test:rules:1.6.1"
+runner = "androidx.test:runner:1.6.2"
 ui = { module = "androidx.compose.ui:ui" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
@@ -54,9 +43,9 @@ google-services-plugin = "com.google.gms:google-services:4.4.2"
 crashlytics-plugin = "com.google.firebase:firebase-crashlytics-gradle:3.0.3"
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
+android-application = "com.android.application:8.9.1"
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+detekt = "io.gitlab.arturbosch.detekt:1.23.4"
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = "com.google.devtools.ksp:2.1.20-1.0.32"
