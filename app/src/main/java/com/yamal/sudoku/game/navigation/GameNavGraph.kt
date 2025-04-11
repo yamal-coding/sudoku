@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.yamal.sudoku.game.ui.GameFinishedScreen
 import com.yamal.sudoku.game.ui.GameScreen
-import com.yamal.sudoku.game.viewmodel.ioc.gameFinishedViewModel
+import com.yamal.sudoku.game.viewmodel.GameFinishedViewModel
 
 fun NavGraphBuilder.gameNavGraph(navController: NavController) {
     composable(
@@ -35,7 +35,11 @@ fun NavGraphBuilder.gameNavGraph(navController: NavController) {
         val gameId = it.arguments?.getString(GameFinishedDestination.GAME_ID_PARAM)!!
 
         GameFinishedScreen(
-            viewModel = gameFinishedViewModel(gameId),
+            viewModel = hiltViewModel<GameFinishedViewModel, GameFinishedViewModel.Factory>(
+                creationCallback = { factory ->
+                    factory.create(gameId)
+                }
+            ),
             onNewGame = { navParams ->
                 navController.onNewGame(navParams)
             },
