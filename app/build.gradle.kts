@@ -15,8 +15,8 @@ android {
         applicationId = "com.yamal.sudoku"
         minSdk =  libs.versions.min.sdk.get().toInt()
         targetSdk = libs.versions.sdk.version.get().toInt()
-        versionCode = 20250415
-        versionName = "1.3.0"
+        versionCode = 20251013
+        versionName = "1.4.0"
 
         testInstrumentationRunner = "com.yamal.sudoku.test.di.HiltTestRunner"
     }
