@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 open class GetExistingGameInfo @Inject constructor(
     private val repository: GameStatusRepository,
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @param:DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
 ) {
     open operator fun invoke(): Flow<ExistingGameInfo?> =
         combine(repository.getGameId(), repository.getSavedBoard()) { existingGameId, existingBoard ->

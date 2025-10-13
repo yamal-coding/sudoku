@@ -20,7 +20,7 @@ interface LevelsDataSource {
 
 @Singleton
 class LevelsDataSourceImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val levelsFileProvider: LevelsFileProvider,
     private val randomGenerator: RandomGenerator,
     private val levelFilesInfoStorage: LevelFilesInfoStorage,
