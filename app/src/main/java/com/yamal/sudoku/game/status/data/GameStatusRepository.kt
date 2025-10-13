@@ -20,7 +20,7 @@ import javax.inject.Singleton
 open class GameStatusRepository @Inject constructor(
     private val gameStatusStorage: GameStatusStorage,
     private val scope: ApplicationScope,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    @param:IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
     open suspend fun setGameId(id: String) {
         withContext(ioDispatcher) {

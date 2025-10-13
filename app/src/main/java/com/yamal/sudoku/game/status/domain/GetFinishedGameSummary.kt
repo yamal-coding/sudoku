@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetFinishedGameSummary @Inject constructor(
     private val gameStatusRepository: GameStatusRepository,
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @param:DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
 ) {
     operator fun invoke(gameId: String): Flow<LastFinishedGameSummary?> =
         gameStatusRepository.getLastFinishedGameSummary().filter {

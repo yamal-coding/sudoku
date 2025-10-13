@@ -13,7 +13,7 @@ import javax.inject.Inject
 open class GetGameStatistics @Inject constructor(
     private val gameStatusRepository: GameStatusRepository,
     private val statisticsRepository: StatisticsRepository,
-    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
+    @param:DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher,
 ) {
     open operator fun invoke(): Flow<GameStatisticsByDifficulty> = combine(
         getStats(Difficulty.EASY),

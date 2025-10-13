@@ -1,5 +1,6 @@
 package com.yamal.sudoku.game.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import com.yamal.sudoku.commons.utils.ScreenDimensions
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
 import com.yamal.sudoku.model.SudokuCellValue
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun LandscapeUpdatedBoard(
     updatedBoard: SudokuViewState.UpdatedBoard,

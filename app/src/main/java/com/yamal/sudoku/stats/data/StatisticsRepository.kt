@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 open class StatisticsRepository @Inject constructor(
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    @param:IODispatcher private val ioDispatcher: CoroutineDispatcher,
     private val scope: ApplicationScope,
     private val storage: StatisticsStorage
 ) {

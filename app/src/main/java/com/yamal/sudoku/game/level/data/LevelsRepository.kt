@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Singleton
 open class LevelsRepository @Inject constructor(
     private val dataSource: LevelsDataSource,
-    @IODispatcher private val ioDispatcher: CoroutineDispatcher,
+    @param:IODispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
     open suspend fun getNewLevel(difficulty: Difficulty): Level? = withContext(ioDispatcher) {
         dataSource.getNewLevel(difficulty)?.let { levelDO ->
