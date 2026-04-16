@@ -14,7 +14,11 @@ plugins {
 }
 
 detekt {
-    source.setFrom(rootProject.rootDir)
+    source.setFrom(
+        fileTree(rootProject.rootDir) {
+            include("**/src/**/*.kt")
+        }
+    )
     config.setFrom("$projectDir/detekt.yml")
     buildUponDefaultConfig = true
 }

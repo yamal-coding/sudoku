@@ -9,7 +9,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -64,12 +65,11 @@ class LoadGameTest : UnitTest() {
 
     private fun givenGameHasStarted() {
         runBlocking {
-            val captor = argumentCaptor<suspend () -> Unit>()
-            whenever(currentGame.onGameStarted(captor.capture())).then {
-                runBlocking {
-                    captor.firstValue.invoke()
-                }
-            }
+            doAnswer { invocation ->
+                val block = invocation.getArgument<suspend () -> Unit>(0)
+                runBlocking { block.invoke() }
+                null
+            }.whenever(currentGame).onGameStarted(any())
         }
     }
 
