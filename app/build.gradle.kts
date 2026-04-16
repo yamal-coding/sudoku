@@ -49,7 +49,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlin.stdlib.jdk7)
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
