@@ -1,6 +1,6 @@
 [versions]
 activity = "1.11.0"
-hilt = "2.57.2"
+hilt = "2.59.2"
 kotlin = "2.2.20"
 min-sdk = "26"
 moshi = "1.15.2"
@@ -47,5 +47,4 @@ android-application = "com.android.application:9.1.0"
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-ksp = "com.google.devtools.ksp:2.3.2"
+ksp = "com.google.devtools.ksp:2.3.6"
