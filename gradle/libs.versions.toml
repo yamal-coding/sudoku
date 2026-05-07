@@ -1,9 +1,7 @@
 [versions]
 activity = "1.13.0"
 hilt = "2.59.2"
-# Pinned. Needed by Compose Compiler Plugin.
-# It will manually be updated when AGP gets updated because it needs to be aligned with built-in Kotlin version
-kotlin = "2.2.10"
+kotlin = "2.3.21"
 min-sdk = "26"
 moshi = "1.15.2"
 room = "2.8.4"
@@ -13,7 +11,7 @@ sdk-version = "36"
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
 appcompat = "androidx.appcompat:appcompat:1.7.1"
-compose-bom = "androidx.compose:compose-bom:2026.03.01"
+compose-bom = "androidx.compose:compose-bom:2026.05.00"
 core = "androidx.test:core:1.7.0"
 coroutines-test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2"
 datastore-preferences = "androidx.datastore:datastore-preferences:1.2.1"
@@ -31,7 +29,7 @@ mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:6.3.0"
 moshi-adapters = { module = "com.squareup.moshi:moshi-adapters", version.ref = "moshi" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
-navigation-compose = "androidx.navigation:navigation-compose:2.9.7"
+navigation-compose = "androidx.navigation:navigation-compose:2.9.8"
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 rules = "androidx.test:rules:1.7.0"
@@ -44,8 +42,8 @@ google-services-plugin = "com.google.gms:google-services:4.4.4"
 crashlytics-plugin = "com.google.firebase:firebase-crashlytics-gradle:3.0.7"
 
 [plugins]
-android-application = "com.android.application:9.1.1"
+android-application = "com.android.application:9.2.1"
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp = "com.google.devtools.ksp:2.3.6"
+ksp = "com.google.devtools.ksp:2.3.7"
