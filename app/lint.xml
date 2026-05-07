@@ -5,4 +5,7 @@
     <issue id="GradleDependency" severity="warning" />
     <issue id="MonochromeLauncherIcon" severity="ignore" />
     <issue id="AndroidGradlePluginVersion" severity="warning" />
+    <issue id="NewerVersionAvailable" severity="ignore" />
+    <issue id="OldTargetApi" severity="ignore" />
+    <issue id="UsingMaterialAndMaterial3Libraries" severity="ignore" />
 </lint>

@@ -8,14 +8,17 @@ buildscript {
 plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.compose.compiler) apply false
 }
 
 detekt {
-    source.setFrom(rootProject.rootDir)
+    source.setFrom(
+        fileTree(rootProject.rootDir) {
+            include("**/src/**/*.kt")
+        }
+    )
     config.setFrom("$projectDir/detekt.yml")
     buildUponDefaultConfig = true
 }
