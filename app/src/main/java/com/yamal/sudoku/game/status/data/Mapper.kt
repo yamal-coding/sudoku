@@ -93,6 +93,7 @@ private fun Difficulty.toDO(): String =
         Difficulty.EASY -> DifficultyDO.EASY
         Difficulty.MEDIUM -> DifficultyDO.MEDIUM
         Difficulty.HARD -> DifficultyDO.HARD
+        Difficulty.CUSTOM -> DifficultyDO.CUSTOM
     }
 
 private fun difficultyFromString(value: String): Difficulty? =
@@ -100,6 +101,7 @@ private fun difficultyFromString(value: String): Difficulty? =
         DifficultyDO.EASY -> Difficulty.EASY
         DifficultyDO.MEDIUM -> Difficulty.MEDIUM
         DifficultyDO.HARD -> Difficulty.HARD
+        DifficultyDO.CUSTOM -> Difficulty.CUSTOM
         else -> null
     }
 

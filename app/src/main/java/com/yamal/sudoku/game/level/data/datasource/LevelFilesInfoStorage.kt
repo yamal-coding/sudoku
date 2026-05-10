@@ -31,6 +31,7 @@ open class LevelFilesInfoStorage @Inject constructor(
             Difficulty.EASY -> EASY_CURRENT_FILE_NUMBER_KEY
             Difficulty.MEDIUM -> MEDIUM_CURRENT_FILE_NUMBER_KEY
             Difficulty.HARD -> HARD_CURRENT_FILE_NUMBER_KEY
+            Difficulty.CUSTOM -> error("Custom games do not use level file keys")
         }
 
     open fun getAlreadyReturnedLevelsIndexesForGivenFile(fileName: String): Set<Int> =

@@ -1,6 +1,5 @@
 package com.yamal.sudoku.game.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,14 +15,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.commons.ui.animation.SlideInVerticalTransition
 import com.yamal.sudoku.commons.utils.ScreenDimensions
 import com.yamal.sudoku.game.viewmodel.SudokuViewState
 import com.yamal.sudoku.model.SudokuCellValue
 
-@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun LandscapeUpdatedBoard(
     updatedBoard: SudokuViewState.UpdatedBoard,
@@ -39,8 +37,8 @@ fun LandscapeUpdatedBoard(
 ) {
     SlideInVerticalTransition {
         Box(modifier = Modifier.fillMaxSize()) {
-            val configuration = LocalConfiguration.current
-            val landscapeModifier = if (configuration.screenHeightDp.dp > ScreenDimensions.SMALL_DEVICE_MAX_WIDTH.dp) {
+            val height = LocalWindowInfo.current.containerSize.height.dp
+            val landscapeModifier = if (height > ScreenDimensions.SMALL_DEVICE_MAX_WIDTH.dp) {
                 Modifier.fillMaxHeight(fraction = 0.8F)
             } else {
                 Modifier

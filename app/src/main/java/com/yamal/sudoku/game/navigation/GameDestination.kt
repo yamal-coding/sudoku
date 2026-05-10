@@ -27,12 +27,14 @@ object GameDestination : SudokuNavDestination() {
     private const val EASY_DIFFICULTY_PARAM_VALUE = "easy"
     private const val MEDIUM_DIFFICULTY_PARAM_VALUE = "medium"
     private const val HARD_DIFFICULTY_PARAM_VALUE = "hard"
+    private const val CUSTOM_DIFFICULTY_PARAM_VALUE = "custom"
 
     fun difficultyFromParam(difficultyParam: String): Difficulty =
         when (difficultyParam) {
             EASY_DIFFICULTY_PARAM_VALUE -> Difficulty.EASY
             MEDIUM_DIFFICULTY_PARAM_VALUE -> Difficulty.MEDIUM
             HARD_DIFFICULTY_PARAM_VALUE -> Difficulty.HARD
+            CUSTOM_DIFFICULTY_PARAM_VALUE -> Difficulty.CUSTOM
             else -> throw IllegalArgumentException(
                 "Unknown difficulty navigation param in $route destination: $difficultyParam"
             )
@@ -46,5 +48,6 @@ object GameDestination : SudokuNavDestination() {
             Difficulty.EASY -> EASY_DIFFICULTY_PARAM_VALUE
             Difficulty.MEDIUM -> MEDIUM_DIFFICULTY_PARAM_VALUE
             Difficulty.HARD -> HARD_DIFFICULTY_PARAM_VALUE
+            Difficulty.CUSTOM -> CUSTOM_DIFFICULTY_PARAM_VALUE
         }
 }

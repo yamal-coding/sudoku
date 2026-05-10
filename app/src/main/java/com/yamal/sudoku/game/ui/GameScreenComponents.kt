@@ -58,6 +58,7 @@ fun DifficultyLabel(
         Difficulty.EASY -> R.string.difficulty_easy
         Difficulty.MEDIUM -> R.string.difficulty_medium
         Difficulty.HARD -> R.string.difficulty_hard
+        Difficulty.CUSTOM -> R.string.difficulty_custom
     }
 
     Text(

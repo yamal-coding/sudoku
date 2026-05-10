@@ -23,6 +23,9 @@ fun NavGraphBuilder.startNavGraph(navController: NavController) {
             },
             onStatisticsClicked = {
                 navController.navigate(StatisticsDestination.route)
+            },
+            onCustomBoardClicked = {
+                navController.navigate(CustomBoardDestination.route)
             }
         )
     }

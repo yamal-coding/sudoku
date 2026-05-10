@@ -34,6 +34,7 @@ fun StartScreen(
     onStartGame: (GameNavigationParams) -> Unit,
     onHowToPlayClicked: () -> Unit,
     onStatisticsClicked: () -> Unit,
+    onCustomBoardClicked: () -> Unit,
 ) {
     val startScreenState by remember {
         viewModel.startScreenState
@@ -52,6 +53,7 @@ fun StartScreen(
                 },
                 onHowToPlayClicked = onHowToPlayClicked,
                 onStatisticsClicked = onStatisticsClicked,
+                onCustomBoardClicked = onCustomBoardClicked,
             )
         }
     }
@@ -65,6 +67,7 @@ private fun StartScreen(
     onNewGame: (Difficulty) -> Unit,
     onHowToPlayClicked: () -> Unit,
     onStatisticsClicked: () -> Unit,
+    onCustomBoardClicked: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -93,6 +96,7 @@ private fun StartScreen(
                 existingGame = existingGame,
                 onContinueGame = onContinueGame,
                 onNewGame = onNewGame,
+                onCustomBoard = onCustomBoardClicked,
             )
         }
         Row(

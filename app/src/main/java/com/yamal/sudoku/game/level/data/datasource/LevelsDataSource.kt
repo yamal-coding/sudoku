@@ -115,6 +115,7 @@ class LevelsDataSourceImpl @Inject constructor(
             Difficulty.EASY -> "easy"
             Difficulty.MEDIUM -> "medium"
             Difficulty.HARD -> "hard"
+            Difficulty.CUSTOM -> error("Custom games do not load from level files")
         }
 
     private suspend fun setCurrentFileNumberIfNeeded(difficulty: Difficulty, fileNumber: Int) {
