@@ -1,6 +1,8 @@
 package com.yamal.sudoku.start.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +22,7 @@ fun Menu(
     onCustomBoard: () -> Unit,
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (existingGame != null) {
