@@ -99,7 +99,9 @@ private fun PortraitCustomBoard(
                 verticalArrangement = Arrangement.Center,
             ) {
                 SudokuBoard(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
                     board = state.toReadOnlyBoard(),
                     selectedRow = state.selectedRow,
                     selectedColumn = state.selectedColumn,
@@ -110,7 +112,7 @@ private fun PortraitCustomBoard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     RemoveCellValueButton(onClick = onRemoveCellValue)
