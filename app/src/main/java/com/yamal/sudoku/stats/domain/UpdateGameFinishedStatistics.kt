@@ -11,6 +11,10 @@ open class UpdateGameFinishedStatistics @Inject constructor(
     private val increaseGamesWon: IncreaseGamesWon
 ) {
     open suspend operator fun invoke(difficulty: Difficulty, gameTimeInSeconds: Long?) {
+        if (difficulty == Difficulty.CUSTOM) {
+            return
+        }
+
         updateCandidateBestTime(difficulty, gameTimeInSeconds)
         updateGamesPlayedIfThereArentPreviousStatistics(difficulty)
         increaseGamesWon(difficulty)
