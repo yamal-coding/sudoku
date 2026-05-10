@@ -14,7 +14,11 @@ fun NavGraphBuilder.customBoardNavGraph(navController: NavController) {
         CustomBoardScreen(
             viewModel = hiltViewModel(),
             onStartGame = { navParams ->
-                navController.navigate(GameDestination.routeFromParams(navParams))
+                navController.navigate(GameDestination.routeFromParams(navParams)) {
+                    popUpTo(CustomBoardDestination.route) {
+                        inclusive = true
+                    }
+                }
             }
         )
     }
