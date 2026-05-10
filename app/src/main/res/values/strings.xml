@@ -37,4 +37,11 @@
     <string name="statistics_games_played_label">Games played</string>
     <string name="statistics_games_won_label">Games won</string>
     <string name="game_finished_new_best_time_title">New best time!</string>
+    <string name="custom_board_button">Custom board</string>
+    <string name="difficulty_custom">Custom</string>
+    <string name="custom_board_start_game_button">Start game</string>
+    <string name="custom_board_start_dialog_title">Start custom game?</string>
+    <string name="custom_board_start_dialog_subtitle">Make sure the board you have filled in is a valid Sudoku. The app will not verify it for you.</string>
+    <string name="custom_board_start_dialog_ok_button">Start game</string>
+    <string name="custom_board_start_dialog_cancel_button">Cancel</string>
 </resources>

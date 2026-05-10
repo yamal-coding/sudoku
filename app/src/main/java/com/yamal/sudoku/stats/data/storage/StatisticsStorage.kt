@@ -56,6 +56,7 @@ class StatisticsStorage @Inject constructor(
             Difficulty.EASY -> EASY_DIFFICULTY_SUFFIX
             Difficulty.MEDIUM -> MEDIUM_DIFFICULTY_SUFFIX
             Difficulty.HARD -> HARD_DIFFICULTY_SUFFIX
+            Difficulty.CUSTOM -> error("Custom games do not have statistics")
         }
 
     private companion object {

@@ -17,6 +17,7 @@ fun Menu(
     existingGame: ExistingGameViewData?,
     onContinueGame: (existingGame: ExistingGameViewData) -> Unit,
     onNewGame: (Difficulty) -> Unit,
+    onCustomBoard: () -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -36,6 +37,8 @@ fun Menu(
         NewMediumGameButton(onClick = onNewGame)
         MenuDivider()
         NewHardGameButton(onClick = onNewGame)
+        MenuDivider()
+        CustomBoardButton(onClick = onCustomBoard)
         MenuDivider()
     }
 }
@@ -73,5 +76,17 @@ fun NewHardGameButton(
         modifier = modifier,
         onClick = { onClick(Difficulty.HARD) },
         textRes = R.string.difficulty_hard
+    )
+}
+
+@Composable
+fun CustomBoardButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    MenuButton(
+        modifier = modifier,
+        onClick = onClick,
+        textRes = R.string.custom_board_button
     )
 }
