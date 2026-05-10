@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.yamal.sudoku.R
@@ -86,8 +87,8 @@ private fun PortraitCustomBoard(
 ) {
     SlideInVerticalTransition {
         Box(modifier = Modifier.fillMaxSize()) {
-            val configuration = LocalConfiguration.current
-            val portraitModifier = if (configuration.screenWidthDp.dp > ScreenDimensions.SMALL_DEVICE_MAX_WIDTH.dp) {
+            val width = LocalWindowInfo.current.containerSize.width.dp
+            val portraitModifier = if (width > ScreenDimensions.SMALL_DEVICE_MAX_WIDTH.dp) {
                 Modifier.fillMaxWidth(fraction = 0.8F)
             } else {
                 Modifier
