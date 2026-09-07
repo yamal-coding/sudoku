@@ -1,6 +1,6 @@
 [versions]
 activity = "1.13.0"
-hilt = "2.59.2"
+hilt = "2.60.1"
 kotlin = "2.3.21"
 min-sdk = "26"
 moshi = "1.15.2"
@@ -42,8 +42,8 @@ google-services-plugin = "com.google.gms:google-services:4.5.0"
 crashlytics-plugin = "com.google.firebase:firebase-crashlytics-gradle:3.0.8"
 
 [plugins]
-android-application = "com.android.application:9.2.1"
+android-application = "com.android.application:9.4.0"
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 detekt = "io.gitlab.arturbosch.detekt:1.23.8"
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp = "com.google.devtools.ksp:2.3.7"
+ksp = "com.google.devtools.ksp:2.3.11"
